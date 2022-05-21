@@ -2,7 +2,6 @@ using Api.Models;
 using AutoMapper;
 using ELifeRPG.Application;
 using ELifeRPG.Application.Characters;
-using ELifeRPG.Infrastructure.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,24 +14,6 @@ builder.Services.AddMediatR(typeof(Application));
 builder.Services.AddInfrastructure();
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    try
-    {
-        var context = services.GetRequiredService<DatabaseContext>();
-        await DatabaseContextSeed.SeedSampleDataAsync(context);
-    }
-    catch (Exception ex)
-    {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Could not seed database");
-        throw;
-    }
-}
-
 
 if (app.Environment.IsDevelopment())
 {

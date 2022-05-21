@@ -1,12 +1,15 @@
-﻿using ELifeRPG.Domain.Common;
+﻿using ELifeRPG.Domain.Accounts;
+using ELifeRPG.Domain.Common;
 
 namespace ELifeRPG.Domain.Characters;
 
-public class Character : IIncludesDomainEvent
+public class Character : EntityBase, IHasDomainEvents
 {
     private CharacterName? _name;
 
     public Guid Id { get; init; }
+    
+    public Account? Account { get; init; }
 
     public CharacterName? Name
     {

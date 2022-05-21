@@ -16,7 +16,5 @@ public class CharacterTypeConfiguration : IEntityTypeConfiguration<Character>
 
         builder.OwnsOne(x => x.Name).Property(x => x.FirstName).HasColumnName("FirstName").HasMaxLength(50).IsRequired();
         builder.OwnsOne(x => x.Name).Property(x => x.LastName).HasColumnName("LastName").HasMaxLength(50).IsRequired();
-        
-        builder.Ignore(e => e.DomainEvents);
     }
 }

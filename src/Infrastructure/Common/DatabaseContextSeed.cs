@@ -1,5 +1,5 @@
-﻿using ELifeRPG.Domain.Characters;
-using Microsoft.EntityFrameworkCore;
+﻿using ELifeRPG.Domain.Accounts;
+using ELifeRPG.Domain.Characters;
 
 namespace ELifeRPG.Infrastructure.Common;
 
@@ -7,17 +7,17 @@ public class DatabaseContextSeed
 {
     public static async Task SeedSampleDataAsync(DatabaseContext context)
     {
-        await context.Database.EnsureCreatedAsync();
-        await context.Database.MigrateAsync();
-        
-        if (!context.Characters.Any())
+        if (!context.Accounts.Any())
         {
-            context.Characters.Add(new Character
+            context.Accounts.Add(new Account
             {
                 Id = Guid.NewGuid(),
-                Name = new CharacterName("Jon", "Doe")
+                Characters = new List<Character>
+                {
+                    new() { Id = Guid.NewGuid(), Name = new CharacterName("Jon", "Doe") },
+                },
             });
-
+            
             await context.SaveChangesAsync();
         }
     }

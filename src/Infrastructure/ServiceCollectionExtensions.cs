@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddDbContext<DatabaseContext>(options =>
-            options.UseSqlite("Data Source=temp.sqlite"));
+            options.UseSqlite("Data Source=E:\\Projekte\\private\\ELifeRPG\\Core\\temp.sqlite", x => x.MigrationsAssembly(typeof(DatabaseContext).Assembly.GetName().Name)));
 
         services.AddScoped<IDatabaseContext>(provider => provider.GetRequiredService<DatabaseContext>());
 

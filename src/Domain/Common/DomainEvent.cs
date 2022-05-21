@@ -2,9 +2,9 @@
 
 namespace ELifeRPG.Domain.Common;
 
-public interface IIncludesDomainEvent
+public interface IHasDomainEvents
 {
-    public List<DomainEvent> DomainEvents { get; set; }
+    List<DomainEvent> DomainEvents { get; set; }
 }
 
 public abstract class DomainEvent : INotification

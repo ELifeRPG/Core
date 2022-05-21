@@ -17,6 +17,7 @@ public class ListCharactersResult
 
 public class ListCharactersQuery : IRequest<ListCharactersResult>
 {
+    public Guid? AccountId { get; init; }
 }
 
 public class ListCharactersHandler : IRequestHandler<ListCharactersQuery, ListCharactersResult>
@@ -30,7 +31,14 @@ public class ListCharactersHandler : IRequestHandler<ListCharactersQuery, ListCh
 
     public async Task<ListCharactersResult> Handle(ListCharactersQuery request, CancellationToken cancellationToken)
     {
-        var characters = await _databaseContext.Characters.ToListAsync(cancellationToken);
+        var query = _databaseContext.Characters.AsQueryable();
+
+        if (request.AccountId.HasValue)
+        {
+            query = query.Where(x => x.Account.Id == request.AccountId);
+        }
+        
+        var characters = await query.OrderBy(x => x.Id).ToListAsync(cancellationToken);
         return new ListCharactersResult(characters);
     }
 }

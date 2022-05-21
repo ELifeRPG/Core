@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using ELifeRPG.Application.Common;
+using ELifeRPG.Domain.Accounts;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using MediatR;
@@ -12,19 +13,26 @@ namespace ELifeRPG.Infrastructure.Common;
 public class DatabaseContext : DbContext, IDatabaseContext
 {
     private readonly IMediator _mediator;
-
-    public DatabaseContext(DbContextOptions<DatabaseContext> options, IMediator mediator)
+    
+    public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
+    {
+    }
+    
+    public DatabaseContext(DbContextOptions<DatabaseContext> options, IMediator mediator)
+        : this(options)
     {
         _mediator = mediator;
     }
 
+    public DbSet<Account> Accounts { get; set; }
+    
     public DbSet<Character> Characters { get; set; }
     
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
-        var domainEvents = ChangeTracker.Entries<IIncludesDomainEvent>()
-            .Select(x => x.Entity.DomainEvents).SelectMany(x => x)
+        var domainEvents = ChangeTracker.Entries<IHasDomainEvents>()
+            .SelectMany(x => x.Entity.DomainEvents)
             .Where(domainEvent => !domainEvent.IsPublished)
             .ToList();
 
@@ -35,6 +43,20 @@ public class DatabaseContext : DbContext, IDatabaseContext
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        var types = typeof(Domain.Domain).Assembly.GetTypes();
+        
+        var typesDerivedFromIHasDomainEvents = types.Where(x => x.GetTypeInfo().ImplementedInterfaces.Any(type => type.GetTypeInfo().IsInterface && type == typeof(IHasDomainEvents)));
+        foreach (var type in typesDerivedFromIHasDomainEvents)
+        {
+            builder.Entity(type).Ignore(nameof(IHasDomainEvents.DomainEvents));
+        }
+        
+        var typesDerivedFromEntityBase = types.Where(x => x.GetTypeInfo().ImplementedInterfaces.Any(type => type.GetTypeInfo().IsClass && type == typeof(EntityBase)));
+        foreach (var type in typesDerivedFromEntityBase)
+        {
+            builder.Entity(type).Property(nameof(EntityBase.Created)).HasColumnType("datetime2").IsRequired().ValueGeneratedOnAdd();
+        }
+        
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
     
