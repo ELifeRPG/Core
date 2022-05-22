@@ -1,9 +1,6 @@
-using Api.Models;
-using AutoMapper;
 using ELifeRPG.Application;
-using ELifeRPG.Application.Characters;
+using ELifeRPG.Core.Api.Endpoints;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,5 +18,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/characters", async ([FromServices] IMediator mediator, [FromServices] IMapper mapper, CancellationToken cancellationToken) => Results.Ok(mapper.Map<List<CharacterDto>>((await mediator.Send(new ListCharactersQuery(), cancellationToken)).Characters)));
+app.MapSessionEndpoints();
+app.MapAccountEndpoints();
+app.MapCharacterEndpoints();
+
 app.Run();

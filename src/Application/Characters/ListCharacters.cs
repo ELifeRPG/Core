@@ -17,7 +17,16 @@ public class ListCharactersResult
 
 public class ListCharactersQuery : IRequest<ListCharactersResult>
 {
-    public Guid? AccountId { get; init; }
+    public ListCharactersQuery()
+    {
+    }
+    
+    public ListCharactersQuery(Guid accountId)
+    {
+        AccountId = accountId;
+    }
+    
+    public Guid? AccountId { get; }
 }
 
 public class ListCharactersHandler : IRequestHandler<ListCharactersQuery, ListCharactersResult>
@@ -35,7 +44,7 @@ public class ListCharactersHandler : IRequestHandler<ListCharactersQuery, ListCh
 
         if (request.AccountId.HasValue)
         {
-            query = query.Where(x => x.Account.Id == request.AccountId);
+            query = query.Where(x => x.Account!.Id == request.AccountId);
         }
         
         var characters = await query.OrderBy(x => x.Id).ToListAsync(cancellationToken);

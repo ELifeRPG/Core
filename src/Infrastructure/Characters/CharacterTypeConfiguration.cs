@@ -16,5 +16,10 @@ public class CharacterTypeConfiguration : IEntityTypeConfiguration<Character>
 
         builder.OwnsOne(x => x.Name).Property(x => x.FirstName).HasColumnName("FirstName").HasMaxLength(50).IsRequired();
         builder.OwnsOne(x => x.Name).Property(x => x.LastName).HasColumnName("LastName").HasMaxLength(50).IsRequired();
+
+        builder
+            .HasOne(x => x.Account)
+            .WithMany(x => x.Characters)
+            .HasConstraintName("FK_Account_Id");
     }
 }

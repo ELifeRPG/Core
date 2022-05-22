@@ -12,6 +12,7 @@ public class DatabaseContextSeed
             context.Accounts.Add(new Account
             {
                 Id = Guid.NewGuid(),
+                EnfusionIdentifier = "foo",
                 Characters = new List<Character>
                 {
                     new() { Id = Guid.NewGuid(), Name = new CharacterName("Jon", "Doe") },

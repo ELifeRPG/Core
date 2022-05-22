@@ -1,8 +1,9 @@
-﻿using Api.Models;
-using AutoMapper;
+﻿using AutoMapper;
+using ELifeRPG.Application.Characters;
+using ELifeRPG.Core.Api.Models;
 using ELifeRPG.Domain.Characters;
 
-namespace Api.Mappers;
+namespace ELifeRPG.Core.Api.Mappers;
 
 public class CharacterProfile : Profile
 {

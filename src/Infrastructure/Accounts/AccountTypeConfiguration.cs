@@ -13,9 +13,5 @@ public class AccountTypeConfiguration : IEntityTypeConfiguration<Account>
         builder.HasKey(x => x.Id).HasName("PK_Account_Id");
         
         builder.Property(x => x.Id).HasColumnName("Id");
-
-        builder
-            .HasMany(x => x.Characters)
-            .WithOne(x => x.Account).HasConstraintName("FK_Account_Id");
     }
 }

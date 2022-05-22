@@ -4,6 +4,8 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>ELifeRPG.Core.Api</AssemblyName>
+        <RootNamespace>ELifeRPG.Core.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
