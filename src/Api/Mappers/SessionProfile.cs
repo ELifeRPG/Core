@@ -12,10 +12,10 @@ public class SessionProfile : Profile
         CreateMap<CreateSessionResponse, SessionDto>()
             .ForMember(d => d.AccountId, o => o.MapFrom(s => s.AccountId));
 
-        CreateMap<CreateSessionResponse, ApiDto<SessionDto>>()
+        CreateMap<CreateSessionResponse, ResultResultDto<SessionDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s));
         
-        CreateMap<CreateCharacterSessionResponse, ApiDto<CharacterDto>>()
+        CreateMap<CreateCharacterSessionResponse, ResultResultDto<CharacterDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s.Character));
     }
 }

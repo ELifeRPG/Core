@@ -15,10 +15,10 @@ public class CharacterProfile : Profile
             .ForMember(d => d.LastName, o => o.MapFrom(s => s.Name!.LastName))
             .ReverseMap();
         
-        CreateMap<CreateCharacterResponse, ApiDto<CharacterDto>>()
+        CreateMap<CreateCharacterResponse, ResultResultDto<CharacterDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s.Character));
         
-        CreateMap<ListCharactersResult, ApiDto<List<CharacterDto>>>()
+        CreateMap<ListCharactersResult, ResultResultDto<List<CharacterDto>>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s.Characters));
     }
 }

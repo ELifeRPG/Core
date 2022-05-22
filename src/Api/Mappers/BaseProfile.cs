@@ -8,7 +8,7 @@ public class BaseProfile : Profile
 {
     public BaseProfile()
     {
-        CreateMap<ResponseBase, DtoBase>()
+        CreateMap<ResponseBase, ResultDtoBase>()
             .ForMember(d => d.Messages, o => o.MapFrom(s => s.Messages))
             .IncludeAllDerived();
     }

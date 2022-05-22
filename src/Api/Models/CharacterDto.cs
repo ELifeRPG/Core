@@ -1,6 +1,6 @@
 ﻿namespace ELifeRPG.Core.Api.Models;
 
-public class CharacterDto : DtoBase
+public class CharacterDto
 {
     public string Id { get; set; } = null!;
     
