@@ -12,7 +12,7 @@ public static class Session
     {
         app
             .MapPost("/sessions", CreateSession)
-            .Produces<ResultResultDto<SessionDto>>();
+            .Produces<ResultDto<SessionDto>>();
         
         return app;
     }
@@ -24,6 +24,6 @@ public static class Session
     /// For Enfusion, the <seealso cref="SessionDto.EnfusionIdentifier"/> is required.</param>
     private static async Task<IResult> CreateSession([FromServices] IMediator mediator, [FromServices] IMapper mapper, [FromBody] SessionDto session, CancellationToken cancellationToken)
     {
-        return Results.Ok(mapper.Map<ResultResultDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(session.EnfusionIdentifier!), cancellationToken)));
+        return Results.Ok(mapper.Map<ResultDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(session.EnfusionIdentifier!), cancellationToken)));
     }
 }

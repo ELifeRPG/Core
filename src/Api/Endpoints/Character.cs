@@ -12,11 +12,11 @@ public static class Character
     {
         app
             .MapPost("/characters", CreateCharacter)
-            .Produces<ResultResultDto<CharacterDto>>();
+            .Produces<ResultDto<CharacterDto>>();
         
         app
             .MapPost("/characters/{characterId:Guid}/sessions", CreateCharacterSession)
-            .Produces<ResultResultDto<CharacterDto>>();
+            .Produces<ResultDto<CharacterDto>>();
         
         return app;
     }
@@ -26,7 +26,7 @@ public static class Character
     /// </summary>
     private static async Task<IResult> CreateCharacter([FromServices] IMediator mediator, [FromServices] IMapper mapper, [FromBody] CharacterDto character, CancellationToken cancellationToken)
     {
-        return Results.Ok(mapper.Map<ResultResultDto<CharacterDto>>(await mediator.Send(new CreateCharacterRequest(mapper.Map<Domain.Characters.Character>(character)), cancellationToken)));
+        return Results.Ok(mapper.Map<ResultDto<CharacterDto>>(await mediator.Send(new CreateCharacterRequest(mapper.Map<Domain.Characters.Character>(character)), cancellationToken)));
     }
 
     /// <summary>
@@ -35,6 +35,6 @@ public static class Character
     /// <param name="characterId">The Id of the used character.</param>
     private static async Task<IResult> CreateCharacterSession([FromServices] IMediator mediator, [FromServices] IMapper mapper, [FromRoute] Guid characterId, CancellationToken cancellationToken)
     {
-        return Results.Ok(mapper.Map<ResultResultDto<CharacterDto>>(await mediator.Send(new CreateCharacterSessionRequest(characterId), cancellationToken)));
+        return Results.Ok(mapper.Map<ResultDto<CharacterDto>>(await mediator.Send(new CreateCharacterSessionRequest(characterId), cancellationToken)));
     }
 }

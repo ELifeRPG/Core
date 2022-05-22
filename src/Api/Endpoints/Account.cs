@@ -12,7 +12,7 @@ public static class Account
     {
         app
             .MapGet("/accounts/{accountId:Guid}/characters", GetCharacters)
-            .Produces<ResultResultDto<List<CharacterDto>>>();
+            .Produces<ResultDto<List<CharacterDto>>>();
         
         return app;
     }
@@ -23,6 +23,6 @@ public static class Account
     /// <param name="accountId">The Id of the account of which from the characters will be loaded.</param>
     private static async Task<IResult> GetCharacters([FromServices] IMediator mediator, [FromServices] IMapper mapper, [FromRoute] Guid accountId, CancellationToken cancellationToken)
     {
-        return Results.Ok(mapper.Map<ResultResultDto<List<CharacterDto>>>(await mediator.Send(new ListCharactersQuery(accountId), cancellationToken)));
+        return Results.Ok(mapper.Map<ResultDto<List<CharacterDto>>>(await mediator.Send(new ListCharactersQuery(accountId), cancellationToken)));
     }
 }
