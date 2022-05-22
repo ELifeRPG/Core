@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-      <RootNamespace>ELifeRPG.Infrastructure</RootNamespace>
-      <AssemblyName>ELifeRPG.Infrastructure</AssemblyName>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ELifeRPG.Infrastructure</RootNamespace>
+    <AssemblyName>ELifeRPG.Infrastructure</AssemblyName>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Application\Application.csproj" />
-      <ProjectReference Include="..\Domain\Domain.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj"/>
+    <ProjectReference Include="..\Domain\Domain.csproj"/>
+  </ItemGroup>
 
-    <ItemGroup>      
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5"/>
+  </ItemGroup>
 
 </Project>

@@ -6,8 +6,8 @@ namespace ELifeRPG.Domain.Accounts;
 public class Account : EntityBase, IHasDomainEvents
 {
     public Guid Id { get; init; }
-    
-    public string EnfusionIdentifier { get; init; }
+
+    public string EnfusionIdentifier { get; init; } = null!;
     
     public ICollection<Character>? Characters { get; init; }
 

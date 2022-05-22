@@ -10,8 +10,12 @@ public class AccountTypeConfiguration : IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> builder)
     {
-        builder.HasKey(x => x.Id).HasName("PK_Account_Id");
+        builder.ToTable("Account");
         
+        builder.HasKey(x => x.Id).HasName("PK_Account_Id");
         builder.Property(x => x.Id).HasColumnName("Id");
+        
+        builder.Property(x => x.EnfusionIdentifier).HasColumnName("EnfusionIdentifier").IsRequired();
+        builder.HasIndex(x => x.EnfusionIdentifier).HasDatabaseName("IDX_Account_EnfusionIdentifier");
     }
 }

@@ -10,8 +10,9 @@ public class CharacterTypeConfiguration : IEntityTypeConfiguration<Character>
 {
     public void Configure(EntityTypeBuilder<Character> builder)
     {
-        builder.HasKey(x => x.Id).HasName("PK_Character_Id");
+        builder.ToTable("Character");
         
+        builder.HasKey(x => x.Id).HasName("PK_Character_Id");
         builder.Property(x => x.Id).HasColumnName("Id");
 
         builder.OwnsOne(x => x.Name).Property(x => x.FirstName).HasColumnName("FirstName").HasMaxLength(50).IsRequired();
