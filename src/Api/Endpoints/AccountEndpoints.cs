@@ -14,8 +14,8 @@ public static class AccountEndpoints
             .MapGet(
                 "/accounts/{accountId:Guid}/characters", 
                 async ([FromServices] IMediator mediator, [FromServices] IMapper mapper, [FromRoute] Guid accountId, CancellationToken cancellationToken) => 
-                    Results.Ok(mapper.Map<List<CharacterDto>>((await mediator.Send(new ListCharactersQuery(accountId), cancellationToken)).Characters)))
-            .Produces<List<CharacterDto>>();
+                    Results.Ok(mapper.Map<ApiDto<List<CharacterDto>>>(await mediator.Send(new ListCharactersQuery(accountId), cancellationToken))))
+            .Produces<ApiDto<List<CharacterDto>>>();
         
         return app;
     }

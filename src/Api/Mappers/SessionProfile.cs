@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ELifeRPG.Application.Characters;
 using ELifeRPG.Application.Sessions;
 using ELifeRPG.Core.Api.Models;
 
@@ -13,5 +14,8 @@ public class SessionProfile : Profile
 
         CreateMap<CreateSessionResponse, ApiDto<SessionDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s));
+        
+        CreateMap<CreateCharacterSessionResponse, ApiDto<CharacterDto>>()
+            .ForMember(d => d.Data, o => o.MapFrom(s => s.Character));
     }
 }
