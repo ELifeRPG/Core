@@ -1,5 +1,4 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using ELifeRPG.Application.Sessions;
 using ELifeRPG.Core.Api.Models;
 using MediatR;
@@ -16,7 +15,7 @@ public static class SessionEndpoints
                 "/sessions", 
                 async ([FromServices] IMediator mediator, [FromServices] IMapper mapper, [FromBody] SessionDto session, CancellationToken cancellationToken) =>
                     Results.Ok(mapper.Map<SessionDto>(await mediator.Send(new CreateSessionRequest(session.EnfusionIdentifier!), cancellationToken))))
-            .Produces((int)HttpStatusCode.OK);
+            .Produces<SessionDto>();
         
         return app;
     }
