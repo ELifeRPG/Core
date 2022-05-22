@@ -17,5 +17,7 @@ public class AccountTypeConfiguration : IEntityTypeConfiguration<Account>
         
         builder.Property(x => x.EnfusionIdentifier).HasColumnName("EnfusionIdentifier").IsRequired();
         builder.HasIndex(x => x.EnfusionIdentifier).HasDatabaseName("IDX_Account_EnfusionIdentifier");
+        
+        builder.Property(x => x.Status).HasColumnName("Status").IsRequired();
     }
 }

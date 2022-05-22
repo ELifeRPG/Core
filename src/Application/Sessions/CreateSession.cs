@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Sessions;
 
-public class CreateSessionResponse
+public class CreateSessionResponse : ResponseBase
 {
     public CreateSessionResponse(Guid accountId)
     {
@@ -46,6 +46,13 @@ public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, Create
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
 
-        return new CreateSessionResponse(account.Id);
+        var response = new CreateSessionResponse(account.Id);
+
+        if (account.Status == AccountStatus.Locked)
+        {
+            response.AddErrorMessage("Account locked", "Your account is currently locked. You might contact the server owner.");
+        }
+
+        return response;
     }
 }

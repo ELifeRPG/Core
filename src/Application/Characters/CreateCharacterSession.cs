@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Characters;
 
-public class CreateCharacterSessionResponse
+public class CreateCharacterSessionResponse : ResponseBase
 {
     public CreateCharacterSessionResponse(Character character)
     {

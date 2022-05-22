@@ -14,8 +14,8 @@ public static class SessionEndpoints
             .MapPost(
                 "/sessions", 
                 async ([FromServices] IMediator mediator, [FromServices] IMapper mapper, [FromBody] SessionDto session, CancellationToken cancellationToken) =>
-                    Results.Ok(mapper.Map<SessionDto>(await mediator.Send(new CreateSessionRequest(session.EnfusionIdentifier!), cancellationToken))))
-            .Produces<SessionDto>();
+                    Results.Ok(mapper.Map<ApiDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(session.EnfusionIdentifier!), cancellationToken))))
+            .Produces<ApiDto<SessionDto>>();
         
         return app;
     }

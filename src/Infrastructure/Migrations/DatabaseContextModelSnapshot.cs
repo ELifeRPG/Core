@@ -32,6 +32,10 @@ namespace ELifeRPG.Infrastructure.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("EnfusionIdentifier");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Status");
+
                     b.HasKey("Id")
                         .HasName("PK_Account_Id");
 

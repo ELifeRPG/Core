@@ -10,5 +10,8 @@ public class SessionProfile : Profile
     {
         CreateMap<CreateSessionResponse, SessionDto>()
             .ForMember(d => d.AccountId, o => o.MapFrom(s => s.AccountId));
+
+        CreateMap<CreateSessionResponse, ApiDto<SessionDto>>()
+            .ForMember(d => d.Data, o => o.MapFrom(s => s));
     }
 }

@@ -8,6 +8,8 @@ public class Account : EntityBase, IHasDomainEvents
     public Guid Id { get; init; }
 
     public string EnfusionIdentifier { get; init; } = null!;
+
+    public AccountStatus Status { get; init; } = AccountStatus.Active;
     
     public ICollection<Character>? Characters { get; init; }
 
