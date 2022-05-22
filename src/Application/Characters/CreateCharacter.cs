@@ -14,9 +14,9 @@ public class CreateCharacterResponse
     public Character Character { get; }
 }
 
-public class CreateCharacterCommand : IRequest<CreateCharacterResponse>
+public class CreateCharacterRequest : IRequest<CreateCharacterResponse>
 {
-    public CreateCharacterCommand(Character characterInfo)
+    public CreateCharacterRequest(Character characterInfo)
     {
         CharacterInfo = characterInfo;
     }
@@ -24,7 +24,7 @@ public class CreateCharacterCommand : IRequest<CreateCharacterResponse>
     public Character CharacterInfo { get; }
 }
 
-public class CreateCharacterHandler : IRequestHandler<CreateCharacterCommand, CreateCharacterResponse>
+public class CreateCharacterHandler : IRequestHandler<CreateCharacterRequest, CreateCharacterResponse>
 {
     private readonly IDatabaseContext _databaseContext;
 
@@ -33,7 +33,7 @@ public class CreateCharacterHandler : IRequestHandler<CreateCharacterCommand, Cr
         _databaseContext = databaseContext;
     }
 
-    public async Task<CreateCharacterResponse> Handle(CreateCharacterCommand request, CancellationToken cancellationToken)
+    public async Task<CreateCharacterResponse> Handle(CreateCharacterRequest request, CancellationToken cancellationToken)
     {
         var character = Character.Create(request.CharacterInfo);
         _databaseContext.Characters.Add(character);
