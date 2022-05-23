@@ -1,0 +1,27 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>WebUI</PageTitle>
+
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+
+<MudLayout>
+
+    <MudAppBar Class="docs-appbar-filter" Color="Color.Transparent" Elevation="0"></MudAppBar>
+    <MudAppBar Class="docs-appbar" Color="Color.Transparent" Elevation="0">
+        <NavLink ActiveClass="d-flex me-4" href="/">
+            <MudImage Src="https://via.placeholder.com/64" Fluid="@true" Style="width: 32px;" />
+            <MudText Color="Color.Primary" Typo="Typo.h5" Style="letter-spacing: .2rem; font-weight: 400; font-family: 'Roboto'; margin-inline-start: 12px; font-size: 24px; user-select: none;">ELifeRPG</MudText>
+        </NavLink>
+        <MudButton Href="/" Color="Color.Inherit" Variant="Variant.Text">Home</MudButton>
+        <MudButton Href="/characters" Color="Color.Inherit" Variant="Variant.Text">Characters</MudButton>
+        <MudButton Href="/administration" Color="Color.Inherit" Variant="Variant.Text">Administration</MudButton>
+        <MudSpacer/>
+         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" Href="https://github.com/ELifeRPG"/>
+    </MudAppBar>
+
+    @Body
+
+</MudLayout>
