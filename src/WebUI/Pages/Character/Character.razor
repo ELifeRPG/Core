@@ -1,0 +1,21 @@
+﻿@page "/characters/{characterId}"
+
+<PageTitle>Character Details</PageTitle>
+
+<MudGrid>
+    <MudItem xs="4">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">Character Info</MudPaper>
+    </MudItem>
+    <MudItem xs="4">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">Faction / Group Info</MudPaper>
+    </MudItem>
+    <MudItem xs="4">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">Economy Info / Money / Bank</MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code 
+{
+    [Parameter]
+    public string? CharacterId { get; set; }
+}

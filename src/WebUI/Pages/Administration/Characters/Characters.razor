@@ -1,0 +1,74 @@
+﻿@page "/administration/characters"
+
+<PageTitle>Character Administration</PageTitle>
+
+@using ELifeRPG.Application.Characters
+@using ELifeRPG.Domain.Characters
+
+@inject IMediator Mediator;
+
+<MudTable @ref="@(_table)"
+          ServerData="@(new Func<TableState, Task<TableData<Character>>>(ServerReload))"
+          MultiSelection="true" @bind-SelectedItems="_selectedItems"
+          Dense="@(true)" Hover="@(true)" Striped="@(true)">
+
+    <ToolBarContent>
+        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+
+        <MudSpacer/>
+
+        @if (_selectedItems.Count > 0)
+        {
+            <MudButtonGroup OverrideStyles="@(false)">
+                <MudButton StartIcon="@Icons.Custom.Uncategorized.Radioactive" Color="Color.Warning" Variant="Variant.Filled">Lock</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Filled">Delete</MudButton>
+            </MudButtonGroup>
+        }
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="id_field" T="@(Character)">Id</MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel SortLabel="name_field" T="@(Character)">Name</MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name?.LastName, @context.Name?.FirstName</MudTd>
+    </RowTemplate>
+
+    <NoRecordsContent>
+        <MudText>No matching Characters found</MudText>
+    </NoRecordsContent>
+
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+@code
+{
+    private MudTable<Character>? _table;
+    private HashSet<Character> _selectedItems = new();
+    private string? _searchString;
+
+    private async Task<TableData<Character>> ServerReload(TableState state)
+    {
+        var result = await Mediator.Send(new ListCharactersQuery());
+        await Task.Delay(TimeSpan.FromSeconds(3));
+        return new TableData<Character> { TotalItems = 100, Items = result.Characters };
+    }
+
+    private void OnSearch(string text)
+    {
+        _searchString = text;
+        _table?.ReloadServerData();
+    }
+}

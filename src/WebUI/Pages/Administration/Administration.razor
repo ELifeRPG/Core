@@ -1,0 +1,20 @@
+﻿@page "/administration"
+
+<PageTitle>Administration</PageTitle>
+
+<MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.ExtraExtraLarge">
+    <MudGrid>
+        <MudItem xs="8" sm="6" md="4">
+            <MudCard Outlined="true">
+                <MudCardContent>
+                    <MudText>Players</MudText>
+                    <MudText Typo="Typo.body2">Manage accounts, characters</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/administration/accounts">Accounts</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/administration/characters">Characters</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

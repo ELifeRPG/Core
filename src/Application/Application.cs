@@ -1,5 +1,12 @@
-﻿namespace ELifeRPG.Application;
+﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 
-public class Application
+namespace ELifeRPG.Application;
+
+public static class ApplicationExtensions
 {
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
+        return services.AddMediatR(typeof(ApplicationExtensions));
+    }
 }

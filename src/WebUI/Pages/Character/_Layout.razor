@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+@layout MainLayout
+
+<MudDrawer Open="@true" ClipMode="DrawerClipMode.Always" Elevation="2">
+    <MudText Typo="Typo.h6" Class="px-4">Normal Harper</MudText>
+    <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">District Police</MudText>
+
+    <MudDivider Class="my-2"/>
+
+    <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
+        <MudNavLink Href="/characters/123">Overview</MudNavLink>
+    </MudNavMenu>
+</MudDrawer>
+
+<MudMainContent>
+    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge">
+        @Body
+    </MudContainer>
+</MudMainContent>

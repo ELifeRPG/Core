@@ -2,7 +2,6 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using ELifeRPG.Application;
 using ELifeRPG.Core.Api.Endpoints;
-using MediatR;
 using Microsoft.AspNetCore.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +19,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddMediatR(typeof(Application));
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
 var app = builder.Build();
