@@ -1,3 +1,88 @@
 ﻿@page "/administration/accounts"
 
 <PageTitle>Accounts Administration</PageTitle>
+
+@using ELifeRPG.Domain.Accounts
+@using ELifeRPG.Application.Accounts
+
+@inject IMediator Mediator;
+
+<MudTable @ref="@(_table)"
+          ServerData="@(new Func<TableState, Task<TableData<Account>>>(ServerReload))"
+          MultiSelection="true" @bind-SelectedItems="_selectedItems"
+          Dense="@(true)" Hover="@(true)" Striped="@(true)">
+
+    <ToolBarContent>
+        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+
+        <MudSpacer/>
+
+        @if (_selectedItems.Count > 0)
+        {
+            <MudButtonGroup OverrideStyles="@(false)">
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Filled">Delete</MudButton>
+            </MudButtonGroup>
+        }
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="id_field" T="@(Account)">Id</MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Id">@context.Id</MudTd>
+        <MudTd>
+            @if (context.Status == AccountStatus.Active)
+            {
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Warning" Variant="Variant.Filled" OnClick="@(async () => await OnLockClicked(context.Id))">Lock</MudButton>
+            }
+            else
+            {
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Success" Variant="Variant.Filled" OnClick="@(async () => await OnUnlockClicked(context.Id))">Unlock</MudButton>
+            }
+        </MudTd>
+    </RowTemplate>
+
+    <NoRecordsContent>
+        <MudText>No matching Accounts found</MudText>
+    </NoRecordsContent>
+
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+@code
+{
+    private MudTable<Account>? _table;
+    private HashSet<Account> _selectedItems = new();
+    private string? _searchString;
+
+    private async Task<TableData<Account>> ServerReload(TableState state)
+    {
+        var result = await Mediator.Send(new ListAccountsQuery());
+        return new TableData<Account> { TotalItems = 100, Items = result.Accounts };
+    }
+
+    private void OnSearch(string text)
+    {
+        _searchString = text;
+        _table?.ReloadServerData();
+    }
+
+    private async Task OnLockClicked(Guid accountId)
+    {
+        await Mediator.Send(new LockAccountCommand(accountId));
+    }
+    
+    private async Task OnUnlockClicked(Guid accountId)
+    {
+        await Mediator.Send(new UnlockAccountCommand(accountId));
+    }
+}

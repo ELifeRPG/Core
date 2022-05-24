@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Characters;
 
-public class ListCharactersResult : ResponseBase
+public class ListCharactersResult : ResultBase
 {
     public ListCharactersResult(List<Character> characters)
     {

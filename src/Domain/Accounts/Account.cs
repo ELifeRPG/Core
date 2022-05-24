@@ -9,7 +9,7 @@ public class Account : EntityBase, IHasDomainEvents
 
     public string EnfusionIdentifier { get; init; } = null!;
 
-    public AccountStatus Status { get; init; } = AccountStatus.Active;
+    public AccountStatus Status { get; private set; } = AccountStatus.Active;
     
     public ICollection<Character>? Characters { get; init; }
 
@@ -32,5 +32,17 @@ public class Account : EntityBase, IHasDomainEvents
     public Account SetValues(Account accountInfo)
     {
         return this;
+    }
+
+    public void Lock()
+    {
+        Status = AccountStatus.Locked;
+        DomainEvents.Add(new AccountLockedEvent(this));
+    }
+    
+    public void Unlock()
+    {
+        Status = AccountStatus.Active;
+        DomainEvents.Add(new AccountLockedEvent(this));
     }
 }

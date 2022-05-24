@@ -9,13 +9,13 @@ public class SessionProfile : Profile
 {
     public SessionProfile()
     {
-        CreateMap<CreateSessionResponse, SessionDto>()
+        CreateMap<CreateSessionResult, SessionDto>()
             .ForMember(d => d.AccountId, o => o.MapFrom(s => s.AccountId));
 
-        CreateMap<CreateSessionResponse, ResultDto<SessionDto>>()
+        CreateMap<CreateSessionResult, ResultDto<SessionDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s));
         
-        CreateMap<CreateCharacterSessionResponse, ResultDto<CharacterDto>>()
+        CreateMap<CreateCharacterSessionResult, ResultDto<CharacterDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s.Character));
     }
 }

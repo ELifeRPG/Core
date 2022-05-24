@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Sessions;
 
-public class CreateSessionResponse : ResponseBase
+public class CreateSessionResult : ResultBase
 {
-    public CreateSessionResponse(Guid accountId)
+    public CreateSessionResult(Guid accountId)
     {
         AccountId = accountId;
     }
@@ -15,7 +15,7 @@ public class CreateSessionResponse : ResponseBase
     public Guid AccountId { get; }
 }
 
-public class CreateSessionRequest : IRequest<CreateSessionResponse>
+public class CreateSessionRequest : IRequest<CreateSessionResult>
 {
     public CreateSessionRequest(string enfusionIdentifier)
     {
@@ -25,7 +25,7 @@ public class CreateSessionRequest : IRequest<CreateSessionResponse>
     public string EnfusionIdentifier { get; }
 }
 
-public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, CreateSessionResponse>
+public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, CreateSessionResult>
 {
     private readonly IDatabaseContext _databaseContext;
 
@@ -34,7 +34,7 @@ public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, Create
         _databaseContext = databaseContext;
     }
 
-    public async Task<CreateSessionResponse> Handle(CreateSessionRequest request, CancellationToken cancellationToken)
+    public async Task<CreateSessionResult> Handle(CreateSessionRequest request, CancellationToken cancellationToken)
     {
         var account = await _databaseContext.Accounts
             .SingleOrDefaultAsync(x => x.EnfusionIdentifier == request.EnfusionIdentifier, cancellationToken);
@@ -46,7 +46,7 @@ public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, Create
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
 
-        var response = new CreateSessionResponse(account.Id);
+        var response = new CreateSessionResult(account.Id);
 
         if (account.Status == AccountStatus.Locked)
         {

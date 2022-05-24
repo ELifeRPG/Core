@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Characters;
 
-public class CreateCharacterSessionResponse : ResponseBase
+public class CreateCharacterSessionResult : ResultBase
 {
-    public CreateCharacterSessionResponse(Character character)
+    public CreateCharacterSessionResult(Character character)
     {
         Character = character;
     }
@@ -15,7 +15,7 @@ public class CreateCharacterSessionResponse : ResponseBase
     public Character Character { get; }
 }
 
-public class CreateCharacterSessionRequest : IRequest<CreateCharacterSessionResponse>
+public class CreateCharacterSessionRequest : IRequest<CreateCharacterSessionResult>
 {
     public CreateCharacterSessionRequest(Guid characterId)
     {
@@ -25,7 +25,7 @@ public class CreateCharacterSessionRequest : IRequest<CreateCharacterSessionResp
     public Guid CharacterId { get; }
 }
 
-public class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSessionRequest, CreateCharacterSessionResponse>
+public class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSessionRequest, CreateCharacterSessionResult>
 {
     private readonly IDatabaseContext _databaseContext;
 
@@ -34,7 +34,7 @@ public class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSess
         _databaseContext = databaseContext;
     }
 
-    public async Task<CreateCharacterSessionResponse> Handle(CreateCharacterSessionRequest request, CancellationToken cancellationToken)
+    public async Task<CreateCharacterSessionResult> Handle(CreateCharacterSessionRequest request, CancellationToken cancellationToken)
     {
         var character = await _databaseContext.Characters
             .Include(x => x.Sessions!.Where(s => s.Ended == null))
@@ -48,6 +48,6 @@ public class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSess
         character.CreateSession();
         await _databaseContext.SaveChangesAsync(cancellationToken);
 
-        return new CreateCharacterSessionResponse(character);
+        return new CreateCharacterSessionResult(character);
     }
 }

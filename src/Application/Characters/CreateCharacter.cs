@@ -4,9 +4,9 @@ using MediatR;
 
 namespace ELifeRPG.Application.Characters;
 
-public class CreateCharacterResponse : ResponseBase
+public class CreateCharacterResult : ResultBase
 {
-    public CreateCharacterResponse(Character character)
+    public CreateCharacterResult(Character character)
     {
         Character = character;
     }
@@ -14,7 +14,7 @@ public class CreateCharacterResponse : ResponseBase
     public Character Character { get; }
 }
 
-public class CreateCharacterRequest : IRequest<CreateCharacterResponse>
+public class CreateCharacterRequest : IRequest<CreateCharacterResult>
 {
     public CreateCharacterRequest(Character characterInfo)
     {
@@ -24,7 +24,7 @@ public class CreateCharacterRequest : IRequest<CreateCharacterResponse>
     public Character CharacterInfo { get; }
 }
 
-public class CreateCharacterHandler : IRequestHandler<CreateCharacterRequest, CreateCharacterResponse>
+public class CreateCharacterHandler : IRequestHandler<CreateCharacterRequest, CreateCharacterResult>
 {
     private readonly IDatabaseContext _databaseContext;
 
@@ -33,11 +33,11 @@ public class CreateCharacterHandler : IRequestHandler<CreateCharacterRequest, Cr
         _databaseContext = databaseContext;
     }
 
-    public async Task<CreateCharacterResponse> Handle(CreateCharacterRequest request, CancellationToken cancellationToken)
+    public async Task<CreateCharacterResult> Handle(CreateCharacterRequest request, CancellationToken cancellationToken)
     {
         var character = Character.Create(request.CharacterInfo);
         _databaseContext.Characters.Add(character);
         await _databaseContext.SaveChangesAsync(cancellationToken);
-        return new CreateCharacterResponse(character);
+        return new CreateCharacterResult(character);
     }
 }
