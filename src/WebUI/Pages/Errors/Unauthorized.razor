@@ -1,0 +1,30 @@
+﻿@page "/errors/unauthorized"
+@using Microsoft.AspNetCore.WebUtilities
+
+@inject NavigationManager NavigationManager
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
+
+    <MudCard>
+        <MudCardMedia Image="images/banner_error_page_401.png" Height="200"/>
+        <MudCardContent>
+            <MudText Typo="Typo.h5">OH NO!</MudText>
+            <MudText Typo="Typo.body2">You are not authorized to visit this page.</MudText>
+            <MudText Typo="Typo.body2">Anyway.. you might just need to sign-in.</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="@(true)" EndIcon="@Icons.Custom.Brands.Steam" OnClick="@(() => NavigationManager.NavigateTo($"/authentication/sign-in{GetQueryString()}", true))">Sign-In with Steam</MudButton>
+        </MudCardActions>
+    </MudCard>
+
+</MudContainer>
+
+@code
+{
+    string GetQueryString()
+    {
+        return QueryHelpers.ParseQuery(NavigationManager.ToAbsoluteUri(NavigationManager.Uri).Query).TryGetValue("redirectUri", out var redirectUri)
+            ? $"?redirectUri={redirectUri}"
+            : string.Empty;
+    }
+}

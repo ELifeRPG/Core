@@ -20,7 +20,7 @@ public class Signin : PageModel
         _mediator = mediator;
     }
 
-    public async Task<IActionResult> OnGet([FromQuery] string? provider, [FromQuery] string? callback)
+    public async Task<IActionResult> OnGet([FromQuery] string? provider, [FromQuery] string? callback, [FromQuery] string? redirectUri)
     {
         if (string.IsNullOrEmpty(provider) && string.IsNullOrEmpty(callback))
         {
@@ -29,8 +29,13 @@ public class Signin : PageModel
         
         if (provider?.Equals(SteamAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) ?? false)
         {
-            var redirectUri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.PathBase}{HttpContext.Request.Path}?callback={SteamAuthenticationDefaults.AuthenticationScheme}";
-            return Challenge(new AuthenticationProperties { RedirectUri = redirectUri }, SteamAuthenticationDefaults.AuthenticationScheme);
+            var uri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.PathBase}{HttpContext.Request.Path}?callback={SteamAuthenticationDefaults.AuthenticationScheme}";
+            if (!string.IsNullOrEmpty(redirectUri))
+            {
+                uri += $"&redirectUri={redirectUri}";
+            }
+            
+            return Challenge(new AuthenticationProperties { RedirectUri = uri }, SteamAuthenticationDefaults.AuthenticationScheme);
         }
         
         if (callback?.Equals(SteamAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) ?? false)
@@ -39,7 +44,7 @@ public class Signin : PageModel
             var nameIdentifierClaim = identity.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier);
             var nameClaim = identity.Claims.Single(x => x.Type == ClaimTypes.Name);
             await _mediator.Send(new UserSignedInRequest(long.Parse(nameIdentifierClaim.Value[^17..]), nameClaim.Value));
-            return Redirect("/");
+            return Redirect($"/{redirectUri ?? string.Empty}");
         }
 
         return StatusCode((int)HttpStatusCode.NoContent);

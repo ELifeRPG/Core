@@ -9,10 +9,10 @@
         <Authorized>
             Signed in as @context.User.Identity?.Name.
             <br/>
-            <MudButton OnClick="@(() => NavigationManager.NavigateTo("/authentication/signout", true))">Sign-Out</MudButton>
+            <MudButton OnClick="@(() => NavigationManager.NavigateTo("/authentication/sign-out", true))">Sign-Out</MudButton>
         </Authorized>
         <NotAuthorized>
-            <MudButton OnClick="@(() => NavigationManager.NavigateTo("/authentication/signin?provider=steam", true))">Sign-In</MudButton>
+            <MudButton OnClick="@(() => NavigationManager.NavigateTo("/authentication/sign-in?provider=steam", true))">Sign-In</MudButton>
         </NotAuthorized>
     </AuthorizeView>
 </MudContainer>

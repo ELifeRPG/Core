@@ -24,8 +24,8 @@ builder.Services
     .AddCookie(options =>
     {
         options.Cookie.Name = "eliferpg";
-        options.LoginPath = "/authentication/signin";
-        options.LogoutPath = "/authentication/signout";
+        options.LoginPath = "/authentication/sign-in";
+        options.LogoutPath = "/authentication/sign-out";
     })
     .AddSteam(options =>
     {
@@ -56,7 +56,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
-
 
 app.UseStaticFiles();
 

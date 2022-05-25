@@ -1,4 +1,4 @@
-﻿@inject NavigationManager UriHelper
+﻿@inject NavigationManager NavigationManager
   
  <CascadingAuthenticationState>
      <Router AppAssembly="@typeof(Program).Assembly">
@@ -6,8 +6,8 @@
              <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                  <NotAuthorized>
                      @{
-                         var returnUrl = UriHelper.ToBaseRelativePath(UriHelper.Uri);
-                         UriHelper.NavigateTo($"authentication/signin?redirectUri={returnUrl}", true);
+                         var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+                         NavigationManager.NavigateTo($"errors/unauthorized?redirectUri={returnUrl}", true);
                      }
                  </NotAuthorized>
                  <Authorizing>
