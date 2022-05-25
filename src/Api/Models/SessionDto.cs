@@ -2,7 +2,7 @@
 
 public class SessionDto
 {
-    public string? EnfusionIdentifier { get; init; }
+    public long? SteamId { get; init; }
     
     public Guid? AccountId { get; init; }
 }

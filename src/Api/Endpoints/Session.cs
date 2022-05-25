@@ -21,9 +21,9 @@ public static class Session
     /// Starts a new session.
     /// </summary>
     /// <param name="session">The session object which contains the needed information to create a session.
-    /// For Enfusion, the <seealso cref="SessionDto.EnfusionIdentifier"/> is required.</param>
+    /// For Enfusion, the <seealso cref="SessionDto.SteamId"/> is required.</param>
     private static async Task<IResult> CreateSession([FromServices] IMediator mediator, [FromServices] IMapper mapper, [FromBody] SessionDto session, CancellationToken cancellationToken)
     {
-        return Results.Ok(mapper.Map<ResultDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(session.EnfusionIdentifier!), cancellationToken)));
+        return Results.Ok(mapper.Map<ResultDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(session.SteamId!.Value), cancellationToken)));
     }
 }

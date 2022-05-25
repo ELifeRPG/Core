@@ -17,12 +17,12 @@ public class CreateSessionResult : ResultBase
 
 public class CreateSessionRequest : IRequest<CreateSessionResult>
 {
-    public CreateSessionRequest(string enfusionIdentifier)
+    public CreateSessionRequest(long steamId)
     {
-        EnfusionIdentifier = enfusionIdentifier;
+        SteamId = steamId;
     }
     
-    public string EnfusionIdentifier { get; }
+    public long SteamId { get; }
 }
 
 public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, CreateSessionResult>
@@ -37,11 +37,11 @@ public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, Create
     public async Task<CreateSessionResult> Handle(CreateSessionRequest request, CancellationToken cancellationToken)
     {
         var account = await _databaseContext.Accounts
-            .SingleOrDefaultAsync(x => x.EnfusionIdentifier == request.EnfusionIdentifier, cancellationToken);
+            .SingleOrDefaultAsync(x => x.SteamId == request.SteamId, cancellationToken);
 
         if (account is null)
         {
-            account = Account.Create(Guid.NewGuid(), request.EnfusionIdentifier);
+            account = Account.Create(request.SteamId);
             _databaseContext.Accounts.Add(account);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
