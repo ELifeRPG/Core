@@ -3,6 +3,7 @@ using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Accounts;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
+using ELifeRPG.Domain.Companies;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,12 @@ public class DatabaseContext : DbContext, IDatabaseContext
     public DbSet<Account> Accounts { get; set; }
     
     public DbSet<Character> Characters { get; set; }
+    
+    public DbSet<Company> Companies { get; set; }
+    
+    public DbSet<CompanyMembership> CompanyMemberships { get; set; }
+    
+    public DbSet<CompanyPosition> CompanyPositions { get; set; }
     
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {

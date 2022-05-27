@@ -1,6 +1,7 @@
 ﻿using ELifeRPG.Domain.Accounts;
 using ELifeRPG.Domain.Characters.Sessions;
 using ELifeRPG.Domain.Common;
+using ELifeRPG.Domain.Companies;
 
 namespace ELifeRPG.Domain.Characters;
 
@@ -19,6 +20,8 @@ public class Character : EntityBase, IHasDomainEvents
     }
 
     public ICollection<CharacterSession>? Sessions { get; init; }
+    
+    public ICollection<CompanyMembership>? CompanyMemberships { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
 
