@@ -39,7 +39,7 @@ builder.Services.AddAntiforgery(options =>
 });
 
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.Scan(scanner => scanner
     .FromAssemblyOf<Program>()
