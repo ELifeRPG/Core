@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<DatabaseContext>(options =>
             options.UseNpgsql(
-                "Host=localhost;Database=eliferpg;Username=postgres;Password=supersecret",
+                configuration.GetConnectionString("Database"),
                 pgsql =>
                 {
                     pgsql.MigrationsAssembly(typeof(DatabaseContext).Assembly.GetName().Name);
