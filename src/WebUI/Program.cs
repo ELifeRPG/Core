@@ -48,6 +48,8 @@ builder.Services.Scan(scanner => scanner
         .WithTransientLifetime());
 builder.Services.AddMudServices();
 
+builder.Services.AddScoped<ISettingsStore, SettingsStore>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

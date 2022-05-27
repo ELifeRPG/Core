@@ -1,8 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
+@inject ISettingsStore SettingsStore
+
 <PageTitle>WebUI</PageTitle>
 
-<MudThemeProvider/>
+<MudThemeProvider @bind-IsDarkMode="@(_currentDarkMode)" Theme="@(_theme)"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -11,3 +13,26 @@
         @Body
     </MudMainContent>
 </MudLayout>
+
+@code
+{
+    private bool _currentDarkMode;
+    private MudTheme _theme = new();
+
+    protected override void OnInitialized()
+    {
+        SettingsStore.DarkModeChanged += async darkMode =>
+        {
+            _currentDarkMode = darkMode;
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _currentDarkMode = await SettingsStore.GetDarkMode();
+    }
+}
