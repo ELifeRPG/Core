@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>ELifeRPG.Core.WebUI</RootNamespace>
     <AssemblyName>ELifeRPG.Core.WebUI</AssemblyName>
+    <UserSecretsId>ab2c7a79-4965-4b8a-9ae5-6f47eeb54736</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

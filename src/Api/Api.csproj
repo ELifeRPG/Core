@@ -8,6 +8,7 @@
     <RootNamespace>ELifeRPG.Core.Api</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591;1573</NoWarn>
+    <UserSecretsId>ab2c7a79-4965-4b8a-9ae5-6f47eeb54736</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
