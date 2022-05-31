@@ -1,6 +1,6 @@
 # ELifeRPG Core
 
-The core project is the core project responsible for persistence, configuration and administration of the game modification. 
+The core project is responsible for persistence, configuration and administration of the game modification. 
 
 [![Releases](https://img.shields.io/github/v/release/ELifeRPG/Core)](https://github.com/ELifeRPG/Core/releases)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/ELifeRPG/Core/blob/main/LICENSE)
