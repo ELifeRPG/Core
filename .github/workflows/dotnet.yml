@@ -15,18 +15,20 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 6.0.x
+      - name: Install dotnet tools
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
       - name: Test
-        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory coverage -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.SkipAutoProps=true
+        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.SkipAutoProps=true
       - name: Collect coverage results
-        id: collect_coverage_results
         run: |
-          echo "::set-output name=files::$(find -name 'coverage.cobertura.xml' -printf '%p, ' | sed 's/\(.*\),/\1 /')"
+          reportgenerator -reports:'./coverage/**/coverage.cobertura.xml' -targetdir:'./coverage' -reporttypes:'lcov'
       - name: Run Codacy Analysis
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ${{ steps.collect_coverage_results.outputs.files }}
+          coverage-reports: ./coverage/lcov.info
