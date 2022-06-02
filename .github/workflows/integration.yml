@@ -1,4 +1,4 @@
-name: .NET
+name: Integration
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
       - name: Collect coverage results
         run: |
           reportgenerator -reports:'./coverage/**/coverage.cobertura.xml' -targetdir:'./coverage' -reporttypes:'Cobertura'
-      - name: Run Codacy Analysis
+      - name: Run Codacy Reporter
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
