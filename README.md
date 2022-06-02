@@ -4,6 +4,7 @@ The core project is responsible for persistence, configuration and administratio
 
 [![Releases](https://img.shields.io/github/v/release/ELifeRPG/Core)](https://github.com/ELifeRPG/Core/releases)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/ELifeRPG/Core/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/ELifeRPG/Core/branch/main/graph/badge.svg?token=29BNHJ6Y2K)](https://codecov.io/gh/ELifeRPG/Core)
 
 
 ## Features
