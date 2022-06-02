@@ -29,4 +29,4 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ${{steps.collect_coverage_results.outputs.files}}
+          coverage-reports: ${{ steps.collect_coverage_results.outputs.files }}
