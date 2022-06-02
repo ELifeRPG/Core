@@ -20,8 +20,13 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Test
-        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
-      - name: Codecov
-        uses: codecov/codecov-action@v2
+        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory coverage -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.SkipAutoProps=true
+      - name: Collect coverage results
+        id: collect_coverage_results
+        run: |
+          echo "::set-output name=files::$(find -name 'coverage.cobertura.xml' -printf '%p, ' | sed 's/\(.*\),/\1 /')"
+      - name: Run Codacy Analysis
+        uses: codacy/codacy-coverage-reporter-action@v1
         with:
-          directory: coverage
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ${{ steps.collect_coverage_results.outputs.files }}

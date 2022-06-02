@@ -4,7 +4,8 @@ The core project is responsible for persistence, configuration and administratio
 
 [![Releases](https://img.shields.io/github/v/release/ELifeRPG/Core)](https://github.com/ELifeRPG/Core/releases)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/ELifeRPG/Core/blob/main/LICENSE)
-[![codecov](https://codecov.io/gh/ELifeRPG/Core/branch/main/graph/badge.svg?token=29BNHJ6Y2K)](https://codecov.io/gh/ELifeRPG/Core)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/98f780fd051a443680a3a87ca6af2967)](https://www.codacy.com/gh/ELifeRPG/Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ELifeRPG/Core&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/98f780fd051a443680a3a87ca6af2967)](https://www.codacy.com/gh/ELifeRPG/Core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ELifeRPG/Core&amp;utm_campaign=Badge_Coverage)
 
 
 ## Features
