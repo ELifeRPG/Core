@@ -1,48 +1,52 @@
-﻿using ELifeRPG.Domain.Characters;
+﻿using ELifeRPG.Application.Common.Exceptions;
+using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 
 namespace ELifeRPG.Domain.Accounts;
 
 public class Account : EntityBase, IHasDomainEvents
 {
+    private AccountStatus _status = AccountStatus.Active;
+    
+    public Account()
+    {
+    }
+
+    public Account(long steamId)
+    {
+        Id = Guid.NewGuid();
+        SteamId = steamId;
+        
+        DomainEvents.Add(new AccountCreatedEvent(this));
+    }
+    
     public Guid Id { get; init; }
 
     public long SteamId { get; init; }
 
-    public AccountStatus Status { get; private set; } = AccountStatus.Active;
-    
+    public AccountStatus Status
+    {
+        get => _status;
+        init => _status = value;
+    }
+
     public ICollection<Character>? Characters { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
 
-    public static Account Create(long steamId)
-    {
-        var account = new Account { Id = Guid.NewGuid(), SteamId = steamId };
-        account.DomainEvents.Add(new AccountCreatedEvent(account));
-        return account;
-    }
-    
-    public static Account Create(Account accountInfo)
-    {
-        var account = Create(accountInfo.SteamId);
-        account.SetValues(accountInfo);
-        return account;
-    }
-
-    public Account SetValues(Account accountInfo)
-    {
-        return this;
-    }
-
     public void Lock()
     {
-        Status = AccountStatus.Locked;
+        ELifeInvalidOperationException.ThrowIf(_status == AccountStatus.Locked, "Account is already locked.");
+        
+        _status = AccountStatus.Locked;
         DomainEvents.Add(new AccountLockedEvent(this));
     }
     
     public void Unlock()
     {
-        Status = AccountStatus.Active;
-        DomainEvents.Add(new AccountLockedEvent(this));
+        ELifeInvalidOperationException.ThrowIf(_status == AccountStatus.Active, "Account is already active.");
+        
+        _status = AccountStatus.Active;
+        DomainEvents.Add(new AccountUnlockedEvent(this));
     }
 }

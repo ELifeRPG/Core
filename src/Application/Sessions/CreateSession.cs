@@ -41,7 +41,7 @@ public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, Create
 
         if (account is null)
         {
-            account = Account.Create(request.SteamId);
+            account = new Account(request.SteamId);
             _databaseContext.Accounts.Add(account);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }

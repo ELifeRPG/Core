@@ -36,7 +36,7 @@ public class UserSignedInHandler : IRequestHandler<UserSignedInRequest, UserSign
         var account = await _databaseContext.Accounts.SingleOrDefaultAsync(x => x.SteamId == request.SteamId, cancellationToken);
         if (account is null)
         {
-            account = Account.Create(request.SteamId);
+            account = new Account(request.SteamId);
             _databaseContext.Accounts.Add(account);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
