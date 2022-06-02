@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Test
-        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory coverage
+        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory coverage -p:SkipAutoProps=true
       - name: Collect coverage results
         id: collect_coverage_results
         run: |
