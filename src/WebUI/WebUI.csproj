@@ -13,7 +13,7 @@
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="6.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="MudBlazor" Version="6.0.10" />
-    <PackageReference Include="Scrutor" Version="4.1.0" />
+    <PackageReference Include="Scrutor" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>
