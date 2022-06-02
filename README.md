@@ -2,6 +2,7 @@
 
 The core project is responsible for persistence, configuration and administration of the game modification. 
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6e9ab03b24654eac8d4039055148302f)](https://app.codacy.com/gh/ELifeRPG/Core?utm_source=github.com&utm_medium=referral&utm_content=ELifeRPG/Core&utm_campaign=Badge_Grade_Settings)
 [![Releases](https://img.shields.io/github/v/release/ELifeRPG/Core)](https://github.com/ELifeRPG/Core/releases)
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/ELifeRPG/Core/blob/main/LICENSE)
 [![codecov](https://codecov.io/gh/ELifeRPG/Core/branch/main/graph/badge.svg?token=29BNHJ6Y2K)](https://codecov.io/gh/ELifeRPG/Core)
