@@ -26,9 +26,9 @@ jobs:
         run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.SkipAutoProps=true
       - name: Collect coverage results
         run: |
-          reportgenerator -reports:'./coverage/**/coverage.cobertura.xml' -targetdir:'./coverage' -reporttypes:'lcov'
+          reportgenerator -reports:'./coverage/**/coverage.cobertura.xml' -targetdir:'./coverage' -reporttypes:'Cobertura'
       - name: Run Codacy Analysis
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: ./coverage/lcov.info
+          coverage-reports: ./coverage/Cobertura.xml
