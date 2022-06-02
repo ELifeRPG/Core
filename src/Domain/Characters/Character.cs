@@ -9,6 +9,18 @@ public class Character : EntityBase, IHasDomainEvents
 {
     private CharacterName? _name;
 
+    public Character()
+    {
+    }
+
+    public Character(Character characterInfo)
+    {
+        Id = Guid.NewGuid();
+        SetValues(characterInfo);
+
+        DomainEvents.Add(new CharacterCreatedEvent(this));
+    }
+
     public Guid Id { get; init; }
     
     public Account? Account { get; init; }
@@ -24,14 +36,6 @@ public class Character : EntityBase, IHasDomainEvents
     public ICollection<CompanyMembership>? CompanyMemberships { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
-
-    public static Character Create(Character characterInfo)
-    {
-        var character = new Character();
-        character.SetValues(characterInfo);
-        character.DomainEvents.Add(new CharacterCreatedEvent(character));
-        return character;
-    }
 
     public Character SetValues(Character characterInfo)
     {

@@ -35,7 +35,7 @@ public class CreateCharacterHandler : IRequestHandler<CreateCharacterRequest, Cr
 
     public async Task<CreateCharacterResult> Handle(CreateCharacterRequest request, CancellationToken cancellationToken)
     {
-        var character = Character.Create(request.CharacterInfo);
+        var character = new Character(request.CharacterInfo);
         _databaseContext.Characters.Add(character);
         await _databaseContext.SaveChangesAsync(cancellationToken);
         return new CreateCharacterResult(character);
