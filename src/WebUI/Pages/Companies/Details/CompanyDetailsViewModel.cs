@@ -28,8 +28,8 @@ public class CompanyDetailsViewModel : ViewModelBase
     [Parameter]
     public string? CompanyId { get; set; }
 
-    [CascadingParameter(Name = "BreadcrumbItems")]
-    public ObservableCollection<BreadcrumbItem>? BreadcrumbItems { get; set; }
+    //[CascadingParameter(Name = "BreadcrumbItems")]
+    //public ObservableCollection<BreadcrumbItem>? BreadcrumbItems { get; set; }
 
     public string? Name { get; set; }
     
@@ -52,7 +52,7 @@ public class CompanyDetailsViewModel : ViewModelBase
         Name = result!.Company.Name;
         TopMembers = result.TopMembers;
         
-        BreadcrumbItems!.Add(new BreadcrumbItem(Name, null, disabled: true));
+        //BreadcrumbItems!.Add(new BreadcrumbItem(Name, null, disabled: true));
 
         Loading = false;
     }
