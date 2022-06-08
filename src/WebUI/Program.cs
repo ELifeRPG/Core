@@ -1,15 +1,18 @@
 using AspNet.Security.OpenId.Steam;
 using ELifeRPG.Application;
+using ELifeRPG.Application.Common;
+using ELifeRPG.Core.WebUI.Pages.Companies.Details;
 using ELifeRPG.Core.WebUI.Shared;
+using ELifeRPG.Infrastructure.Common;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using MudBlazor;
 using MudBlazor.Services;
+using MvvmBlazor.ViewModel;
 
 var builder = WebApplication.CreateBuilder(args);
-
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddJsonFile("appsettings.DevelopmentPrivate.json", true); // store your api key for dev purposes ;)
-}
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -30,7 +33,7 @@ builder.Services
     .AddSteam(options =>
     {
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.ApplicationKey = builder.Configuration.GetValue<string>("ELifeRPG:OIDC:SteamApiKey");
+        options.ApplicationKey = builder.Configuration.GetValue<string>("ELifeRPG:SteamApiKey");
     });
 
 builder.Services.AddAntiforgery(options =>
@@ -38,15 +41,14 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.SameSite = SameSiteMode.None;
 });
 
+builder.Services.AddMvvm();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddMudServices();
 
 builder.Services.Scan(scanner => scanner
     .FromAssemblyOf<Program>()
-    .AddClasses(classes => classes.AssignableTo<ViewModelBase>())
-        .AsSelf()
-        .WithTransientLifetime());
-builder.Services.AddMudServices();
+    .AddClasses(x => x.AssignableTo<ViewModelBase>()).AsSelf().WithTransientLifetime());
 
 builder.Services.AddScoped<ISettingsStore, SettingsStore>();
 

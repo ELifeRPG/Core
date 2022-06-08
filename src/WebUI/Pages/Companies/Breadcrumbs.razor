@@ -1,0 +1,20 @@
+﻿@using System.Collections.ObjectModel
+
+<MudBreadcrumbs Items="@(Items.ToList())" Separator=">"></MudBreadcrumbs>
+
+@code 
+{
+    [Parameter]
+    public ObservableCollection<BreadcrumbItem> Items { get; set; } = null!;
+    
+    protected override void OnInitialized()
+    {
+        Items.CollectionChanged += async (_, _) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+    }
+}

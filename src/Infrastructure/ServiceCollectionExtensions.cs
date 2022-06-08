@@ -10,15 +10,13 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<DatabaseContext>(options =>
+        services.AddDbContext<IDatabaseContext, DatabaseContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("Database"),
                 pgsql =>
                 {
                     pgsql.MigrationsAssembly(typeof(DatabaseContext).Assembly.GetName().Name);
                 }));
-
-        services.AddScoped<IDatabaseContext>(provider => provider.GetRequiredService<DatabaseContext>());
 
         return services;
     }

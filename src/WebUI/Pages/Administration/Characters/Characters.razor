@@ -4,10 +4,10 @@
 
 @using ELifeRPG.Domain.Characters
 
-@inject CharactersViewModel ViewModel
+@inherits MvvmBlazor.Components.MvvmComponentBase<CharactersViewModel>
 
 <MudTable @ref="@(_table)"
-          ServerData="@(new Func<TableState, Task<TableData<Character>>>(ViewModel.ReloadData))"
+          ServerData="@(new Func<TableState, Task<TableData<Character>>>(BindingContext.ReloadData))"
           MultiSelection="true" @bind-SelectedItems="_selectedItems"
           Dense="@(true)" Hover="@(true)" Striped="@(true)">
 

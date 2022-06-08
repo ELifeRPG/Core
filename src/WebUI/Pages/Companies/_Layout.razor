@@ -1,0 +1,32 @@
+﻿@using System.Collections.ObjectModel
+@inherits LayoutComponentBase
+@layout MainLayout
+
+<MudMainContent>
+    
+    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-8">
+
+        <CascadingValue Name="BreadcrumbItems" Value="@(_breadcrumbItems)">
+            
+            <Breadcrumbs Items="@(_breadcrumbItems)" />
+            
+            @Body
+            
+        </CascadingValue>
+
+    </MudContainer>
+    
+</MudMainContent>
+
+@code 
+{
+    private ObservableCollection<BreadcrumbItem>? _breadcrumbItems;
+
+    protected override void OnInitialized()
+    {
+        _breadcrumbItems = new ObservableCollection<BreadcrumbItem>
+        {
+            new("Companies", href: "/companies"),
+        };
+    }
+}

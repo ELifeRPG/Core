@@ -1,4 +1,5 @@
-﻿using ELifeRPG.Infrastructure.Common;
+﻿using ELifeRPG.Application.Common;
+using ELifeRPG.Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

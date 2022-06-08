@@ -33,6 +33,7 @@ if (app.Environment.IsDevelopment())
 app
     .MapSessionEndpoints()
     .MapAccountEndpoints()
-    .MapCharacterEndpoints();
+    .MapCharacterEndpoints()
+    .MapCompanyEndpoints();
 
 app.Run();

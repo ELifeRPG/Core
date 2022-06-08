@@ -14,18 +14,13 @@ namespace ELifeRPG.Infrastructure.Common;
 public class DatabaseContext : DbContext, IDatabaseContext
 {
     private readonly IMediator _mediator;
-    
-    public DatabaseContext(DbContextOptions<DatabaseContext> options)
-        : base(options)
-    {
-    }
-    
+
     public DatabaseContext(DbContextOptions<DatabaseContext> options, IMediator mediator)
-        : this(options)
+        : base(options)
     {
         _mediator = mediator;
     }
-
+    
     public DbSet<Account> Accounts { get; set; }
     
     public DbSet<Character> Characters { get; set; }

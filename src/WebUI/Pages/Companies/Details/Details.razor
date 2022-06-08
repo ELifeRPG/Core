@@ -1,0 +1,35 @@
+﻿@page "/companies/{companyId?}"
+
+@using System.Collections.ObjectModel
+
+@inherits MvvmBlazor.Components.MvvmComponentBase<CompanyDetailsViewModel>
+
+<PageTitle>@(Bind(x => x.Name) ?? "Company")</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    
+    <ELoadingPage IsLoading="@Bind(x => x.Loading)">
+        
+        <Loading>
+            <MudSkeleton SkeletonType="SkeletonType.Circle" Width="50px" Height="50px" />
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="600px" Height="400px" />
+            <MudSkeleton />
+        </Loading>
+
+        <Content>
+            <MudText Typo="Typo.h4">@Bind(x => x.Name)</MudText>
+        </Content>
+
+    </ELoadingPage>
+    
+</MudContainer>
+
+
+@code
+{
+    [Parameter]
+    public string? CompanyId { get; set; }
+
+    [CascadingParameter(Name = "BreadcrumbItems")]
+    public ObservableCollection<BreadcrumbItem>? BreadcrumbItems { get; set; }
+}

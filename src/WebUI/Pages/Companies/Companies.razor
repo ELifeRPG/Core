@@ -1,0 +1,57 @@
+﻿@page "/companies"
+
+<PageTitle>Companies</PageTitle>
+
+@using ELifeRPG.Domain.Companies
+
+@inherits MvvmBlazor.Components.MvvmComponentBase<CompaniesViewModel>
+
+<MudTable @ref="@(_table)"
+          ServerData="@(new Func<TableState, Task<TableData<Company>>>(BindingContext.ReloadData))"
+          Loading="@(BindingContext.TableIsLoading)"
+          Dense="@(true)" Hover="@(true)" Striped="@(true)">
+
+    <ToolBarContent>
+        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel SortLabel="name_field" T="@(Company)">Name</MudTableSortLabel>
+        </MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd Style="text-align:right">
+            <MudButtonGroup Color="Color.Default" Size="Size.Small" Variant="Variant.Outlined">
+                <MudButton OnClick="@(() => BindingContext.ViewCompany(context.Id))">View</MudButton>
+            </MudButtonGroup>
+        </MudTd>
+    </RowTemplate>
+
+    <NoRecordsContent>
+        <MudText>No matching Companies found</MudText>
+    </NoRecordsContent>
+
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+
+    <PagerContent>
+        <MudTablePager/>
+    </PagerContent>
+</MudTable>
+
+@code
+{
+    private MudTable<Company>? _table;
+    private string? _searchString;
+
+    private void OnSearch(string text)
+    {
+        _searchString = text;
+        _table?.ReloadServerData();
+    }
+}

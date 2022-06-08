@@ -3,12 +3,11 @@
 <PageTitle>Accounts Administration</PageTitle>
 
 @using ELifeRPG.Domain.Accounts
-@using ELifeRPG.Application.Accounts
 
-@inject IMediator Mediator;
+@inherits MvvmBlazor.Components.MvvmComponentBase<AccountsViewModel>
 
 <MudTable @ref="@(_table)"
-          ServerData="@(new Func<TableState, Task<TableData<Account>>>(ServerReload))"
+          ServerData="@(new Func<TableState, Task<TableData<Account>>>(BindingContext.ReloadData))"
           MultiSelection="true" @bind-SelectedItems="_selectedItems"
           Dense="@(true)" Hover="@(true)" Striped="@(true)">
 
@@ -36,11 +35,11 @@
         <MudTd>
             @if (context.Status == AccountStatus.Active)
             {
-                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Warning" Variant="Variant.Filled" OnClick="@(async () => await OnLockClicked(context.Id))">Lock</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Warning" Variant="Variant.Filled" OnClick="@(async () => await BindingContext.OnLockClicked(context.Id))">Lock</MudButton>
             }
             else
             {
-                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Success" Variant="Variant.Filled" OnClick="@(async () => await OnUnlockClicked(context.Id))">Unlock</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" Color="Color.Success" Variant="Variant.Filled" OnClick="@(async () => await BindingContext.OnUnlockClicked(context.Id))">Unlock</MudButton>
             }
         </MudTd>
     </RowTemplate>
@@ -64,25 +63,9 @@
     private HashSet<Account> _selectedItems = new();
     private string? _searchString;
 
-    private async Task<TableData<Account>> ServerReload(TableState state)
-    {
-        var result = await Mediator.Send(new ListAccountsQuery());
-        return new TableData<Account> { TotalItems = 100, Items = result.Accounts };
-    }
-
     private void OnSearch(string text)
     {
         _searchString = text;
         _table?.ReloadServerData();
-    }
-
-    private async Task OnLockClicked(Guid accountId)
-    {
-        await Mediator.Send(new LockAccountCommand(accountId));
-    }
-    
-    private async Task OnUnlockClicked(Guid accountId)
-    {
-        await Mediator.Send(new UnlockAccountCommand(accountId));
     }
 }
