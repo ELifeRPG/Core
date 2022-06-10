@@ -4,11 +4,10 @@ using ELifeRPG.Domain.Companies;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using MvvmBlazor.ViewModel;
 
 namespace ELifeRPG.Core.WebUI.Pages.Companies;
 
-public class CompaniesViewModel : ViewModelBase
+public class CompaniesViewModel : PageViewModelBase
 {
     private readonly IMediator _mediator;
     private NavigationManager _navigationManager = null!;

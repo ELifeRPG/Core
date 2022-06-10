@@ -1,12 +1,14 @@
 ﻿@using System.Collections.ObjectModel
+@using MudBlazor.Services
 
+<!-- ToDo: .ToList() is an ugly workaround until this is released: https://github.com/MudBlazor/MudBlazor/pull/4728 -->
 <MudBreadcrumbs Items="@(Items.ToList())" Separator=">"></MudBreadcrumbs>
 
 @code 
 {
-    [Parameter]
+    [Inject]
     public ObservableCollection<BreadcrumbItem> Items { get; set; } = null!;
-    
+
     protected override void OnInitialized()
     {
         Items.CollectionChanged += async (_, _) =>

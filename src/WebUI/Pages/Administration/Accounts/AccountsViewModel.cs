@@ -1,12 +1,12 @@
 ﻿using ELifeRPG.Application.Accounts;
+using ELifeRPG.Core.WebUI.Shared;
 using ELifeRPG.Domain.Accounts;
 using MediatR;
 using MudBlazor;
-using MvvmBlazor.ViewModel;
 
 namespace ELifeRPG.Core.WebUI.Pages.Administration.Accounts;
 
-public class AccountsViewModel : ViewModelBase
+public class AccountsViewModel : PageViewModelBase
 {
     private readonly IMediator _mediator;
     private ISnackbar? _snackbar;

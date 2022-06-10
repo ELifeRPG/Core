@@ -2,11 +2,10 @@
 using ELifeRPG.Core.WebUI.Shared;
 using MediatR;
 using MudBlazor;
-using MvvmBlazor.ViewModel;
 
 namespace ELifeRPG.Core.WebUI.Pages.Administration.Characters;
 
-public class CharactersViewModel : ViewModelBase
+public class CharactersViewModel : PageViewModelBase
 {
     private readonly IMediator _mediator;
     private ISnackbar? _snackbar;

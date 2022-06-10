@@ -3,30 +3,25 @@
 @layout MainLayout
 
 <MudMainContent>
-    
+
     <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-8">
 
-        <CascadingValue Name="BreadcrumbItems" Value="@(_breadcrumbItems)">
-            
-            <Breadcrumbs Items="@(_breadcrumbItems)" />
-            
-            @Body
-            
-        </CascadingValue>
+        <Breadcrumbs/>
+
+        @Body
 
     </MudContainer>
-    
+
 </MudMainContent>
 
-@code 
+@code
 {
-    private ObservableCollection<BreadcrumbItem>? _breadcrumbItems;
+    [Inject]
+    public ObservableCollection<BreadcrumbItem> Breadcrumbs { get; set; } = null!;
 
     protected override void OnInitialized()
     {
-        _breadcrumbItems = new ObservableCollection<BreadcrumbItem>
-        {
-            new("Companies", href: "/companies"),
-        };
+        Breadcrumbs.Clear();
+        Breadcrumbs.Add(new BreadcrumbItem("Companies", href: "/companies"));
     }
 }

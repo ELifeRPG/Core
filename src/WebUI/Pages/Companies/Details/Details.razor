@@ -1,7 +1,4 @@
 ﻿@page "/companies/{companyId?}"
-
-@using System.Collections.ObjectModel
-
 @inherits MvvmBlazor.Components.MvvmComponentBase<CompanyDetailsViewModel>
 
 <PageTitle>@(Bind(x => x.Name) ?? "Company")</PageTitle>
@@ -29,7 +26,4 @@
 {
     [Parameter]
     public string? CompanyId { get; set; }
-
-    //[CascadingParameter(Name = "BreadcrumbItems")]
-    //public ObservableCollection<BreadcrumbItem>? BreadcrumbItems { get; set; }
 }

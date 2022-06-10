@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using AspNet.Security.OpenId.Steam;
 using ELifeRPG.Application;
 using ELifeRPG.Application.Common;
@@ -48,9 +49,10 @@ builder.Services.AddMudServices();
 
 builder.Services.Scan(scanner => scanner
     .FromAssemblyOf<Program>()
-    .AddClasses(x => x.AssignableTo<ViewModelBase>()).AsSelf().WithTransientLifetime());
+    .AddClasses(x => x.AssignableTo<PageViewModelBase>()).AsSelf().WithTransientLifetime());
 
 builder.Services.AddScoped<ISettingsStore, SettingsStore>();
+builder.Services.AddScoped(_ => new ObservableCollection<BreadcrumbItem>());
 
 var app = builder.Build();
 
