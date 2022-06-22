@@ -1,0 +1,61 @@
+﻿@if (DisplayBox)
+{
+    <MudPaper Class="pa-16 ma-2">
+    
+        @if (IsLoading)
+        {
+            <div class="pt-8 pb-8" style="width: 100%;">
+            
+                <MudProgressLinear Color="@(Color.Primary)" Indeterminate="@(true)" Class="@("my-7")" />
+            
+                @Loading
+            
+            </div>
+        
+        }
+        else
+        {
+            @(Content ?? ChildContent)
+        }
+    
+    </MudPaper>
+}
+else
+{
+    @if (IsLoading)
+    {
+        <div class="pt-8 pb-8" style="width: 100%;">
+            
+            <MudProgressLinear Color="@(Color.Primary)" Indeterminate="@(true)" Class="@("my-7")" />
+            
+            @Loading
+            
+        </div>
+        
+    }
+    else
+    {
+        @(Content ?? ChildContent)
+    }
+}
+
+@code
+{
+    [Parameter]
+    public bool IsLoading { get; set; }
+    
+    [Parameter]
+    public EventCallback<bool> LoadingChanged { get; set; }
+    
+    [Parameter]
+    public bool DisplayBox { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; } = null!;
+    
+    [Parameter]
+    public RenderFragment? Content { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? Loading { get; set; } = @<MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="100%" Height="400px" />;
+}

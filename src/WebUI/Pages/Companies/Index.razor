@@ -1,0 +1,36 @@
+﻿@page "/companies"
+
+<PageTitle>Companies</PageTitle>
+
+@using Microsoft.AspNetCore.WebUtilities
+
+@inherits MvvmBlazor.Components.MvvmComponentBase<IndexViewModel>
+
+@if (_affiliation == null)
+{
+    <CompaniesList />
+}
+else
+{
+    <AffiliatedCompaniesGroup Affiliation="@(_affiliation)" />
+}
+
+@code
+{
+    private string? _affiliation;
+    
+    [Inject]
+    public NavigationManager NavigationManager { get; set; } = null!;
+    
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var query = QueryHelpers.ParseQuery(uri.Query);
+        if (query.TryGetValue("affiliation", out var affiliation))
+        {
+            _affiliation = affiliation;
+        }
+    }
+}

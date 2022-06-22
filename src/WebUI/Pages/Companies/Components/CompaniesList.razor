@@ -1,10 +1,6 @@
-﻿@page "/companies"
+﻿@using ELifeRPG.Domain.Companies
 
-<PageTitle>Companies</PageTitle>
-
-@using ELifeRPG.Domain.Companies
-
-@inherits MvvmBlazor.Components.MvvmComponentBase<CompaniesViewModel>
+@inherits MvvmBlazor.Components.MvvmComponentBase<IndexViewModel>
 
 <MudTable @ref="@(_table)"
           ServerData="@(new Func<TableState, Task<TableData<Company>>>(BindingContext.ReloadData))"
@@ -44,11 +40,11 @@
     </PagerContent>
 </MudTable>
 
-@code
+@code 
 {
     private MudTable<Company>? _table;
     private string? _searchString;
-
+    
     private void OnSearch(string text)
     {
         _searchString = text;

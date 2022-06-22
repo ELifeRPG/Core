@@ -1,27 +1,18 @@
-﻿@using System.Collections.ObjectModel
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @layout MainLayout
 
+
+<MudDrawer Open="@true" ClipMode="DrawerClipMode.Always" Color="Color.Transparent">
+    <MudNavLink Href="/companies" Class="mt-2">Index</MudNavLink>
+    <MudDivider Class="my-2" />
+    <!-- ToDo: might be grouped by some user-defined affiliation groups -->
+    <MudNavLink Href="/companies?affiliation=state">State Departments</MudNavLink>
+    <MudNavLink Href="/companies?affiliation=state">Rebel Groups</MudNavLink>
+</MudDrawer>
+
 <MudMainContent>
-
     <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-8">
-
-        <Breadcrumbs/>
-
+        <Breadcrumbs />
         @Body
-
     </MudContainer>
-
 </MudMainContent>
-
-@code
-{
-    [Inject]
-    public ObservableCollection<BreadcrumbItem> Breadcrumbs { get; set; } = null!;
-
-    protected override void OnInitialized()
-    {
-        Breadcrumbs.Clear();
-        Breadcrumbs.Add(new BreadcrumbItem("Companies", href: "/companies"));
-    }
-}

@@ -5,16 +5,16 @@ using MediatR;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace ELifeRPG.Core.WebUI.Pages.Companies;
+namespace ELifeRPG.Core.WebUI.Pages.Companies.Components;
 
-public class CompaniesViewModel : PageViewModelBase
+public class CompaniesListViewModel : ViewModelBase
 {
     private readonly IMediator _mediator;
     private NavigationManager _navigationManager = null!;
     private ISnackbar _snackbar = null!;
     private bool _tableIsLoading;
 
-    public CompaniesViewModel(IMediator mediator)
+    public CompaniesListViewModel(IMediator mediator)
     {
         _mediator = mediator;
     }

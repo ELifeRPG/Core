@@ -1,0 +1,40 @@
+﻿@page "/companies/{companyId?}"
+@inherits MvvmBlazor.Components.MvvmComponentBase<DetailsViewModel>
+
+<PageTitle>@(Bind(x => x.Name) ?? "Company")</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    
+    <EContentBox IsLoading="@Bind(x => x.Loading)" DisplayBox="@(false)">
+
+        <Loading>
+            <MudSkeleton SkeletonType="SkeletonType.Circle" Width="50px" Height="50px"/>
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="600px" Height="400px"/>
+            <MudSkeleton/>
+        </Loading>
+
+        <Content>
+            
+            <MudCard>
+                <MudCardMedia Image="https://placehold.co/600x200" Height="200" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">@Bind(x => x.Name)</MudText>
+                    <MudText Typo="Typo.body2">Small description of the company</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary">Apply online</MudButton>
+                </MudCardActions>
+            </MudCard>
+            
+        </Content>
+
+    </EContentBox>
+
+</MudContainer>
+
+
+@code
+{
+    [Parameter]
+    public string? CompanyId { get; set; }
+}

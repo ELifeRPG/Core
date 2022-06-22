@@ -1,24 +1,22 @@
-﻿using System.Collections.ObjectModel;
-using ELifeRPG.Application.Companies;
+﻿using ELifeRPG.Application.Companies;
 using ELifeRPG.Core.WebUI.Shared;
 using ELifeRPG.Domain.Companies;
 using MediatR;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace ELifeRPG.Core.WebUI.Pages.Companies.Details;
+namespace ELifeRPG.Core.WebUI.Pages.Companies;
 
-public class CompanyDetailsViewModel : PageViewModelBase
+public class DetailsViewModel : ViewModelBase
 {
     private readonly IMediator _mediator;
-    private readonly ObservableCollection<BreadcrumbItem> _breadcrumbs;
+    private BreadcrumbsCollection _breadcrumbs = null!;
     private ISnackbar _snackbar = null!;
     private bool _loading;
     
-    public CompanyDetailsViewModel(IMediator mediator, ObservableCollection<BreadcrumbItem> breadcrumbs)
+    public DetailsViewModel(IMediator mediator)
     {
         _mediator = mediator;
-        _breadcrumbs = breadcrumbs;
     }
 
     public bool Loading
@@ -38,7 +36,8 @@ public class CompanyDetailsViewModel : PageViewModelBase
     {
         Loading = true;
         _snackbar = RootServiceProvider.GetRequiredService<ISnackbar>();
-        
+
+        _breadcrumbs = RootServiceProvider.GetRequiredService<BreadcrumbsCollection>();
         _breadcrumbs.Clear();
         _breadcrumbs.Add(new BreadcrumbItem(null, icon: Icons.Material.Filled.Home, href: "/"));
         _breadcrumbs.Add(new BreadcrumbItem("Companies", href: "/companies"));
@@ -55,7 +54,7 @@ public class CompanyDetailsViewModel : PageViewModelBase
         Name = result!.Company.Name;
         TopMembers = result.TopMembers;
 
-        _breadcrumbs.Add(new BreadcrumbItem(Name, href: $"/companies/{CompanyId}"));
+        _breadcrumbs.Add(new BreadcrumbItem(Name, href: null, disabled: true));
 
         Loading = false;
     }

@@ -6,7 +6,7 @@ using MudBlazor;
 
 namespace ELifeRPG.Core.WebUI.Pages.Administration.Accounts;
 
-public class AccountsViewModel : PageViewModelBase
+public class AccountsViewModel : ViewModelBase
 {
     private readonly IMediator _mediator;
     private ISnackbar? _snackbar;
