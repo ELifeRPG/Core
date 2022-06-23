@@ -30,7 +30,7 @@ builder.Services
     .AddSteam(options =>
     {
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.ApplicationKey = builder.Configuration.GetValue<string>("ELifeRPG:OIDC:SteamApiKey");
+        options.ApplicationKey = builder.Configuration.GetValue<string>("ELifeRPG:SteamApiKey");
     });
 
 builder.Services.AddAntiforgery(options =>
