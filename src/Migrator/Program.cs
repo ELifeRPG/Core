@@ -1,4 +1,4 @@
-﻿using ELifeRPG.Application.Common;
+﻿using ELifeRPG.Application;
 using ELifeRPG.Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
+        services.AddApplication();
         services.AddInfrastructure(context.Configuration);
     })
     .Build();
