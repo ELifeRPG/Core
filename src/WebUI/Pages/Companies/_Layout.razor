@@ -1,0 +1,15 @@
+﻿@inherits LayoutComponentBase
+@layout MainLayout
+
+@inject NavigationManager NavigationManager
+
+<MudDrawer Open="@true" ClipMode="DrawerClipMode.Always" Color="Color.Transparent">
+    <MudNavLink OnClick="@(() => NavigationManager.NavigateTo("/companies", true))" Class="mt-2">Index</MudNavLink>
+</MudDrawer>
+
+<MudMainContent>
+    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-8">
+        <Breadcrumbs />
+        @Body
+    </MudContainer>
+</MudMainContent>

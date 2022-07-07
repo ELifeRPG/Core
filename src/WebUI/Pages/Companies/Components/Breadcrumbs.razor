@@ -1,0 +1,7 @@
+﻿@using System.Collections.ObjectModel
+@using MudBlazor.Services
+
+@inherits MvvmComponentBase<BreadcrumbsViewModel>
+
+<!-- ToDo: .ToList() is an ugly workaround until this is released: https://github.com/MudBlazor/MudBlazor/pull/4728 -->
+<MudBreadcrumbs Items="@(Bind(x => x.Items).ToList())" Separator=">"></MudBreadcrumbs>

@@ -5,6 +5,17 @@ namespace ELifeRPG.Domain.Companies;
 
 public class Company : EntityBase, IHasDomainEvents
 {
+    public Company()
+    {
+    }
+
+    public Company(string name)
+    {
+        Id = Guid.NewGuid();
+        Name = name;
+        Positions = new List<CompanyPosition> { new() { Name = "Newbie", Ordering = 10, } };
+    }
+    
     public Guid Id { get; init; }
 
     public string Name { get; init; } = null!;

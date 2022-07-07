@@ -1,4 +1,5 @@
-﻿using ELifeRPG.Domain.Accounts;
+﻿using ELifeRPG.Application.Common;
+using ELifeRPG.Domain.Accounts;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Companies;
 using Microsoft.EntityFrameworkCore;
@@ -12,13 +13,13 @@ public class DatabaseContextSeed
     private static readonly Guid _stateCompanyId = Guid.Parse("98a58b46-f9fd-4174-9d35-978fd3e5c41e");
     private static readonly Guid _statePolicyCompanyId = Guid.Parse("616c7e2c-c76d-4482-ae03-8e7afbb5ee39");
     
-    public static async Task SeedSampleDataAsync(DatabaseContext context)
+    public static async Task SeedSampleDataAsync(IDatabaseContext context)
     {
         await SeedAccountsCharacters(context);
         await SeedCompanies(context);
     }
 
-    private static async Task SeedAccountsCharacters(DatabaseContext context)
+    private static async Task SeedAccountsCharacters(IDatabaseContext context)
     {
         if ((await context.Characters.SingleOrDefaultAsync(x => x.Id == _characterJonDoeId)) is null)
         {
@@ -40,7 +41,7 @@ public class DatabaseContextSeed
         }
     }
 
-    private static async Task SeedCompanies(DatabaseContext context)
+    private static async Task SeedCompanies(IDatabaseContext context)
     {
         if ((await context.Companies.SingleOrDefaultAsync(x => x.Id == _stateCompanyId)) is null)
         {

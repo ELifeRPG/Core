@@ -11,4 +11,6 @@ public class CompanyPosition : EntityBase
     public string Name { get; init; } = null!;
     
     public int Ordering { get; init; }
+    
+    public CompanyPermissions Permissions { get; init; }
 }

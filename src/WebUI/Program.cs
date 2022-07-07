@@ -6,11 +6,6 @@ using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddJsonFile("appsettings.DevelopmentPrivate.json", true); // store your api key for dev purposes ;)
-}
-
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -38,17 +33,17 @@ builder.Services.AddAntiforgery(options =>
     options.Cookie.SameSite = SameSiteMode.None;
 });
 
+builder.Services.AddMvvm();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddMudServices();
 
 builder.Services.Scan(scanner => scanner
     .FromAssemblyOf<Program>()
-    .AddClasses(classes => classes.AssignableTo<ViewModelBase>())
-        .AsSelf()
-        .WithTransientLifetime());
-builder.Services.AddMudServices();
+    .AddClasses(x => x.AssignableTo<ViewModelBase>()).AsSelf().WithTransientLifetime());
 
 builder.Services.AddScoped<ISettingsStore, SettingsStore>();
+builder.Services.AddScoped<BreadcrumbsCollection>();
 
 var app = builder.Build();
 
