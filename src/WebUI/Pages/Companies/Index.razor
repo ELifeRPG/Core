@@ -4,19 +4,10 @@
 
 @inherits MvvmBlazor.Components.MvvmComponentBase<IndexViewModel>
 
-@if (_affiliation == null)
-{
-    <CompaniesList />
-}
-else
-{
-    <AffiliatedCompaniesGroup Affiliation="@(_affiliation)" />
-}
+<CompaniesList />
 
 @code
 {
-    private string? _affiliation;
-    
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
 }
