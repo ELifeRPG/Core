@@ -1,13 +1,10 @@
 ﻿@inherits LayoutComponentBase
 @layout MainLayout
 
+@inject NavigationManager NavigationManager
 
 <MudDrawer Open="@true" ClipMode="DrawerClipMode.Always" Color="Color.Transparent">
-    <MudNavLink Href="/companies" Class="mt-2">Index</MudNavLink>
-    <MudDivider Class="my-2" />
-    <!-- ToDo: might be grouped by some user-defined affiliation groups -->
-    <MudNavLink Href="/companies?affiliation=state">State Departments</MudNavLink>
-    <MudNavLink Href="/companies?affiliation=state">Rebel Groups</MudNavLink>
+    <MudNavLink OnClick="@(() => NavigationManager.NavigateTo("/companies", true))" Class="mt-2">Index</MudNavLink>
 </MudDrawer>
 
 <MudMainContent>

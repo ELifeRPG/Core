@@ -1,9 +1,7 @@
-using System.Collections.ObjectModel;
 using AspNet.Security.OpenId.Steam;
 using ELifeRPG.Application;
 using ELifeRPG.Core.WebUI.Shared;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using MudBlazor;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
