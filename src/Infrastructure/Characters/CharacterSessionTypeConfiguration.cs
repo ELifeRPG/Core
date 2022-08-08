@@ -9,8 +9,9 @@ public class CharacterSessionTypeConfiguration : IEntityTypeConfiguration<Charac
     public void Configure(EntityTypeBuilder<CharacterSession> builder)
     {
         builder.ToTable("CharacterSession");
+
         builder.HasKey(x => x.Id).HasName("PK_CharacterSession_Id");
-        builder.Property(x => x.Id).HasColumnName("Id");
+        builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedNever();
 
         builder
             .HasOne(x => x.Character)

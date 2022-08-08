@@ -14,5 +14,10 @@ public class CompanyMembershipTypeConfiguration : IEntityTypeConfiguration<Compa
         
         builder.HasKey(x => x.Id).HasName("PK_CompanyMembership_Id");
         builder.Property(x => x.Id).HasColumnName("Id");
+        
+        builder
+            .HasOne(x => x.Character)
+            .WithMany(x => x.CompanyMemberships)
+            .HasConstraintName("FK_Character_Id");
     }
 }
