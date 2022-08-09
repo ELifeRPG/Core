@@ -11,7 +11,7 @@ public class BankAccountNumberGeneratorTests
     {
         var bank = new Bank { Country = Country.Default, Number = 924352752 };
 
-        for (var i = 0; i <= 10000; i++)
+        for (var i = 0; i <= 1; i++)
         {
             var bankAccountNumber = BankAccountNumberGenerator.Generate(bank);
             Assert.NotEmpty(bankAccountNumber.Value);

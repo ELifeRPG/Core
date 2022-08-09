@@ -22,25 +22,6 @@ public class BankAccountNumber
 
     public string Value { get; }
 
-    public void Validate()
-    {
-        //// EBAN can not contain more than 34 characters
-        if (Value.Length > 34)
-        {
-            throw new ELifeInvalidOperationException("Value exceeds limit of 34 characters.");
-        }
-
-        if (!new BankAccountNumberToken(Value[..4], Value[4..]).IsValidMod97())
-        {
-            throw new ELifeInvalidOperationException("Generated bank account number did not pass MOD-97-10 ISO/IEC 7064:2003 check.");
-        }
-    }
-
-    public static bool DecimalTokenIsValidMod971ß(decimal token)
-    {
-        return token % 97 == 1;
-    }
-
     public bool TryValidate()
     {
         try
@@ -87,5 +68,19 @@ public class BankAccountNumber
         }
         
         return newStr;
+    }
+    
+    private void Validate()
+    {
+        //// IBAN can not contain more than 34 characters
+        if (Value.Length > 34)
+        {
+            throw new ELifeInvalidOperationException("Value exceeds limit of 34 characters.");
+        }
+
+        if (!new BankAccountNumberToken(Value[..4], Value[4..]).IsValidMod97())
+        {
+            throw new ELifeInvalidOperationException("Generated bank account number did not pass MOD-97-10 ISO/IEC 7064:2003 check.");
+        }
     }
 }

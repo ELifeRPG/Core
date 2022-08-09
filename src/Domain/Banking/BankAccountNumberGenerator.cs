@@ -1,4 +1,5 @@
-﻿using ELifeRPG.Domain.Common.Exceptions;
+﻿using System.Diagnostics;
+using ELifeRPG.Domain.Common.Exceptions;
 
 namespace ELifeRPG.Domain.Banking;
 
@@ -11,7 +12,7 @@ public static class BankAccountNumberGenerator
     /// </summary>
     public static BankAccountNumber Generate(Bank bank)
     {
-        for (var i = 1; i <= 10; i++)
+        for (var i = 1; i <= 3; i++)
         {
             var randomNumber = Random.NextInt64(1000000000, 99999999999);
             var checkNumber = BuildCheckNumber(bank.Country.Code, bank.Number, randomNumber);
@@ -19,6 +20,11 @@ public static class BankAccountNumberGenerator
             if (bankAccountNumber.TryValidate())
             {
                 return bankAccountNumber;
+            }
+
+            if (i == 3)
+            {
+                throw new ELifeInvalidOperationException($"Could not generate bank account number - attempts: {i}");
             }
         }
 
@@ -28,17 +34,7 @@ public static class BankAccountNumberGenerator
     private static byte BuildCheckNumber(string countryCode, int bankCode, long accountNumber)
     {
         var baseNumberToken = new BankAccountNumberToken(countryCode, bankCode, accountNumber);
-
-        for (byte i = 1; i <= 99; i++)
-        {
-            var iStr = i >= 10 ? i.ToString() : $"0{i}";
-            var bankAccountNumber = new BankAccountNumberToken(decimal.Parse($"{baseNumberToken.Value}{iStr}"));
-            if (bankAccountNumber.IsValidMod97())
-            {
-                return i;
-            }
-        }
-        
-        throw new ELifeInvalidOperationException("Could not detect check-number.");
+        var checkNumber = 98 - (baseNumberToken.Value % 97);
+        return (byte)checkNumber;
     }
 }

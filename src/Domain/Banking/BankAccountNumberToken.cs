@@ -9,7 +9,7 @@ public class BankAccountNumberToken
 {
     public BankAccountNumberToken(string countryCode, int bankCode, long accountNumber)
     {
-        Value = BuildValue(countryCode, $"{bankCode}{accountNumber}");
+        Value = BuildValue(countryCode, $"{bankCode}{accountNumber}", "00");
     }
     
     public BankAccountNumberToken(string countryCode, string remainder)
@@ -29,15 +29,16 @@ public class BankAccountNumberToken
         return Value % 97 == 1;
     }
 
-    private static decimal BuildValue(string countryCode, string remainder, byte? checksum = null)
+    private static decimal BuildValue(string countryCode, string remainder, string? checkNumber = null)
     {
-        var rearrangedValue = $"{remainder}{countryCode}{checksum}";
+        var rearrangedValue = $"{remainder}{countryCode}{checkNumber ?? string.Empty}";
         var decimalValueString = rearrangedValue.Aggregate(string.Empty, (current, character) => current + (char.IsLetter(character) ? character - 55 : character - 48));
-        if (!decimal.TryParse(decimalValueString, out var decimalValue))
+        
+        if (!decimal.TryParse(decimalValueString, out var parsedValue))
         {
-            throw new ELifeInvalidOperationException("Generated decimal value could not be parsed.");
+            throw new ELifeInvalidOperationException("Generated value could not be parsed.");
         }
 
-        return decimalValue;
+        return parsedValue;
     }
 }
