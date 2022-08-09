@@ -20,7 +20,7 @@ public class BankAccountNumberTests
     }
 
     [Theory]
-    [InlineData("EL69 BUKB 2020 1555 5555 55", true)]
+    [InlineData("EL28 9243 5275 2759 5717 2774", true)]
     public void Validates_ELifeRPGRules(string bankAccountNumber, bool shouldBeValid)
     {
         var instance = new BankAccountNumber(bankAccountNumber);
@@ -28,7 +28,7 @@ public class BankAccountNumberTests
     }
 
     [Theory]
-    [InlineData("EL", 31, 71302, 402, "EL6901302402")]
+    [InlineData("EL", 31, 71302, 402, "EL3171302402")]
     public void ConstructsValidBankAccountNumber(string countryCode, byte checkNumber, int bankCode, long accountNumber, string assertedValue)
     {
         var instance = new BankAccountNumber(countryCode, checkNumber, bankCode, accountNumber);

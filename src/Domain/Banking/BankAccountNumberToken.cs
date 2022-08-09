@@ -3,23 +3,24 @@
 namespace ELifeRPG.Domain.Banking;
 
 /// <summary>
-/// Represents the rearranged structure of an IBAN with ASCII characters: (Bank-Code)(Account-Number)(Country-Code)(Checksum)
+/// Represents the rearranged structure of an IBAN with ASCII characters: (Bank-Code)(Account-Number)(Country-Code)(Check-Number)
 /// </summary>
 public class BankAccountNumberToken
 {
+    /// <summary>
+    /// Constructs the token from Country-Code, Bank-Code and regular Account-Number.
+    /// </summary>
     public BankAccountNumberToken(string countryCode, int bankCode, long accountNumber)
     {
         Value = BuildValue(countryCode, $"{bankCode}{accountNumber}", "00");
     }
     
-    public BankAccountNumberToken(string countryCode, string remainder)
+    /// <summary>
+    /// Constructs the token from the IBAN.
+    /// </summary>
+    public BankAccountNumberToken(string iban)
     {
-        Value = BuildValue(countryCode, remainder);
-    }
-
-    public BankAccountNumberToken(decimal token)
-    {
-        Value = token;
+        Value = BuildValue(iban[..2], iban[4..], iban[2..4]);
     }
     
     public decimal Value { get; }

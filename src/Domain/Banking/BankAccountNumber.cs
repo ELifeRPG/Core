@@ -78,7 +78,7 @@ public class BankAccountNumber
             throw new ELifeInvalidOperationException("Value exceeds limit of 34 characters.");
         }
 
-        if (!new BankAccountNumberToken(Value[..4], Value[4..]).IsValidMod97())
+        if (!new BankAccountNumberToken(Value).IsValidMod97())
         {
             throw new ELifeInvalidOperationException("Generated bank account number did not pass MOD-97-10 ISO/IEC 7064:2003 check.");
         }

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using ELifeRPG.Domain.Common.Exceptions;
+﻿using ELifeRPG.Domain.Common.Exceptions;
 
 namespace ELifeRPG.Domain.Banking;
 
