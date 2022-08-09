@@ -9,7 +9,8 @@ public class BankAccountNumber
 {
     public BankAccountNumber(string countryCode, byte checkNumber, int bankCode, long accountNumber)
     {
-        Value = $"{countryCode}{checkNumber}{bankCode}{accountNumber}";
+        var paddedCheckNumber = checkNumber < 10 ? $"0{checkNumber}" : checkNumber.ToString();
+        Value = $"{countryCode}{paddedCheckNumber}{bankCode}{accountNumber}";
     }
 
     public BankAccountNumber(string bankAccountNumber)

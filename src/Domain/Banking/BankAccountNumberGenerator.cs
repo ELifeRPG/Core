@@ -11,20 +11,13 @@ public static class BankAccountNumberGenerator
     /// </summary>
     public static BankAccountNumber Generate(Bank bank)
     {
-        for (var i = 1; i <= 3; i++)
-        {
-            var randomNumber = Random.NextInt64(1000000000, 99999999999);
-            var checkNumber = BuildCheckNumber(bank.Country.Code, bank.Number, randomNumber);
-            var bankAccountNumber = new BankAccountNumber(bank.Country.Code, checkNumber, bank.Number, randomNumber);
-            if (bankAccountNumber.TryValidate())
-            {
-                return bankAccountNumber;
-            }
+        var randomNumber = Random.NextInt64(1000000000, 99999999999);
+        var checkNumber = BuildCheckNumber(bank.Country.Code, bank.Number, randomNumber);
+        var bankAccountNumber = new BankAccountNumber(bank.Country.Code, checkNumber, bank.Number, randomNumber);
 
-            if (i == 3)
-            {
-                throw new ELifeInvalidOperationException($"Could not generate bank account number - attempts: {i}");
-            }
+        if (bankAccountNumber.TryValidate())
+        {
+            return bankAccountNumber;
         }
 
         throw new ELifeInvalidOperationException("Could not generate bank account number");
