@@ -10,7 +10,6 @@ public class BankAccountNumber
     public BankAccountNumber(string countryCode, byte checkNumber, int bankCode, long accountNumber)
     {
         Value = $"{countryCode}{checkNumber}{bankCode}{accountNumber}";
-        Validate();
     }
 
     public BankAccountNumber(string bankAccountNumber)
@@ -31,17 +30,15 @@ public class BankAccountNumber
             throw new ELifeInvalidOperationException("Value exceeds limit of 34 characters.");
         }
 
-        var rearrangedValue = $"{Value[4..]}{Value[..4]}";
-        var decimalValueString = rearrangedValue.Aggregate(string.Empty, (current, character) => current + (char.IsLetter(character) ? character - 55 : character - 48));
-        if (!decimal.TryParse(decimalValueString, out var decimalValue))
-        {
-            throw new ELifeInvalidOperationException("Generated decimal value could not be parsed.");
-        }
-
-        if ((decimalValue % 97) == 1)
+        if (!new BankAccountNumberToken(Value[..4], Value[4..]).IsValidMod97())
         {
             throw new ELifeInvalidOperationException("Generated bank account number did not pass MOD-97-10 ISO/IEC 7064:2003 check.");
         }
+    }
+
+    public static bool DecimalTokenIsValidMod971ß(decimal token)
+    {
+        return token % 97 == 1;
     }
 
     public bool TryValidate()

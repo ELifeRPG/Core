@@ -2,14 +2,17 @@
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Companies;
+using ELifeRPG.Domain.Countries;
 
 namespace ELifeRPG.Domain.Banking;
 
 public class Bank : EntityBase, IHasDomainEvents
 {
     private readonly List<BankAccount>? _accounts;
-    
+
     public Guid Id { get; init; } = Guid.NewGuid();
+    
+    public Country Country { get; init; } = Country.Default;
     
     /// <summary>
     /// The national identification number of the bank.

@@ -1,7 +1,7 @@
 ﻿using ELifeRPG.Domain.Banking;
 using Xunit;
 
-namespace ELifeRPG.Core.Domain.UnitTests.Banking.Accounts;
+namespace ELifeRPG.Core.Domain.UnitTests.Banking;
 
 public class BankAccountNumberTests
 {

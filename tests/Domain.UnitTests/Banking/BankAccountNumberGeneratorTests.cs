@@ -1,15 +1,21 @@
 ﻿using ELifeRPG.Domain.Banking;
+using ELifeRPG.Domain.Countries;
 using Xunit;
 
-namespace ELifeRPG.Core.Domain.UnitTests.Banking.Accounts;
+namespace ELifeRPG.Core.Domain.UnitTests.Banking;
 
 public class BankAccountNumberGeneratorTests
 {
     [Fact]
-    public void Generate_GeneratesValidNumber()
+    public void Generate_GeneratesValidNumbers()
     {
-        var bank = new Bank { Number = 2435 };
-        var bankAccountNumber = BankAccountNumberGenerator.Generate(bank);
-        Assert.NotEmpty(bankAccountNumber.Value);
+        var bank = new Bank { Country = Country.Default, Number = 924352752 };
+
+        for (var i = 0; i <= 10000; i++)
+        {
+            var bankAccountNumber = BankAccountNumberGenerator.Generate(bank);
+            Assert.NotEmpty(bankAccountNumber.Value);
+            Assert.True(bankAccountNumber.TryValidate(), $"Could not validate number `{bankAccountNumber}`");
+        }
     }
 }
