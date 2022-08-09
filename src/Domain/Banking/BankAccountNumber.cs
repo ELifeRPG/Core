@@ -1,6 +1,6 @@
-﻿using ELifeRPG.Application.Common.Exceptions;
+﻿using ELifeRPG.Domain.Common.Exceptions;
 
-namespace ELifeRPG.Domain.Banking.Accounts;
+namespace ELifeRPG.Domain.Banking;
 
 /// <summary>
 /// Over-simplified version of an IBAN.
@@ -22,12 +22,6 @@ public class BankAccountNumber
     }
 
     public string Value { get; }
-
-    public static BankAccountNumber Generate(Bank bank)
-    {
-        var randomNumber = new Random().Next(100000, 999999);
-        return new BankAccountNumber("EL", 31, bank.Number, randomNumber);
-    }
 
     public void Validate()
     {

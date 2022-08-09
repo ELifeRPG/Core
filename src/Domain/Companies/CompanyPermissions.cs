@@ -28,3 +28,11 @@ public enum CompanyPermissions
     /// </summary>
     ManageFinances = ManageWages << 1,
 }
+
+public static class CompanyPermissionsExtensions
+{
+    public static bool Contains(this CompanyPermissions self, CompanyPermissions flag)
+    {
+        return (self & flag) == flag;
+    }
+}

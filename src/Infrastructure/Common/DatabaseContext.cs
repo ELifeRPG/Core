@@ -38,9 +38,8 @@ public class DatabaseContext : DbContext, IDatabaseContext
             .Where(domainEvent => !domainEvent.IsPublished)
             .ToList();
 
-        var result = await base.SaveChangesAsync(cancellationToken);
         await PublishDomainEvents(domainEvents);
-        return result;
+        return await base.SaveChangesAsync(cancellationToken);
     }
     
     protected override void OnModelCreating(ModelBuilder builder)

@@ -1,4 +1,4 @@
-﻿using ELifeRPG.Domain.Banking.Accounts;
+﻿using ELifeRPG.Domain.Banking;
 using Xunit;
 
 namespace ELifeRPG.Core.Domain.UnitTests.Banking.Accounts;
@@ -40,13 +40,5 @@ public class BankAccountNumberTests
     {
         var instance = new BankAccountNumber("GB33BUKB20201555555555");
         Assert.Equal("GB33 BUKB 2020 1555 5555 55", instance.ToString());
-    }
-
-    [Fact]
-    public void Generate_GeneratesValidNumber()
-    {
-        var bank = new Bank { Number = 2435 };
-        var bankAccountNumber = BankAccountNumber.Generate(bank);
-        Assert.NotEmpty(bankAccountNumber.Value);
     }
 }

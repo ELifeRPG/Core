@@ -1,4 +1,4 @@
-﻿namespace ELifeRPG.Application.Common.Exceptions;
+﻿namespace ELifeRPG.Domain.Common.Exceptions;
 
 public class ELifeInvalidOperationException : InvalidOperationException
 {

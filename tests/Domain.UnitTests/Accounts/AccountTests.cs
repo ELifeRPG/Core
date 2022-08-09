@@ -1,6 +1,6 @@
 using System.Linq;
-using ELifeRPG.Application.Common.Exceptions;
 using ELifeRPG.Domain.Accounts;
+using ELifeRPG.Domain.Common.Exceptions;
 using Xunit;
 
 namespace ELifeRPG.Core.Domain.UnitTests.Accounts;
