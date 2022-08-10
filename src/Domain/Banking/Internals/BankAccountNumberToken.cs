@@ -1,11 +1,11 @@
 ﻿using ELifeRPG.Domain.Common.Exceptions;
 
-namespace ELifeRPG.Domain.Banking;
+namespace ELifeRPG.Domain.Banking.Internals;
 
 /// <summary>
 /// Represents the rearranged structure of an IBAN with ASCII characters: (Bank-Code)(Account-Number)(Country-Code)(Check-Number)
 /// </summary>
-public class BankAccountNumberToken
+internal class BankAccountNumberToken
 {
     /// <summary>
     /// Constructs the token from Country-Code, Bank-Code and regular Account-Number.

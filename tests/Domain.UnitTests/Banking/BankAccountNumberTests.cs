@@ -1,4 +1,5 @@
 ﻿using ELifeRPG.Domain.Banking;
+using ELifeRPG.Domain.Countries;
 using Xunit;
 
 namespace ELifeRPG.Core.Domain.UnitTests.Banking;
@@ -28,7 +29,7 @@ public class BankAccountNumberTests
     }
 
     [Theory]
-    [InlineData("EL", 31, 71302, 402, "EL3171302402")]
+    [InlineData("EL", 28, 92435275, 275957172774, "EL2892435275275957172774")]
     public void ConstructsValidBankAccountNumber(string countryCode, byte checkNumber, int bankCode, long accountNumber, string assertedValue)
     {
         var instance = new BankAccountNumber(countryCode, checkNumber, bankCode, accountNumber);
@@ -40,5 +41,18 @@ public class BankAccountNumberTests
     {
         var instance = new BankAccountNumber("GB33BUKB20201555555555");
         Assert.Equal("GB33 BUKB 2020 1555 5555 55", instance.ToString());
+    }
+    
+    [Fact]
+    public void Constructor_GeneratesValidNumbers()
+    {
+        var bank = new Bank { Country = Country.Default, Number = 924352752 };
+
+        for (var i = 0; i <= 25; i++)
+        {
+            var bankAccountNumber = new BankAccountNumber(bank);
+            Assert.NotEmpty(bankAccountNumber.Value);
+            Assert.True(bankAccountNumber.TryValidate(), $"Could not validate number `{bankAccountNumber}`");
+        }
     }
 }

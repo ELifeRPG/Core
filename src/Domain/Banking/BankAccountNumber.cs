@@ -1,4 +1,5 @@
-﻿using ELifeRPG.Domain.Common.Exceptions;
+﻿using ELifeRPG.Domain.Banking.Internals;
+using ELifeRPG.Domain.Common.Exceptions;
 
 namespace ELifeRPG.Domain.Banking;
 
@@ -7,10 +8,21 @@ namespace ELifeRPG.Domain.Banking;
 /// </summary>
 public class BankAccountNumber
 {
+    private static readonly Random Random = new();
+    
+    public BankAccountNumber(Bank bank)
+    {
+        var randomNumber = Random.NextInt64(1000000000, 99999999999);
+        var checkNumber = BuildCheckNumber(bank.Country.Code, bank.Number, randomNumber);
+        
+        Value = BuildValue(bank.Country.Code, checkNumber, bank.Number, randomNumber);
+        Validate();
+    }
+
     public BankAccountNumber(string countryCode, byte checkNumber, int bankCode, long accountNumber)
     {
-        var paddedCheckNumber = checkNumber < 10 ? $"0{checkNumber}" : checkNumber.ToString();
-        Value = $"{countryCode}{paddedCheckNumber}{bankCode}{accountNumber}";
+        Value = BuildValue(countryCode, checkNumber, bankCode, accountNumber);
+        Validate();
     }
 
     public BankAccountNumber(string bankAccountNumber)
@@ -69,6 +81,19 @@ public class BankAccountNumber
         }
         
         return newStr;
+    }
+    
+    private static byte BuildCheckNumber(string countryCode, int bankCode, long accountNumber)
+    {
+        var baseNumberToken = new BankAccountNumberToken(countryCode, bankCode, accountNumber);
+        var checkNumber = 98 - (baseNumberToken.Value % 97);
+        return (byte)checkNumber;
+    }
+
+    private static string BuildValue(string countryCode, byte checkNumber, int bankCode, long accountNumber)
+    {
+        var paddedCheckNumber = checkNumber < 10 ? $"0{checkNumber}" : checkNumber.ToString();
+        return $"{countryCode}{paddedCheckNumber}{bankCode}{accountNumber}";
     }
     
     private void Validate()

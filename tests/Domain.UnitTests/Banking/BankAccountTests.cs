@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters;
+using ELifeRPG.Domain.Common.Exceptions;
 using ELifeRPG.Domain.Companies;
 using Xunit;
 
@@ -16,6 +17,7 @@ public class BankAccountTests
         
         var bankAccount = new BankAccount
         {
+            Type = BankAccountType.Personal,
             OwningCharacter = character,
         };
 
@@ -50,5 +52,19 @@ public class BankAccountTests
         var canManageFinances = bankAccount.Can(character, BankAccountCapabilities.CommitTransactions);
 
         Assert.True(canManageFinances);
+    }
+
+    [Fact]
+    public void MakeTransactionTo_ChecksExecutingPerson_WhenTypeOfPersonalBankAccount()
+    {
+        var bank = new Bank();
+        
+        var owningCharacter = new Character();
+        var bankAccount = new BankAccount(bank, owningCharacter);
+        
+        var executingCharacter = new Character();
+        var bankAccountOfExecutingCharacter = new BankAccount(bank, executingCharacter);
+
+        Assert.Throws<ELifeInvalidOperationException>(() =>  bankAccount.MakeTransactionTo(bankAccountOfExecutingCharacter, executingCharacter, 1000m));
     }
 }

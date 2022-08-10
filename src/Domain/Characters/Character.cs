@@ -15,13 +15,11 @@ public class Character : EntityBase, IHasDomainEvents
 
     public Character(Character characterInfo)
     {
-        Id = Guid.NewGuid();
         SetValues(characterInfo);
-
         DomainEvents.Add(new CharacterCreatedEvent(this));
     }
 
-    public Guid Id { get; init; }
+    public Guid Id { get; init; } = Guid.NewGuid();
     
     public Account? Account { get; init; }
 
