@@ -3,6 +3,13 @@ using ELifeRPG.Domain.Common;
 
 namespace ELifeRPG.Domain.Banking;
 
+public enum BankAccountTransactionType
+{
+    CashDeposit,
+    CashWithdrawal,
+    BankTransfer,
+}
+
 public class BankAccountTransaction : EntityBase
 {
     public BankAccountTransaction()

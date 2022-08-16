@@ -1,0 +1,16 @@
+﻿using ELifeRPG.Domain.Common;
+
+namespace ELifeRPG.Domain.Banking;
+
+public class BankCondition : EntityBase
+{
+    public static readonly BankCondition Default = new() { TransactionFeeBase = 1.00m, TransactionFeeMultiplier = 0.02m };
+    
+    public Guid Id { get; init; } = Guid.NewGuid();
+
+    public Bank Bank { get; init; } = null!;
+    
+    public decimal TransactionFeeBase { get; init; }
+    
+    public decimal TransactionFeeMultiplier { get; init; }
+}

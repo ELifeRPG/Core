@@ -10,14 +10,26 @@ public class Bank : EntityBase, IHasDomainEvents
 {
     private readonly List<BankAccount>? _accounts;
 
+    public Bank()
+    {
+    }
+
+    public Bank(Country country)
+    {
+        Country = country;
+        Conditions = new List<BankCondition> { BankCondition.Default };
+    }
+
     public Guid Id { get; init; } = Guid.NewGuid();
     
-    public Country Country { get; init; } = Country.Default;
+    public Country Country { get; init; } = null!;
     
     /// <summary>
     /// The national identification number of the bank.
     /// </summary>
     public int Number { get; init; }
+    
+    public ICollection<BankCondition>? Conditions { get; init; }
 
     public IReadOnlyCollection<BankAccount>? Accounts
     {

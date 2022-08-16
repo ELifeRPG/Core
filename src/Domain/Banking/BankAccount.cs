@@ -6,6 +6,12 @@ using ELifeRPG.Domain.Companies;
 
 namespace ELifeRPG.Domain.Banking;
 
+public enum BankAccountType
+{
+    Personal = 1,
+    Corporate = 2,
+}
+
 public class BankAccount : EntityBase, IHasDomainEvents
 {
     public BankAccount()

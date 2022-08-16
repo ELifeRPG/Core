@@ -5,7 +5,7 @@ namespace ELifeRPG.Domain.Companies;
 
 public class Company : EntityBase, IHasDomainEvents
 {
-    public Company()
+    internal Company()
     {
     }
 
@@ -14,6 +14,7 @@ public class Company : EntityBase, IHasDomainEvents
         Id = Guid.NewGuid();
         Name = name;
         Positions = new List<CompanyPosition> { new() { Name = "Newbie", Ordering = 10, } };
+        Memberships = new List<CompanyMembership>();
     }
     
     public Guid Id { get; init; }
