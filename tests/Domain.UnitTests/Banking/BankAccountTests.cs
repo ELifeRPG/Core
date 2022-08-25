@@ -81,7 +81,7 @@ public class BankAccountTests
 
         bankAccount.MakeTransactionTo(bankAccountOfExecutingCharacter, owningCharacter, 1000m);
 
-        Assert.Contains(bankAccount.Transactions, x => x.Amount == 1000m);
+        Assert.Contains(bankAccount.SentTransactions, x => x.Amount == 1000m);
     }
     
     [Fact]

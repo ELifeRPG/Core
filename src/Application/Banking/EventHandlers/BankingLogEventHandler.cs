@@ -46,7 +46,7 @@ public class BankingLogEventHandler :
     {
         BankAccountTransactionExecutedEvent(
             _logger,
-            notification.Transaction.Source.Id,
+            notification.Transaction.BankAccount.Id,
             notification.ExecutingCharacter.Id,
             notification.Transaction.Target!.Id,
             notification.Transaction.Amount,

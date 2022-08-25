@@ -8,8 +8,10 @@ public class BankCondition : EntityBase
     
     public Guid Id { get; init; } = Guid.NewGuid();
 
-    public Bank Bank { get; init; } = null!;
+    public Bank? Bank { get; init; }
     
+    public ICollection<BankAccount>? BankAccounts { get; init; }
+
     public decimal TransactionFeeBase { get; init; }
     
     public decimal TransactionFeeMultiplier { get; init; }

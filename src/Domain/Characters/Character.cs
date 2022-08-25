@@ -1,4 +1,5 @@
 ﻿using ELifeRPG.Domain.Accounts;
+using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters.Sessions;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Companies;
@@ -9,7 +10,7 @@ public class Character : EntityBase, IHasDomainEvents
 {
     private CharacterName? _name;
 
-    public Character()
+    internal Character()
     {
     }
 
@@ -32,6 +33,8 @@ public class Character : EntityBase, IHasDomainEvents
     public ICollection<CharacterSession>? Sessions { get; init; }
     
     public ICollection<CompanyMembership>? CompanyMemberships { get; init; }
+    
+    public ICollection<BankAccount>? BankAccounts { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
 

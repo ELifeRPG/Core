@@ -1,10 +1,10 @@
 ﻿namespace ELifeRPG.Domain.Banking.Internals;
 
-public class TransactionFee
+public struct TransactionFee
 {
     public TransactionFee(BankAccountTransaction transaction, BankAccount bankAccount)
     {
-        Value = Decimal.Multiply(transaction.Amount, bankAccount.TransactionFeeMultiplier);
+        Value = bankAccount.BankCondition!.TransactionFeeBase + Decimal.Multiply(transaction.Amount, bankAccount.BankCondition!.TransactionFeeMultiplier);
     }
     
     public decimal Value { get; }

@@ -12,24 +12,24 @@ public enum BankAccountTransactionType
 
 public class BankAccountTransaction : EntityBase
 {
-    public BankAccountTransaction()
+    internal BankAccountTransaction()
     {
     }
     
-    public BankAccountTransaction(BankAccount source, BankAccount target, decimal amount)
+    public BankAccountTransaction(BankAccount bankAccount, BankAccount target, decimal amount)
     {
         Type = BankAccountTransactionType.BankTransfer;
-        Source = source;
+        BankAccount = bankAccount;
         Target = target;
         Amount = amount;
-        Fees = new TransactionFee(this, source).Value;
+        Fees = new TransactionFee(this, bankAccount).Value;
     }
     
     public Guid Id { get; init; } = Guid.NewGuid();
     
     public BankAccountTransactionType Type { get; init; }
 
-    public BankAccount Source { get; init; } = null!;
+    public BankAccount BankAccount { get; init; } = null!;
 
     public BankAccount? Target { get; init; }
     

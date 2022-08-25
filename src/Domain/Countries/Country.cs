@@ -1,10 +1,12 @@
-﻿namespace ELifeRPG.Domain.Countries;
+﻿using ELifeRPG.Domain.Banking;
+
+namespace ELifeRPG.Domain.Countries;
 
 public class Country
 {
     public static readonly Country Default = new() { Id = Guid.Parse("90AFA7EC-CCDA-49B7-9AE4-F08B4EF4B759"), Code = "EL" };
 
-    public Country()
+    internal Country()
     {
     }
 
@@ -16,4 +18,6 @@ public class Country
     public Guid Id { get; init; }
 
     public string Code { get; init; } = null!;
+
+    public ICollection<Bank>? Banks { get; init; }
 }

@@ -14,7 +14,7 @@ public enum BankAccountType
 
 public class BankAccount : EntityBase, IHasDomainEvents
 {
-    public BankAccount()
+    internal BankAccount()
     {
     }
     
@@ -47,15 +47,17 @@ public class BankAccount : EntityBase, IHasDomainEvents
     /// </summary>
     public string Number { get; init; } = null!;
 
-    public Bank Bank { get; init; } = null!;
+    public Bank? Bank { get; init; }
+    
+    public BankCondition? BankCondition { get; init; }
     
     public Character? OwningCharacter { get; init; }
     
     public Company? OwningCompany { get; init; }
 
-    public decimal TransactionFeeMultiplier { get; init; } = 0.02m;
-
-    public ICollection<BankAccountTransaction> Transactions { get; init; } = new List<BankAccountTransaction>();
+    public ICollection<BankAccountTransaction> SentTransactions { get; init; } = new List<BankAccountTransaction>();
+    
+    public ICollection<BankAccountTransaction> ReceivedTransactions { get; init; } = new List<BankAccountTransaction>();
 
     public List<DomainEvent> DomainEvents { get; } = new();
 
@@ -70,7 +72,7 @@ public class BankAccount : EntityBase, IHasDomainEvents
         return companyMembership is not null && MapFromCompanyPosition(companyMembership.Position.Permissions).Contains(capability);
     }
 
-    public void MakeTransactionTo(BankAccount targetAccount, Character character, decimal amount)
+    public BankAccountTransaction MakeTransactionTo(BankAccount targetAccount, Character character, decimal amount)
     {
         if (!Can(character, BankAccountCapabilities.CommitTransactions))
         {
@@ -78,8 +80,13 @@ public class BankAccount : EntityBase, IHasDomainEvents
         }
         
         var transaction = new BankAccountTransaction(this, targetAccount, amount);
-        Transactions.Add(transaction);
+
+        SentTransactions.Add(transaction);
+        targetAccount.ReceivedTransactions.Add(transaction);
+
         DomainEvents.Add(new BankAccountTransactionExecutedEvent(transaction, character));
+
+        return transaction;
     }
 
     private static BankAccountCapabilities MapFromCompanyPosition(CompanyPermissions companyPermissions)

@@ -8,16 +8,18 @@ namespace ELifeRPG.Domain.Banking;
 
 public class Bank : EntityBase, IHasDomainEvents
 {
-    private readonly List<BankAccount>? _accounts;
+    private static readonly Random Random = new();
+    private readonly List<BankAccount>? _accounts = new();
 
-    public Bank()
+    internal Bank()
     {
     }
 
-    public Bank(Country country)
+    public Bank(Country country, int? number = null)
     {
         Country = country;
         Conditions = new List<BankCondition> { BankCondition.Default };
+        Number = GenerateNumber(number, country);
     }
 
     public Guid Id { get; init; } = Guid.NewGuid();
@@ -31,11 +33,7 @@ public class Bank : EntityBase, IHasDomainEvents
     
     public ICollection<BankCondition>? Conditions { get; init; }
 
-    public IReadOnlyCollection<BankAccount>? Accounts
-    {
-        get => _accounts;
-        init => _accounts = value!.ToList();
-    }
+    public IReadOnlyCollection<BankAccount>? Accounts => _accounts;
 
     public BankAccount OpenAccount(Character owningCharacter)
     {
@@ -58,4 +56,19 @@ public class Bank : EntityBase, IHasDomainEvents
     }
 
     public List<DomainEvent> DomainEvents { get; } = new();
+
+    private static int GenerateNumber(int? givenNumber, Country country)
+    {
+        do
+        {
+            var number = givenNumber ?? Random.Next(10000, 99999);
+
+            if (country.Banks!.Any(x => x.Number == number))
+            {
+                continue;
+            }
+            
+            return number;
+        } while (true);
+    }
 }

@@ -26,5 +26,11 @@ public class CompanyTypeConfiguration : IEntityTypeConfiguration<Company>
             .HasMany(x => x.Memberships)
             .WithOne(x => x.Company)
             .HasConstraintName("FK_CompanyMembership_Id");
+
+        builder
+            .HasMany(x => x.BankAccounts)
+            .WithOne(x => x.OwningCompany)
+            .HasForeignKey("FK_Company_Id")
+            .HasConstraintName("FK_BankAccount_Company_Id");
     }
 }
