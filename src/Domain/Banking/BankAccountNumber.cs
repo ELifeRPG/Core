@@ -79,7 +79,7 @@ public class BankAccountNumber
                 newStr.Append(' ');
             }
 
-            newStr.Append(i);
+            newStr.Append(Value[i]);
         }
         
         return newStr.ToString();
