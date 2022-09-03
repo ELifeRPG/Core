@@ -1,6 +1,4 @@
-﻿using ELifeRPG.Domain.Banking;
-
-namespace ELifeRPG.Core.Api.Banking;
+﻿namespace ELifeRPG.Core.Api.Banking;
 
 public class BankAccountDto
 {
@@ -10,5 +8,5 @@ public class BankAccountDto
     
     public decimal Balance { get; set; }
     
-    public List<BankAccountBooking>? Bookings { get; set; }
+    public List<BankAccountBookingDto>? Bookings { get; set; }
 }

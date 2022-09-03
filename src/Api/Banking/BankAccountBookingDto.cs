@@ -6,7 +6,9 @@ public class BankAccountBookingDto
 {
     public BankAccountBookingType Type { get; set; }
     
-    public BankAccountDto? Source { get; init; }
+    public DateTime Date { get; set; }
+    
+    public string? SourceBankAccountNumber { get; set; }
     
     public string? Purpose { get; set; }
     

@@ -16,7 +16,12 @@ public class BankingProfile : Profile
 
         CreateMap<BankAccountBooking, BankAccountBookingDto>()
             .ForMember(d => d.Type, o => o.MapFrom(s => s.Type))
-            .ForMember(d => d.Source, o => o.MapFrom(s => s.Source))
+            .ForMember(d => d.Date, o => o.MapFrom(s => s.Created))
+            .ForMember(d => d.SourceBankAccountNumber, o =>
+            {
+                o.Condition(s => s.Source is not null);
+                o.MapFrom(s => s.Source!.Number);
+            })
             .ForMember(d => d.Purpose, o => o.MapFrom(s => s.Purpose))
             .ForMember(d => d.Amount, o => o.MapFrom(s => s.Amount));
         

@@ -39,6 +39,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
     public async Task<MakeTransactionCommandResult> Handle(MakeTransactionCommand request, CancellationToken cancellationToken)
     {
         var selectedBankAccounts = await _databaseContext.BankAccounts
+            .Include(x => x.Bookings)
             .Include(x => x.BankCondition)
             .Where(x => x.Id == request.SourceBankAccountId || x.Id == request.TargetBankAccountId)
             .ToListAsync(cancellationToken);
@@ -60,6 +61,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
         var targetBankAccount = selectedBankAccounts.First(x => x.Id == request.TargetBankAccountId);
         
         var transaction = sourceBankAccount.TransferMoneyTo(targetBankAccount, character, request.Amount);
+        await _databaseContext.SaveChangesAsync(cancellationToken);
 
         return new MakeTransactionCommandResult(transaction);
     }

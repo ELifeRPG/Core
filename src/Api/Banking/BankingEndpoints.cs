@@ -44,11 +44,22 @@ public static class BankingEndpoints
             .Produces<string>()
             .WithTags(Tag)
             .WithSummary("Lists bank-accounts of the given character.");
+        
+        app
+            .MapGet(
+                "/bank-accounts/{bankAccountId:guid}",
+                async (Guid bankAccountId, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
+                    => Results.Ok(mapper.Map<BankAccountDto>(
+                        (await mediator.Send(new BankAccountDetailsQuery(bankAccountId), cancellationToken))
+                        .BankAccount)))
+            .Produces<string>()
+            .WithTags(Tag)
+            .WithSummary("Lists bank-accounts of the given character.");
 
         app
             .MapPut(
-                "/bank-accounts/{bankAccountId:guid}/transactions",
-                async ([FromRoute] Guid bankAccountId, [FromQuery] Guid characterId, [FromBody] BankAccountTransactionDto transaction, IMediator mediator, IMapper mapper)
+                "/bank-accounts/{bankAccountId:guid}/transaction",
+                async ([FromRoute] Guid bankAccountId, [FromQuery] Guid characterId, [FromBody] BankAccountTransactionCommandDto transaction, IMediator mediator, IMapper mapper)
                     => Results.Ok(
                         mapper.Map<BankAccountTransactionDto>(
                             (await mediator.Send(
