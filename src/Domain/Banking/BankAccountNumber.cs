@@ -1,4 +1,6 @@
-﻿using ELifeRPG.Domain.Banking.Internals;
+﻿using System.Globalization;
+using System.Text;
+using ELifeRPG.Domain.Banking.Internals;
 using ELifeRPG.Domain.Common.Exceptions;
 
 namespace ELifeRPG.Domain.Banking;
@@ -28,7 +30,7 @@ public class BankAccountNumber
     public BankAccountNumber(string bankAccountNumber)
     {
         Value = bankAccountNumber
-            .ToUpper()
+            .ToUpper(CultureInfo.InvariantCulture)
             .Replace(" ", string.Empty)
             .Replace("-", string.Empty);
     }
@@ -68,19 +70,19 @@ public class BankAccountNumber
     /// </summary>
     public override string ToString()
     {
-        var newStr = string.Empty;
+        var newStr = new StringBuilder();
 
         for (int i = 0; i < Value.Length; i++)
         {
             if (i > 0 && i % 4 == 0)
             {
-                newStr += " ";
+                newStr.Append(' ');
             }
 
-            newStr += Value[i];
+            newStr.Append(i);
         }
         
-        return newStr;
+        return newStr.ToString();
     }
     
     private static byte BuildCheckNumber(string countryCode, int bankCode, long accountNumber)

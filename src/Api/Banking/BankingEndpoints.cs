@@ -54,7 +54,7 @@ public static class BankingEndpoints
                         .BankAccount)))
             .Produces<string>()
             .WithTags(Tag)
-            .WithSummary("Lists bank-accounts of the given character.");
+            .WithSummary("Gets bank-account with details.");
 
         app
             .MapPut(

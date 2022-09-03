@@ -1,6 +1,6 @@
 ﻿namespace ELifeRPG.Domain.Banking.Internals;
 
-public struct TransactionFee
+public class TransactionFee
 {
     public TransactionFee(BankAccountTransaction transaction, BankAccount bankAccount)
     {
