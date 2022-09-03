@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ELifeRPG.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220901193534_BankingBalance")]
-    partial class BankingBalance
+    [Migration("20220903221846_AddBanking")]
+    partial class AddBanking
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
