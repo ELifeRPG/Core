@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen(options =>
     options.EnableAnnotations();
 });
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(options =>options.AllowNullCollections = true, typeof(Program));
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Companies;
 
-public class GetCompanyResult : ResultBase
+public class GetCompanyResult : AbstractResult
 {
     public GetCompanyResult(Company company, ICollection<CompanyMembership> topMembers)
     {

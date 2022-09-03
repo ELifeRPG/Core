@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Banking.Commands;
 
-public class OpenBankAccountCommandResult : ResultBase
+public class OpenBankAccountCommandResult : AbstractResult
 {
     public OpenBankAccountCommandResult(BankAccount bankAccount)
     {
@@ -51,7 +51,6 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
 
     public async Task<OpenBankAccountCommandResult> Handle(OpenBankAccountCommand request, CancellationToken cancellationToken)
     {
-        // todo: validation behavior
         if (request.CharacterId is null && request.CompanyId is null)
         {
             throw new ELifeInvalidOperationException();
@@ -60,6 +59,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
         var bank = await _databaseContext.Banks
             .Include(x => x.Country)
             .Include(x => x.Accounts)
+            .Include(x => x.Conditions)
             .SingleOrDefaultAsync(x => x.Id == request.BankId, cancellationToken);
 
         if (bank is null)

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Sessions;
 
-public class CreateSessionResult : ResultBase
+public class CreateSessionResult : AbstractResult
 {
     public CreateSessionResult(Guid accountId)
     {

@@ -1,5 +1,5 @@
 ﻿using ELifeRPG.Domain.Banking.Internals;
-using ELifeRPG.Domain.Common;
+using ELifeRPG.Domain.Common.Exceptions;
 
 namespace ELifeRPG.Domain.Banking;
 
@@ -10,28 +10,39 @@ public enum BankAccountTransactionType
     BankTransfer,
 }
 
-public class BankAccountTransaction : EntityBase
+public class BankAccountTransaction
 {
     internal BankAccountTransaction()
     {
     }
-    
-    public BankAccountTransaction(BankAccount bankAccount, BankAccount target, decimal amount)
+
+    public BankAccountTransaction(BankAccount bankAccount, BankAccountTransactionType type, decimal amount)
     {
-        Type = BankAccountTransactionType.BankTransfer;
+        if (type != BankAccountTransactionType.CashDeposit && type != BankAccountTransactionType.CashWithdrawal)
+        {
+            throw new ELifeInvalidOperationException();
+        }
+        
+        Type = type;
         BankAccount = bankAccount;
-        Target = target;
         Amount = amount;
         Fees = new TransactionFee(this, bankAccount).Value;
     }
     
-    public Guid Id { get; init; } = Guid.NewGuid();
+    public BankAccountTransaction(BankAccount bankAccount, BankAccount source, decimal amount)
+    {
+        Type = BankAccountTransactionType.BankTransfer;
+        BankAccount = bankAccount;
+        Source = source;
+        Amount = amount;
+        Fees = new TransactionFee(this, bankAccount).Value;
+    }
     
     public BankAccountTransactionType Type { get; init; }
 
     public BankAccount BankAccount { get; init; } = null!;
 
-    public BankAccount? Target { get; init; }
+    public BankAccount? Source { get; init; }
     
     public decimal Amount { get; init; }
     

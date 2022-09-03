@@ -5,7 +5,7 @@ namespace ELifeRPG.Core.WebUI.Shared;
 
 public static class ResultBaseExtensions
 {
-    public static void HandleMessages(this ResultBase result, ISnackbar snackbar)
+    public static void HandleMessages(this AbstractResult result, ISnackbar snackbar)
     {
         foreach (var message in result.Messages)
         {

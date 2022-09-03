@@ -4,11 +4,11 @@ namespace ELifeRPG.Core.Api.Banking;
 
 public class BankAccountDto
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
+
+    public string Number { get; set; } = null!;
     
-    public Guid BankId { get; init; }
+    public decimal Balance { get; set; }
     
-    public ICollection<BankAccountTransaction>? SentTransactions { get; init; }
-    
-    public ICollection<BankAccountTransaction>? ReceivedTransactions { get; init; }
+    public List<BankAccountBooking>? Bookings { get; set; }
 }

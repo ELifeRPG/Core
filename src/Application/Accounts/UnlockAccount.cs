@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ELifeRPG.Application.Accounts;
 
-public class UnlockAccountResult : ResultBase
+public class UnlockAccountResult : AbstractResult
 {
 }
 

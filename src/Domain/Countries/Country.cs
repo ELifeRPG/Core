@@ -13,6 +13,7 @@ public class Country
     public Country(string code)
     {
         Code = code;
+        Banks = new List<Bank>();
     }
     
     public Guid Id { get; init; }

@@ -56,7 +56,7 @@ public class BankAccountTests
     }
 
     [Fact]
-    public void MakeTransactionTo_ThrowsELifeInvalidOperationException_WhenCheckingExecutingPersonOfPersonalBankAccount()
+    public void TransferMoneyTo_ThrowsELifeInvalidOperationException_WhenCheckingExecutingPersonOfPersonalBankAccount()
     {
         var bank = new Bank(new Country("DE"));
         
@@ -66,11 +66,11 @@ public class BankAccountTests
         var executingCharacter = new Character();
         var bankAccountOfExecutingCharacter = new BankAccount(bank, executingCharacter);
 
-        Assert.Throws<ELifeInvalidOperationException>(() =>  bankAccount.MakeTransactionTo(bankAccountOfExecutingCharacter, executingCharacter, 1000m));
+        Assert.Throws<ELifeInvalidOperationException>(() =>  bankAccount.TransferMoneyTo(bankAccountOfExecutingCharacter, executingCharacter, 1000m));
     }
     
     [Fact]
-    public void MakeTransactionTo_AddsTransaction_WhenExecutingPersonOfPersonalBankAccountIsAuthorized()
+    public void TransferMoneyTo_AddsBooking_WhenExecutingPersonOfPersonalBankAccountIsAuthorized()
     {
         var bank = new Bank(new Country("DE"));
         
@@ -79,13 +79,13 @@ public class BankAccountTests
         
         var bankAccountOfExecutingCharacter = new BankAccount(bank, new Character());
 
-        bankAccount.MakeTransactionTo(bankAccountOfExecutingCharacter, owningCharacter, 1000m);
+        bankAccount.TransferMoneyTo(bankAccountOfExecutingCharacter, owningCharacter, 1000m);
 
-        Assert.Contains(bankAccount.SentTransactions, x => x.Amount == 1000m);
+        Assert.Contains(bankAccount.Bookings, x => x.Amount == 1000m);
     }
     
     [Fact]
-    public void MakeTransactionTo_ThrowsELifeInvalidOperationException_WhenCheckingExecutingPersonOfCompanyBankAccount()
+    public void TransferMoneyTo_ThrowsELifeInvalidOperationException_WhenCheckingExecutingPersonOfCompanyBankAccount()
     {
         var bank = new Bank(new Country("DE"));
         var owningCompany = new Company("Feuerstein GmbH");
@@ -93,6 +93,32 @@ public class BankAccountTests
 
         var bankAccountOfExecutingCharacter = new BankAccount(bank, new Company("The Empire"));
 
-        Assert.Throws<ELifeInvalidOperationException>(() =>  bankAccount.MakeTransactionTo(bankAccountOfExecutingCharacter, new Character(), 1000m));
+        Assert.Throws<ELifeInvalidOperationException>(() =>  bankAccount.TransferMoneyTo(bankAccountOfExecutingCharacter, new Character(), 1000m));
+    }
+
+    [Fact]
+    public void WithdrawMoney_AddsBooking()
+    {
+        var bank = new Bank(new Country("EL"));
+        var owningCharacter = new Character();
+        var bankAccount = new BankAccount(bank, owningCharacter);
+
+        bankAccount.WithdrawMoney(owningCharacter, 200);
+
+        Assert.Contains(bankAccount.Bookings, x => x.Type == BankAccountBookingType.Outgoing);
+    }
+    
+    [Fact]
+    public void TransferMoneyTo_AddsBookingsToBothAccounts()
+    {
+        var bank = new Bank(new Country("EL"));
+        var character = new Character();
+        var bankAccount = new BankAccount(bank, character);
+        var targetBankAccount = new BankAccount(bank, new Character());
+
+        bankAccount.TransferMoneyTo(targetBankAccount, character, 200);
+
+        Assert.Contains(bankAccount.Bookings, x => x.Type == BankAccountBookingType.Outgoing);
+        Assert.Contains(targetBankAccount.Bookings, x => x.Type == BankAccountBookingType.Incoming);
     }
 }

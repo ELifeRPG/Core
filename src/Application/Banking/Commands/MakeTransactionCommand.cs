@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Banking.Commands;
 
-public class MakeTransactionCommandResult : ResultBase
+public class MakeTransactionCommandResult : AbstractResult
 {
     public MakeTransactionCommandResult(BankAccountTransaction transaction)
     {
@@ -39,6 +39,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
     public async Task<MakeTransactionCommandResult> Handle(MakeTransactionCommand request, CancellationToken cancellationToken)
     {
         var selectedBankAccounts = await _databaseContext.BankAccounts
+            .Include(x => x.BankCondition)
             .Where(x => x.Id == request.SourceBankAccountId || x.Id == request.TargetBankAccountId)
             .ToListAsync(cancellationToken);
 
@@ -58,7 +59,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
         var sourceBankAccount = selectedBankAccounts.First(x => x.Id == request.SourceBankAccountId);
         var targetBankAccount = selectedBankAccounts.First(x => x.Id == request.TargetBankAccountId);
         
-        var transaction = sourceBankAccount.MakeTransactionTo(targetBankAccount, character, request.Amount);
+        var transaction = sourceBankAccount.TransferMoneyTo(targetBankAccount, character, request.Amount);
 
         return new MakeTransactionCommandResult(transaction);
     }

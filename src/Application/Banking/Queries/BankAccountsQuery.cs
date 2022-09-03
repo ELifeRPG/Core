@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Banking.Queries;
 
-public class BankAccountsQueryResult : ResultBase
+public class BankAccountsQueryResult : AbstractResult
 {
     public BankAccountsQueryResult(ICollection<BankAccount> bankAccounts)
     {

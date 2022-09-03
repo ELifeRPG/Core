@@ -21,15 +21,9 @@ public class BankAccountTypeConfiguration : IEntityTypeConfiguration<BankAccount
         builder.HasIndex(x => x.Number).IsUnique();
         
         builder
-            .HasMany(x => x.ReceivedTransactions)
-            .WithOne(x => x.Target)
-            .HasForeignKey("FK_Bank_Id")
-            .HasConstraintName("FK_BankAccountTransaction_Bank_Id");
-
-        builder
-            .HasMany(x => x.SentTransactions)
+            .HasMany(x => x.Bookings)
             .WithOne(x => x.BankAccount)
-            .HasForeignKey("FK_Bank_Target_Id")
-            .HasConstraintName("FK_BankAccountTransaction_Bank_Target_Id");
+            .HasForeignKey("FK_BankAccount_Id")
+            .HasConstraintName("FK_BankAccountBooking_BankAccount_Id");
     }
 }

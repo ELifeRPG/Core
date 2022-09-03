@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Accounts;
 
-public class UserSignedInResult : ResultBase
+public class UserSignedInResult : AbstractResult
 {
 }
 
