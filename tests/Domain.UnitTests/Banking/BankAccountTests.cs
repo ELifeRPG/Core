@@ -61,10 +61,10 @@ public class BankAccountTests
         var bank = new Bank(new Country("DE"));
         
         var owningCharacter = new Character();
-        var bankAccount = new BankAccount(bank, owningCharacter);
+        var bankAccount = new BankAccount(bank, owningCharacter){ Bookings = new List<BankAccountBooking>() };
         
         var executingCharacter = new Character();
-        var bankAccountOfExecutingCharacter = new BankAccount(bank, executingCharacter);
+        var bankAccountOfExecutingCharacter = new BankAccount(bank, executingCharacter){ Bookings = new List<BankAccountBooking>() };
 
         Assert.Throws<ELifeInvalidOperationException>(() =>  bankAccount.TransferMoneyTo(bankAccountOfExecutingCharacter, executingCharacter, 1000m));
     }
@@ -75,13 +75,13 @@ public class BankAccountTests
         var bank = new Bank(new Country("DE"));
         
         var owningCharacter = new Character();
-        var bankAccount = new BankAccount(bank, owningCharacter);
+        var bankAccount = new BankAccount(bank, owningCharacter){ Balance = 5000m, Bookings = new List<BankAccountBooking>() };
         
-        var bankAccountOfExecutingCharacter = new BankAccount(bank, new Character());
+        var bankAccountOfExecutingCharacter = new BankAccount(bank, new Character()){ Bookings = new List<BankAccountBooking>() };
 
         bankAccount.TransferMoneyTo(bankAccountOfExecutingCharacter, owningCharacter, 1000m);
 
-        Assert.Contains(bankAccount.Bookings, x => x.Amount == 1000m);
+        Assert.Equal(1, bankAccount.Bookings.Count);
     }
     
     [Fact]
@@ -89,9 +89,9 @@ public class BankAccountTests
     {
         var bank = new Bank(new Country("DE"));
         var owningCompany = new Company("Feuerstein GmbH");
-        var bankAccount = new BankAccount(bank, owningCompany);
+        var bankAccount = new BankAccount(bank, owningCompany){ Bookings = new List<BankAccountBooking>() };
 
-        var bankAccountOfExecutingCharacter = new BankAccount(bank, new Company("The Empire"));
+        var bankAccountOfExecutingCharacter = new BankAccount(bank, new Company("The Empire")){ Bookings = new List<BankAccountBooking>() };
 
         Assert.Throws<ELifeInvalidOperationException>(() =>  bankAccount.TransferMoneyTo(bankAccountOfExecutingCharacter, new Character(), 1000m));
     }
@@ -101,7 +101,7 @@ public class BankAccountTests
     {
         var bank = new Bank(new Country("EL"));
         var owningCharacter = new Character();
-        var bankAccount = new BankAccount(bank, owningCharacter);
+        var bankAccount = new BankAccount(bank, owningCharacter){ Balance = 1000m, Bookings = new List<BankAccountBooking>() };
 
         bankAccount.WithdrawMoney(owningCharacter, 200);
 
@@ -113,8 +113,8 @@ public class BankAccountTests
     {
         var bank = new Bank(new Country("EL"));
         var character = new Character();
-        var bankAccount = new BankAccount(bank, character);
-        var targetBankAccount = new BankAccount(bank, new Character());
+        var bankAccount = new BankAccount(bank, character){ Balance = 1000m, Bookings = new List<BankAccountBooking>() };
+        var targetBankAccount = new BankAccount(bank, new Character()){ Bookings = new List<BankAccountBooking>() };
 
         bankAccount.TransferMoneyTo(targetBankAccount, character, 200);
 
