@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ELifeRPG.Application.Characters;
 
-public class CreateCharacterResult : ResultBase
+public class CreateCharacterResult : AbstractResult
 {
     public CreateCharacterResult(Character character)
     {

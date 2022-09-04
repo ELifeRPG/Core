@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Companies;
 
-public class ListCompaniesResult : ResultBase
+public class ListCompaniesResult : AbstractResult
 {
     public ListCompaniesResult(List<Company> companies)
     {

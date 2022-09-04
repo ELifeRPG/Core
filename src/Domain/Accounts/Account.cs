@@ -1,6 +1,6 @@
-﻿using ELifeRPG.Application.Common.Exceptions;
-using ELifeRPG.Domain.Characters;
+﻿using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
+using ELifeRPG.Domain.Common.Exceptions;
 
 namespace ELifeRPG.Domain.Accounts;
 

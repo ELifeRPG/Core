@@ -1,19 +1,21 @@
-﻿using ELifeRPG.Domain.Characters;
+﻿using ELifeRPG.Domain.Banking;
+using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 
 namespace ELifeRPG.Domain.Companies;
 
 public class Company : EntityBase, IHasDomainEvents
 {
-    public Company()
+    internal Company()
     {
     }
 
     public Company(string name)
     {
-        Id = Guid.NewGuid();
+        Id = CompanyId.New().Value;
         Name = name;
-        Positions = new List<CompanyPosition> { new() { Name = "Newbie", Ordering = 10, } };
+        Positions = new List<CompanyPosition> { new() { Name = "Rookie", Ordering = 10, } };
+        Memberships = new List<CompanyMembership>();
     }
     
     public Guid Id { get; init; }
@@ -23,6 +25,8 @@ public class Company : EntityBase, IHasDomainEvents
     public ICollection<CompanyPosition>? Positions { get; init; }
 
     public ICollection<CompanyMembership>? Memberships { get; init; }
+    
+    public ICollection<BankAccount>? BankAccounts { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
 

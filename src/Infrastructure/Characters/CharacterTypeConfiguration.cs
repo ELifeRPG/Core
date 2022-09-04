@@ -22,5 +22,11 @@ public class CharacterTypeConfiguration : IEntityTypeConfiguration<Character>
             .HasOne(x => x.Account)
             .WithMany(x => x.Characters)
             .HasConstraintName("FK_Account_Id");
+
+        builder
+            .HasMany(x => x.BankAccounts)
+            .WithOne(x => x.OwningCharacter)
+            .HasForeignKey("FK_Character_Id")
+            .HasConstraintName("FK_BankAccount_Character_Id");
     }
 }

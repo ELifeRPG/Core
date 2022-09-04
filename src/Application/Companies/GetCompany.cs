@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Companies;
 
-public class GetCompanyResult : ResultBase
+public class GetCompanyResult : AbstractResult
 {
     public GetCompanyResult(Company company, ICollection<CompanyMembership> topMembers)
     {
@@ -21,12 +21,12 @@ public class GetCompanyResult : ResultBase
 
 public class GetCompanyQuery : IRequest<GetCompanyResult>
 {
-    public GetCompanyQuery(Guid companyId)
+    public GetCompanyQuery(CompanyId companyId)
     {
         CompanyId = companyId;
     }
     
-    public Guid CompanyId { get; }
+    public CompanyId CompanyId { get; }
 }
 
 public class GetCompanyHandler : IRequestHandler<GetCompanyQuery, GetCompanyResult>
@@ -42,7 +42,7 @@ public class GetCompanyHandler : IRequestHandler<GetCompanyQuery, GetCompanyResu
     {
         var company = await _databaseContext.Companies
             .Include(x => x.Memberships!.OrderBy(m => m.Position.Ordering).Take(5))
-            .SingleOrDefaultAsync(x => x.Id == request.CompanyId, cancellationToken);
+            .SingleOrDefaultAsync(x => x.Id == request.CompanyId.Value, cancellationToken);
         
         if (company is null)
         {

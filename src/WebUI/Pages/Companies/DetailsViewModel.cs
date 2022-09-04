@@ -45,7 +45,7 @@ public class DetailsViewModel : ViewModelBase
 
     public override async Task OnParametersSetAsync()
     {
-        var (succeed, result) = await _mediator.TrySend(new GetCompanyQuery(Guid.Parse(CompanyId!)), _snackbar);
+        var (succeed, result) = await _mediator.TrySend(new GetCompanyQuery(new CompanyId(Guid.Parse(CompanyId!))), _snackbar);
         if (!succeed)
         {
             return;

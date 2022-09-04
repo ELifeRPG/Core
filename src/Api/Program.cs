@@ -18,9 +18,10 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     options.SchemaFilter<EnumSchemaFilter>();
+    options.EnableAnnotations();
 });
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(options =>options.AllowNullCollections = true, typeof(Program));
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -35,6 +36,7 @@ if (app.Environment.IsDevelopment())
 app
     .MapSessionEndpoints()
     .MapAccountEndpoints()
+    .MapBankingEndpoints()
     .MapCharacterEndpoints()
     .MapCompanyEndpoints();
 

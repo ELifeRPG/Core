@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Accounts;
 
-public class ListAccountsResult : ResultBase
+public class ListAccountsResult : AbstractResult
 {
     public ListAccountsResult(List<Account> accounts)
     {

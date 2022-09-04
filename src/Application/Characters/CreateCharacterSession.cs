@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Characters;
 
-public class CreateCharacterSessionResult : ResultBase
+public class CreateCharacterSessionResult : AbstractResult
 {
     public CreateCharacterSessionResult(Character character)
     {
