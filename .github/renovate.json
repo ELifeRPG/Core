@@ -1,0 +1,39 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "packageRules": [
+    {
+      "packagePatterns": [
+        "^Microsoft\\.EntityFrameworkCore\\.*",
+        "^Microsoft\\.Extensions\\.*",
+        "^Npgsql\\.EntityFrameworkCore\\.*"
+      ],
+      "groupName": "dotnet"
+    },
+    {
+      "packagePatterns": [
+        "^MediatR\\.*"
+      ],
+      "groupName": "mediator"
+    },
+    {
+      "packagePatterns": [
+        "^AutoMapper\\.*"
+      ],
+      "groupName": "mapper"
+    },
+    {
+      "packagePatterns": [
+        "Microsoft.NET.Test.Sdk",
+        "^xunit.*",
+        "coverlet.collector"
+      ],
+      "groupName": "testing"
+    }   
+  ],
+  "labels": [
+    "dependencies"
+  ]
+}
