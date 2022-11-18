@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using ELifeRPG.Application.Characters;
 using ELifeRPG.Application.Sessions;
+using ELifeRPG.Core.Api.Characters;
 using ELifeRPG.Core.Api.Models;
 
-namespace ELifeRPG.Core.Api.Mappers;
+namespace ELifeRPG.Core.Api.Accounts;
 
 public class SessionProfile : Profile
 {

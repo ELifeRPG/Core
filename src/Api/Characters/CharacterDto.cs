@@ -1,4 +1,4 @@
-﻿namespace ELifeRPG.Core.Api.Models;
+﻿namespace ELifeRPG.Core.Api.Characters;
 
 public class CharacterDto
 {

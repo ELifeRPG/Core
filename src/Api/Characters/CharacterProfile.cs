@@ -3,7 +3,7 @@ using ELifeRPG.Application.Characters;
 using ELifeRPG.Core.Api.Models;
 using ELifeRPG.Domain.Characters;
 
-namespace ELifeRPG.Core.Api.Mappers;
+namespace ELifeRPG.Core.Api.Characters;
 
 public class CharacterProfile : Profile
 {

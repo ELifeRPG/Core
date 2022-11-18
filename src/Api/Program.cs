@@ -1,7 +1,6 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
 using ELifeRPG.Application;
-using ELifeRPG.Core.Api.Endpoints;
 using ELifeRPG.Core.Api.OpenAPI;
 using Microsoft.AspNetCore.Http.Json;
 
@@ -34,7 +33,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app
-    .MapSessionEndpoints()
     .MapAccountEndpoints()
     .MapBankingEndpoints()
     .MapCharacterEndpoints()

@@ -25,7 +25,7 @@ public class CreateCharacterSessionRequest : IRequest<CreateCharacterSessionResu
     public Guid CharacterId { get; }
 }
 
-public class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSessionRequest, CreateCharacterSessionResult>
+internal class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSessionRequest, CreateCharacterSessionResult>
 {
     private readonly IDatabaseContext _databaseContext;
 

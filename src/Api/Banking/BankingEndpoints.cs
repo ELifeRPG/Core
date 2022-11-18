@@ -11,7 +11,7 @@ namespace Microsoft.AspNetCore.Builder;
 
 public static class BankingEndpoints
 {
-    private const string Tag = "Banking";
+    public const string Tag = "Banking";
 
     public static WebApplication MapBankingEndpoints(this WebApplication app)
     {
