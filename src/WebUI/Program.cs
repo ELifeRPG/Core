@@ -57,6 +57,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.MapInternalEndpoints();
 
 app.UseAuthentication();
 app.MapBlazorHub();

@@ -33,6 +33,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app
+    .MapInternalEndpoints()
     .MapAccountEndpoints()
     .MapBankingEndpoints()
     .MapCharacterEndpoints()
