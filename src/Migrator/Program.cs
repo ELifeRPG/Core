@@ -8,7 +8,7 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
         services.AddApplication();
-        services.AddInfrastructure(context.Configuration);
+        services.AddInfrastructure(context.Configuration, context.HostingEnvironment);
     })
     .Build();
 

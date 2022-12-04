@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using ELifeRPG.Application;
 using ELifeRPG.Core.Api.OpenAPI;
 using Microsoft.AspNetCore.Http.Json;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,9 +21,15 @@ builder.Services.AddSwaggerGen(options =>
     options.EnableAnnotations();
 });
 
-builder.Services.AddAutoMapper(options =>options.AllowNullCollections = true, typeof(Program));
+builder.Services.AddAutoMapper(options => options.AllowNullCollections = true, typeof(Program));
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(
+    builder.Configuration,
+    builder.Environment,
+    tracingBuilder: x =>
+    {
+        x.AddAspNetCoreInstrumentation();
+    });
 
 var app = builder.Build();
 
