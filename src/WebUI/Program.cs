@@ -35,7 +35,7 @@ builder.Services.AddAntiforgery(options =>
 
 builder.Services.AddMvvm();
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddMudServices();
 
 builder.Services.Scan(scanner => scanner
