@@ -26,7 +26,7 @@ public static class ServiceCollectionExtensions
         services.AddOpenTelemetryMetrics(builder =>
         {
             builder
-                .AddMeter("ELifeRPG")
+                .AddMeter(Metrics.SourceName)
                 .AddPrometheusExporter();
         });
 
@@ -34,6 +34,7 @@ public static class ServiceCollectionExtensions
         {
             builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(hostEnvironment.ApplicationName));
             builder.AddSource(Activities.SourceName);
+            builder.AddEntityFrameworkCoreInstrumentation();
             builder.AddOtlpExporter(options => options.Endpoint = new Uri(configuration.GetConnectionString("OpenTelemetryTracingEndpoint")!));
             
             tracingBuilder?.Invoke(builder);
