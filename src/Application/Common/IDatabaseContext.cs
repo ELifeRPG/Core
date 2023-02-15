@@ -3,6 +3,7 @@ using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Companies;
 using ELifeRPG.Domain.Countries;
+using ELifeRPG.Domain.Shops;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Common;
@@ -21,6 +22,8 @@ public interface IDatabaseContext : IDisposable, IAsyncDisposable
     
     DbSet<Bank> Banks { get; set; }
     
+    DbSet<Shop> Shops { get; set; }
+
     DbSet<BankAccount> BankAccounts { get; set; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = new());
