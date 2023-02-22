@@ -4,14 +4,10 @@ namespace ELifeRPG.Domain.Shops;
 
 public class ShopListing
 {
-    public Guid Id { get; init; }
+    internal ShopListing()
+    {
+    }
     
-    public Shop? Shop { get; init; }
-    
-    public Item? Item { get; init; }
-    
-    public int Amount { get; init; }
-
     public ShopListing(Item item, int amount)
     {
         if (amount <= 0)
@@ -22,4 +18,12 @@ public class ShopListing
         Item = item;
         Amount = amount;
     }
+    
+    public Guid Id { get; init; }
+    
+    public Shop? Shop { get; init; }
+    
+    public Item? Item { get; init; }
+    
+    public int Amount { get; init; }
 }

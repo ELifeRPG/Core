@@ -15,18 +15,10 @@ public enum ShopType
 
 public class Shop : EntityBase
 {
-    public Guid Id { get; init; } = Guid.NewGuid();
-
-    public string DisplayName { get; init; } = null!;
+    internal Shop()
+    {
+    }
     
-    public ShopType Type { get; init; }
-    
-    public Company? OwningCompany { get; init; } = null!;
-    
-    public Character? OwningCharacter { get; init; } = null!;
-    
-    public ICollection<ShopListing>? Listings { get; set; }
-
     /// <summary>
     /// Instantiates a new player owned shop.
     /// </summary>
@@ -38,6 +30,18 @@ public class Shop : EntityBase
         DisplayName = name;
         OwningCharacter = owner;
     }
+    
+    public Guid Id { get; init; } = Guid.NewGuid();
+
+    public string DisplayName { get; init; } = null!;
+    
+    public ShopType Type { get; init; }
+    
+    public Company? OwningCompany { get; init; }
+    
+    public Character? OwningCharacter { get; init; }
+    
+    public ICollection<ShopListing>? Listings { get; set; }
 
     public void ListItem(Item item, int amount)
     {

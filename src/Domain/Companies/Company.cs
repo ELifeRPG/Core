@@ -1,6 +1,7 @@
 ﻿using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
+using ELifeRPG.Domain.Shops;
 
 namespace ELifeRPG.Domain.Companies;
 
@@ -27,6 +28,8 @@ public class Company : EntityBase, IHasDomainEvents
     public ICollection<CompanyMembership>? Memberships { get; init; }
     
     public ICollection<BankAccount>? BankAccounts { get; init; }
+    
+    public ICollection<Shop> Shops { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
 
