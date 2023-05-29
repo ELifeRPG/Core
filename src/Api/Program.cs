@@ -33,6 +33,18 @@ builder.Services.AddInfrastructure(
 
 var app = builder.Build();
 
+//// quick fix for Reforgers disability to modify request headers / body encoding
+app.Use(async (context, next) =>
+{
+    if (context.Request.Method.Equals("post", StringComparison.OrdinalIgnoreCase) &&
+        context.Request.Headers["content-type"].Equals("x-www-form-urlencoded"))
+    {
+        context.Request.Headers["content-type"] = "application/json";
+    }
+
+    await next();
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
