@@ -23,15 +23,6 @@ public static class AccountEndpoints
                     => Results.Ok(mapper.Map<ResultDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(sessionRequest.SteamId), cancellationToken))))
             .Produces<ResultDto<SessionDto>>();
         
-        app
-            .MapPost(
-                "/characters/{characterId:guid}/sessions",
-                async (Guid characterId, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
-                    => Results.Ok(mapper.Map<ResultDto<CharacterDto>>(await mediator.Send(new CreateCharacterSessionRequest(characterId), cancellationToken))))
-            .Produces<ResultDto<CharacterDto>>()
-            .WithTags(Tag)
-            .WithSummary("Begins a new character session.");
-        
         return app;
     }
 }
