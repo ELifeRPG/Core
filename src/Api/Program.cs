@@ -38,7 +38,7 @@ var app = builder.Build();
 app.Use(async (context, next) =>
 {
     if (context.Request.Method.Equals("post", StringComparison.OrdinalIgnoreCase) &&
-        context.Request.Headers.ContentType.Equals("x-www-form-urlencoded"))
+        context.Request.Headers.ContentType.Equals("application/x-www-form-urlencoded"))
     {
         context.Request.Headers.ContentType = new StringValues("application/json");
     }
