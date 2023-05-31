@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using ELifeRPG.Application;
 using ELifeRPG.Core.Api.OpenAPI;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Extensions.Primitives;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,12 +38,12 @@ var app = builder.Build();
 app.Use(async (context, next) =>
 {
     if (context.Request.Method.Equals("post", StringComparison.OrdinalIgnoreCase) &&
-        context.Request.Headers["content-type"].Equals("x-www-form-urlencoded"))
+        context.Request.Headers.ContentType.Equals("x-www-form-urlencoded"))
     {
-        context.Request.Headers["content-type"] = "application/json";
+        context.Request.Headers.ContentType = new StringValues("application/json");
     }
 
-    await next();
+    await next(context);
 });
 
 if (app.Environment.IsDevelopment())
@@ -51,6 +52,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
 app
     .MapInternalEndpoints()
     .MapAccountEndpoints()
