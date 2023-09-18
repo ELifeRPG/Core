@@ -3,12 +3,14 @@ using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters.Sessions;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Companies;
+using ELifeRPG.Domain.ObjectPositions;
 
 namespace ELifeRPG.Domain.Characters;
 
 public class Character : EntityBase, IHasDomainEvents
 {
     private CharacterName? _name;
+    private PositionData _worldPosition;
 
     internal Character()
     {
@@ -30,6 +32,12 @@ public class Character : EntityBase, IHasDomainEvents
         init => _name = value;
     }
 
+    public PositionData WorldPosition
+    {
+        get => _worldPosition;
+        init => _worldPosition = value;
+    }
+
     public ICollection<CharacterSession>? Sessions { get; init; }
     
     public ICollection<CompanyMembership>? CompanyMemberships { get; init; }
@@ -41,6 +49,7 @@ public class Character : EntityBase, IHasDomainEvents
     public Character SetValues(Character characterInfo)
     {
         _name = characterInfo.Name;
+        _worldPosition = characterInfo.WorldPosition;
         return this;
     }
     
