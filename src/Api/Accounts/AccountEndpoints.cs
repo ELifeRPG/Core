@@ -20,7 +20,7 @@ public static class AccountEndpoints
             .MapPost(
                 "/sessions",
                 async ([FromBody] SessionRequestDto sessionRequest, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
-                    => Results.Ok(mapper.Map<ResultDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(sessionRequest.SteamId), cancellationToken))))
+                    => Results.Ok(mapper.Map<ResultDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(sessionRequest.BohemiaId), cancellationToken))))
             .Produces<ResultDto<SessionDto>>();
         
         return app;

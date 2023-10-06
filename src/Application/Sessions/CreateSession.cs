@@ -7,22 +7,19 @@ namespace ELifeRPG.Application.Sessions;
 
 public class CreateSessionResult : AbstractResult
 {
-    public CreateSessionResult(Guid accountId)
-    {
-        AccountId = accountId;
-    }
+    public required Guid AccountId { get; init; }
     
-    public Guid AccountId { get; }
+    public required AccountStatus AccountStatus { get; init; }
 }
 
 public class CreateSessionRequest : IRequest<CreateSessionResult>
 {
-    public CreateSessionRequest(long steamId)
+    public CreateSessionRequest(Guid bohemiaId)
     {
-        SteamId = steamId;
+        BohemiaId = bohemiaId;
     }
     
-    public long SteamId { get; }
+    public Guid BohemiaId { get; }
 }
 
 public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, CreateSessionResult>
@@ -37,16 +34,21 @@ public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, Create
     public async Task<CreateSessionResult> Handle(CreateSessionRequest request, CancellationToken cancellationToken)
     {
         var account = await _databaseContext.Accounts
-            .SingleOrDefaultAsync(x => x.SteamId == request.SteamId, cancellationToken);
+            .SingleOrDefaultAsync(x => x.BohemiaId == request.BohemiaId, cancellationToken);
 
         if (account is null)
         {
-            account = new Account(request.SteamId);
+            // temporary until ingame account linking is finished, then blocking this case -> https://github.com/ELifeRPG/Core/issues/96
+            account = new Account(request.BohemiaId);
             _databaseContext.Accounts.Add(account);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
 
-        var response = new CreateSessionResult(account.Id);
+        var response = new CreateSessionResult
+        {
+            AccountId = account.Id,
+            AccountStatus = account.Status,
+        };
 
         if (account.Status == AccountStatus.Locked)
         {

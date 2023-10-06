@@ -20,9 +20,19 @@ public class Account : EntityBase, IHasDomainEvents
         DomainEvents.Add(new AccountCreatedEvent(this));
     }
     
+    public Account(Guid bohemiaId)
+    {
+        Id = Guid.NewGuid();
+        BohemiaId = bohemiaId;
+        
+        DomainEvents.Add(new AccountCreatedEvent(this));
+    }
+    
     public Guid Id { get; init; }
 
     public long SteamId { get; init; }
+    
+    public Guid? BohemiaId { get; init; }
 
     public AccountStatus Status
     {
