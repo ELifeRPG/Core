@@ -35,7 +35,7 @@ internal class BankAccountsQueryHandler : IRequestHandler<BankAccountsQuery, Ban
 
         if (request.CharacterId is not null)
         {
-            query = query.Where(x => x.OwningCharacter!.Id == request.CharacterId);
+            query = query.Where(x => x.Owner.Character!.Id == request.CharacterId);
         }
 
         var result = await query.AsNoTracking().ToListAsync(cancellationToken);

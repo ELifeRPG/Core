@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using ELifeRPG.Domain.Characters;
+using ELifeRPG.Domain.Characters.Events;
 using Xunit;
 
 namespace ELifeRPG.Core.Domain.UnitTests.Characters;

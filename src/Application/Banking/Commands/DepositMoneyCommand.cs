@@ -40,7 +40,8 @@ internal class DepositMoneyCommandHandler : IRequestHandler<DepositMoneyCommand,
     public async Task<DepositMoneyCommandResult> Handle(DepositMoneyCommand request, CancellationToken cancellationToken)
     {
         var bankAccount = await _databaseContext.BankAccounts
-            .Include(x => x.OwningCharacter)
+            .Include(x => x.Owner.Character)
+            .Include(x => x.Owner.Company)
             .Include(x => x.BankCondition)
             .SingleOrDefaultAsync(x => x.Id == request.BankAccountId, cancellationToken);
 

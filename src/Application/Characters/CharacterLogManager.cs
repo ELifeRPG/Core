@@ -1,4 +1,4 @@
-﻿using ELifeRPG.Domain.Characters;
+﻿using ELifeRPG.Domain.Characters.Events;
 using ELifeRPG.Domain.Characters.Sessions;
 using MediatR;
 using Microsoft.Extensions.Logging;
