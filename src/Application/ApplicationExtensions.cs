@@ -9,7 +9,7 @@ public static class ApplicationExtensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         return services
-            .AddMediatR(typeof(ApplicationExtensions))
+            .AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ApplicationExtensions).Assembly))
             .AddSingleton(typeof(IPipelineBehavior<,>), typeof(MetricsBehaviour<,>));
     }
 }
