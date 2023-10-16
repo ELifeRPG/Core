@@ -6,6 +6,7 @@ using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Companies;
 using ELifeRPG.Domain.Countries;
+using ELifeRPG.Domain.Shops;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,6 +33,8 @@ public class DatabaseContext : DbContext, IDatabaseContext
     public DbSet<Country> Countries { get; set; }
 
     public DbSet<Bank> Banks { get; set; }
+
+    public DbSet<Shop> Shops { get; set; }
 
     public DbSet<BankAccount> BankAccounts { get; set; }
     
