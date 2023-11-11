@@ -18,6 +18,9 @@ public class AccountTypeConfiguration : IEntityTypeConfiguration<Account>
         builder.Property(x => x.SteamId).HasColumnName("SteamId").IsRequired();
         builder.HasIndex(x => x.SteamId).HasDatabaseName("IDX_Account_SteamId");
         
+        builder.Property(x => x.BohemiaId).HasColumnName("BohemiaId");
+        builder.HasIndex(x => x.BohemiaId).HasDatabaseName("IDX_Account_BohemiaId");
+        
         builder.Property(x => x.Status).HasColumnName("Status").IsRequired();
     }
 }

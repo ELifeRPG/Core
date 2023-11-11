@@ -2,5 +2,5 @@
 
 public class SessionRequestDto
 {
-    public long SteamId { get; init; }
+    public Guid BohemiaId { get; init; }
 }
