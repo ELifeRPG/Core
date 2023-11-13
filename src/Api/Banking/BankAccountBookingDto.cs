@@ -4,7 +4,7 @@ namespace ELifeRPG.Core.Api.Banking;
 
 public class BankAccountBookingDto
 {
-    public BankAccountBookingType Type { get; set; }
+    public BankAccountBookingTypeEnumDto Type { get; set; }
     
     public DateTime Date { get; set; }
     
@@ -13,4 +13,10 @@ public class BankAccountBookingDto
     public string? Purpose { get; set; }
     
     public decimal Amount { get; set; }
+}
+
+public enum BankAccountBookingTypeEnumDto
+{
+    Incoming = 1,
+    Outgoing = 2,
 }

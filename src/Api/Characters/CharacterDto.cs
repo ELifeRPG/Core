@@ -1,4 +1,6 @@
-﻿namespace ELifeRPG.Core.Api.Characters;
+﻿using ELifeRPG.Core.Api.ObjectPositions;
+
+namespace ELifeRPG.Core.Api.Characters;
 
 public class CharacterDto
 {
@@ -7,4 +9,6 @@ public class CharacterDto
     public string FirstName { get; set; } = null!;
     
     public string LastName { get; set; } = null!;
+
+    public PositionDataDto WorldPosition { get; set; } = null!;
 }
