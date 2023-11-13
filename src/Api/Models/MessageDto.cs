@@ -2,14 +2,14 @@
 
 public class MessageDto
 {
-    public MessageTypeDto Type { get; init; }
+    public MessageTypeEnumDto Type { get; init; }
 
     public string Summary { get; init; } = null!;
     
     public string? Text { get; init; }
 }
 
-public enum MessageTypeDto
+public enum MessageTypeEnumDto
 {
     Information,
     Success,
