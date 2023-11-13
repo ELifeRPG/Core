@@ -12,15 +12,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ELifeRPG.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230609164758_AddCharacterPosition")]
-    partial class AddCharacterPosition
+    [Migration("20231111121342_AddCharacterWorldPositionAsJson")]
+    partial class AddCharacterWorldPositionAsJson
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -31,6 +31,10 @@ namespace ELifeRPG.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("Id");
+
+                    b.Property<Guid?>("BohemiaId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("BohemiaId");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -45,6 +49,9 @@ namespace ELifeRPG.Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Account_Id");
+
+                    b.HasIndex("BohemiaId")
+                        .HasDatabaseName("IDX_Account_BohemiaId");
 
                     b.HasIndex("SteamId")
                         .HasDatabaseName("IDX_Account_SteamId");
@@ -205,6 +212,12 @@ namespace ELifeRPG.Infrastructure.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("WorldPosition")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("jsonb")
+                        .HasDefaultValue("{\r\n  \"location\": {\r\n    \"x\": 0.0,\r\n    \"y\": 0.0,\r\n    \"z\": 0.0\r\n  },\r\n  \"rotation\": {\r\n    \"a\": 0.0,\r\n    \"b\": 0.0,\r\n    \"c\": 0.0,\r\n    \"d\": 0.0\r\n  }\r\n}");
 
                     b.HasKey("Id")
                         .HasName("PK_Character_Id");
@@ -446,85 +459,9 @@ namespace ELifeRPG.Infrastructure.Migrations
                                 .HasForeignKey("CharacterId");
                         });
 
-                    b.OwnsOne("ELifeRPG.Domain.ObjectPositions.PositionData", "WorldPosition", b1 =>
-                        {
-                            b1.Property<Guid>("CharacterId")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("CharacterId");
-
-                            b1.ToTable("Character");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CharacterId");
-
-                            b1.OwnsOne("ELifeRPG.Domain.ObjectPositions.EnfusionQuaternion", "Rotation", b2 =>
-                                {
-                                    b2.Property<Guid>("PositionDataCharacterId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<decimal>("A")
-                                        .HasColumnType("numeric")
-                                        .HasColumnName("WorldPosition_Rot_A");
-
-                                    b2.Property<decimal>("B")
-                                        .HasColumnType("numeric")
-                                        .HasColumnName("WorldPosition_Rot_B");
-
-                                    b2.Property<decimal>("C")
-                                        .HasColumnType("numeric")
-                                        .HasColumnName("WorldPosition_Rot_C");
-
-                                    b2.Property<decimal>("D")
-                                        .HasColumnType("numeric")
-                                        .HasColumnName("WorldPosition_Rot_D");
-
-                                    b2.HasKey("PositionDataCharacterId");
-
-                                    b2.ToTable("Character");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("PositionDataCharacterId");
-                                });
-
-                            b1.OwnsOne("ELifeRPG.Domain.ObjectPositions.EnfusionVector", "Location", b2 =>
-                                {
-                                    b2.Property<Guid>("PositionDataCharacterId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<decimal>("X")
-                                        .HasColumnType("numeric")
-                                        .HasColumnName("WorldPosition_Pos_X");
-
-                                    b2.Property<decimal>("Y")
-                                        .HasColumnType("numeric")
-                                        .HasColumnName("WorldPosition_Pos_Y");
-
-                                    b2.Property<decimal>("Z")
-                                        .HasColumnType("numeric")
-                                        .HasColumnName("WorldPosition_Pos_Z");
-
-                                    b2.HasKey("PositionDataCharacterId");
-
-                                    b2.ToTable("Character");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("PositionDataCharacterId");
-                                });
-
-                            b1.Navigation("Location")
-                                .IsRequired();
-
-                            b1.Navigation("Rotation")
-                                .IsRequired();
-                        });
-
                     b.Navigation("Account");
 
                     b.Navigation("Name");
-
-                    b.Navigation("WorldPosition")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ELifeRPG.Domain.Characters.Sessions.CharacterSession", b =>

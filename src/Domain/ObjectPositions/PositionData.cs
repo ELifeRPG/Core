@@ -2,6 +2,6 @@
 
 public class PositionData
 {
-    public EnfusionVector Location { get; init; } = null!;
-    public EnfusionQuaternion Rotation { get; init; } = null!;
+    public EnfusionVector Location { get; init; } = new();
+    public EnfusionQuaternion Rotation { get; init; } = new();
 }

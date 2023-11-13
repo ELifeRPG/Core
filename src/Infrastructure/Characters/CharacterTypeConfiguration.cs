@@ -1,6 +1,10 @@
-﻿using ELifeRPG.Domain.Characters;
+﻿using System.Text.Json;
+using ELifeRPG.Domain.Characters;
+using ELifeRPG.Domain.ObjectPositions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ELifeRPG.Infrastructure.Characters;
 
@@ -18,14 +22,7 @@ public class CharacterTypeConfiguration : IEntityTypeConfiguration<Character>
         builder.OwnsOne(x => x.Name).Property(x => x.FirstName).HasColumnName("FirstName").HasMaxLength(50).IsRequired();
         builder.OwnsOne(x => x.Name).Property(x => x.LastName).HasColumnName("LastName").HasMaxLength(50).IsRequired();
 
-        builder.OwnsOne(x => x.WorldPosition).OwnsOne(x => x.Location).Property(x => x.X).HasColumnName("WorldPosition_Pos_X");
-        builder.OwnsOne(x => x.WorldPosition).OwnsOne(x => x.Location).Property(x => x.Y).HasColumnName("WorldPosition_Pos_Y");
-        builder.OwnsOne(x => x.WorldPosition).OwnsOne(x => x.Location).Property(x => x.Z).HasColumnName("WorldPosition_Pos_Z");
-        
-        builder.OwnsOne(x => x.WorldPosition).OwnsOne(x => x.Rotation).Property(x => x.A).HasColumnName("WorldPosition_Rot_A");
-        builder.OwnsOne(x => x.WorldPosition).OwnsOne(x => x.Rotation).Property(x => x.B).HasColumnName("WorldPosition_Rot_B");
-        builder.OwnsOne(x => x.WorldPosition).OwnsOne(x => x.Rotation).Property(x => x.C).HasColumnName("WorldPosition_Rot_C");
-        builder.OwnsOne(x => x.WorldPosition).OwnsOne(x => x.Rotation).Property(x => x.D).HasColumnName("WorldPosition_Rot_D");
+        builder.Property(e => e.WorldPosition).HasJsonConversion();
 
         builder
             .HasOne(x => x.Account)
@@ -37,5 +34,40 @@ public class CharacterTypeConfiguration : IEntityTypeConfiguration<Character>
             .WithOne(x => x.OwningCharacter)
             .HasForeignKey("FK_Character_Id")
             .HasConstraintName("FK_BankAccount_Character_Id");
+    }
+}
+
+public static class PositionDataJsonExtensions
+{
+    public static PropertyBuilder<T> HasJsonConversion<T>(this PropertyBuilder<T> propertyBuilder) where T : class, new()
+    {
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true,
+            AllowTrailingCommas = true,
+            PropertyNameCaseInsensitive = true
+        };
+
+        ValueConverter<T, string> converter = new ValueConverter<T, string>
+        (
+            v => JsonSerializer.Serialize(v, options),
+            v => string.IsNullOrEmpty(v) ? new T() : JsonSerializer.Deserialize<T>(v, options) ?? new T()
+        );
+
+        ValueComparer<T> comparer = new ValueComparer<T>
+        (
+            (l, r) => JsonSerializer.Serialize(l, options) == JsonSerializer.Serialize(r, options),
+            v => v == null ? 0 : JsonSerializer.Serialize(v, options).GetHashCode(),
+            v => JsonSerializer.Deserialize<T>(JsonSerializer.Serialize(v, options), options) ?? new T()
+        );
+
+        propertyBuilder.HasConversion(converter);
+        propertyBuilder.HasDefaultValue(new T());
+        propertyBuilder.Metadata.SetValueConverter(converter);
+        propertyBuilder.Metadata.SetValueComparer(comparer);
+        propertyBuilder.HasColumnType("jsonb");
+
+        return propertyBuilder;
     }
 }
