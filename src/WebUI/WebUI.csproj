@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNet.Security.OpenId.Steam" Version="8.0.0" />
+    <PackageReference Include="AspNet.Security.OpenId.Steam" Version="7.0.0" />
     <PackageReference Include="MudBlazor" Version="6.20.0" />
     <PackageReference Include="MvvmBlazor" Version="6.0.6" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
