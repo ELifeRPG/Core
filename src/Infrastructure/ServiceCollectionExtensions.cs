@@ -23,14 +23,12 @@ public static class ServiceCollectionExtensions
                     pgsql.MigrationsAssembly(typeof(DatabaseContext).Assembly.GetName().Name);
                 }));
 
-        services.ConfigureOpenTelemetryMeterProvider(builder =>
+        services.AddOpenTelemetry().WithMetrics(builder =>
         {
             builder
                 .AddMeter(Metrics.SourceName)
                 .AddPrometheusExporter();
-        });
-
-        services.ConfigureOpenTelemetryTracerProvider(builder =>
+        }).WithTracing(builder =>
         {
             builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(hostEnvironment.ApplicationName));
             builder.AddSource(Activities.SourceName);
@@ -42,7 +40,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     public static WebApplication MapInternalEndpoints(this WebApplication app)
     {
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
