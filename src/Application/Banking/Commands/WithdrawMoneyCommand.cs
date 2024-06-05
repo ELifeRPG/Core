@@ -39,6 +39,7 @@ internal class WithdrawMoneyCommandHandler : IRequestHandler<WithdrawMoneyComman
         var bankAccount = await _databaseContext.BankAccounts
             .Include(x => x.Owner.Character)
             .Include(x => x.BankCondition)
+            .Include(x => x.Bookings!.Take(0))
             .SingleOrDefaultAsync(x => x.Id == request.BankAccountId, cancellationToken);
 
         if (bankAccount is null)

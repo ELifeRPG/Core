@@ -21,7 +21,7 @@ public class Character : EntityBase, IHasDomainEvents, IHuman
     public Character(Character characterInfo)
     {
         SetValues(characterInfo);
-        Person = new Person();
+        Person = new Person(this);
         DomainEvents.Add(new CharacterCreatedEvent(this));
     }
     

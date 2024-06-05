@@ -19,7 +19,7 @@ public class CharacterLogManager : INotificationHandler<CharacterCreatedEvent>, 
         _logger.LogInformation("Character {CharacterId} has been created", notification.Character.Id.ToString());
         return Task.CompletedTask;
     }
-    
+
     public Task Handle(CharacterSessionCreatedEvent notification, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Session for character {CharacterId} has been started", notification.Character.Id.ToString());

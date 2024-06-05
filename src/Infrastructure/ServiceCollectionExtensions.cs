@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -23,26 +24,26 @@ public static class ServiceCollectionExtensions
                     pgsql.MigrationsAssembly(typeof(DatabaseContext).Assembly.GetName().Name);
                 }));
 
-        services.ConfigureOpenTelemetryMeterProvider(builder =>
-        {
-            builder
-                .AddMeter(Metrics.SourceName)
-                .AddPrometheusExporter();
-        });
+        services.AddOpenTelemetry()
+            .WithMetrics(metrics =>
+            {
+                metrics
+                    .AddMeter(Metrics.SourceName)
+                    .AddPrometheusExporter();
+            })
+            .WithTracing(tracing =>
+            {
+                tracing.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(hostEnvironment.ApplicationName));
+                tracing.AddSource(Activities.SourceName);
+                tracing.AddEntityFrameworkCoreInstrumentation();
+                tracing.AddOtlpExporter(options => options.Endpoint = new Uri(configuration.GetConnectionString("OpenTelemetryTracingEndpoint")!));
 
-        services.ConfigureOpenTelemetryTracerProvider(builder =>
-        {
-            builder.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(hostEnvironment.ApplicationName));
-            builder.AddSource(Activities.SourceName);
-            builder.AddEntityFrameworkCoreInstrumentation();
-            builder.AddOtlpExporter(options => options.Endpoint = new Uri(configuration.GetConnectionString("OpenTelemetryTracingEndpoint")!));
-            
-            tracingBuilder?.Invoke(builder);
-        });
+                tracingBuilder?.Invoke(tracing);
+            });
 
         return services;
     }
-    
+
     public static WebApplication MapInternalEndpoints(this WebApplication app)
     {
         app.UseOpenTelemetryPrometheusScrapingEndpoint();

@@ -10,11 +10,9 @@ namespace ELifeRPG.Domain.Banking;
 /// </summary>
 public class BankAccountNumber
 {
-    private static readonly Random Random = new();
-    
     public BankAccountNumber(Bank bank)
     {
-        var randomNumber = Random.NextInt64(1000000000, 99999999999);
+        var randomNumber = Random.Shared.NextInt64(1000000000, 99999999999);
         var checkNumber = BuildCheckNumber(bank.Country.Code, bank.Number, randomNumber);
         
         Value = BuildValue(bank.Country.Code, checkNumber, bank.Number, randomNumber);

@@ -23,8 +23,6 @@ public class DepositMoneyCommand : IRequest<DepositMoneyCommandResult>
 {
     public Guid BankAccountId { get; init; }
     
-    public Guid CharacterId { get; init; }
-    
     public decimal Amount { get; init; }
 }
 
@@ -43,6 +41,7 @@ internal class DepositMoneyCommandHandler : IRequestHandler<DepositMoneyCommand,
             .Include(x => x.Owner.Character)
             .Include(x => x.Owner.Company)
             .Include(x => x.BankCondition)
+            .Include(x => x.Bookings!.Take(0))
             .SingleOrDefaultAsync(x => x.Id == request.BankAccountId, cancellationToken);
 
         if (bankAccount is null)
@@ -50,15 +49,7 @@ internal class DepositMoneyCommandHandler : IRequestHandler<DepositMoneyCommand,
             throw new ELifeEntityNotFoundException();
         }
         
-        var character = await _databaseContext.Characters
-            .SingleOrDefaultAsync(x => x.Id == request.CharacterId, cancellationToken);
-
-        if (character is null)
-        {
-            throw new ELifeEntityNotFoundException();
-        }
-        
-        var (transaction, booking) = bankAccount.DepositMoney(character, request.Amount);
+        var (transaction, booking) = bankAccount.DepositMoney(request.Amount);
 
         await _databaseContext.SaveChangesAsync(cancellationToken);
 

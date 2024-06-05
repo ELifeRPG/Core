@@ -59,7 +59,7 @@ public class BankAccount : EntityBase, IHasDomainEvents
     {
         if (Type == BankAccountType.Personal)
         {
-            return person.Id == Owner.Character!.Id;
+            return person.Character!.Id == Owner.Character!.Id;
         }
 
         var companyMembership = Owner.Company!.Memberships!.SingleOrDefault(x => x.Character.Id == person.Id);
@@ -141,16 +141,11 @@ public class BankAccount : EntityBase, IHasDomainEvents
         return transaction;
     }
     
-    public (BankAccountTransaction Transaction, BankAccountBooking Booking) DepositMoney(Character character, decimal amount)
+    public (BankAccountTransaction Transaction, BankAccountBooking Booking) DepositMoney(decimal amount)
     {
         if (Bookings is null)
         {
             throw new InvalidOperationException();
-        }
-        
-        if (!Can(character.Person!, BankAccountCapabilities.CommitTransactions))
-        {
-            throw new ELifeInvalidOperationException();
         }
 
         var transaction = new BankAccountTransaction(this, BankAccountTransactionType.CashDeposit, amount);
@@ -158,7 +153,7 @@ public class BankAccount : EntityBase, IHasDomainEvents
         Bookings.Add(booking);
         Balance += booking.Amount;
 
-        DomainEvents.Add(new BankAccountTransactionExecutedEvent(transaction, character));
+        DomainEvents.Add(new BankAccountTransactionExecutedEvent(transaction));
 
         return (transaction, booking);
     }
