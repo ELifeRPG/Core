@@ -9,6 +9,6 @@ public class MessageProfile : Profile
     public MessageProfile()
     {
         CreateMap<Message, MessageDto>();
-        CreateMap<MessageType, MessageTypeDto>();
+        CreateMap<MessageType, MessageTypeEnumDto>();
     }
 }
