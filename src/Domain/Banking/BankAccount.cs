@@ -1,8 +1,10 @@
-﻿using ELifeRPG.Domain.Banking.Events;
+﻿using System.Buffers;
+using ELifeRPG.Domain.Banking.Events;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Common.Exceptions;
 using ELifeRPG.Domain.Companies;
+using ELifeRPG.Domain.Persons;
 
 namespace ELifeRPG.Domain.Banking;
 
@@ -18,18 +20,11 @@ public class BankAccount : EntityBase, IHasDomainEvents
     {
     }
     
-    public BankAccount(Bank bank, Character owningCharacter)
+    public BankAccount(Bank bank, Person owner)
         : this(bank)
     {
-        OwningCharacter = owningCharacter;
-        Type = BankAccountType.Personal;
-    }
-    
-    public BankAccount(Bank bank, Company owningCompany)
-        : this(bank)
-    {
-        OwningCompany = owningCompany;
-        Type = BankAccountType.Corporate;
+        Owner = owner;
+        Type = owner.Character is null && owner.Company is not null ? BankAccountType.Corporate : BankAccountType.Personal;
     }
     
     private BankAccount(Bank bank)
@@ -53,23 +48,21 @@ public class BankAccount : EntityBase, IHasDomainEvents
     public Bank? Bank { get; init; }
     
     public BankCondition? BankCondition { get; init; }
-    
-    public Character? OwningCharacter { get; init; }
-    
-    public Company? OwningCompany { get; init; }
-    
+
+    public Person Owner { get; init; } = null!;
+
     public ICollection<BankAccountBooking>? Bookings { get; init; }
 
     public List<DomainEvent> DomainEvents { get; } = new();
 
-    public bool Can(Character character, BankAccountCapabilities capability)
+    public bool Can(Person person, BankAccountCapabilities capability)
     {
         if (Type == BankAccountType.Personal)
         {
-            return character.Id == OwningCharacter!.Id;
+            return person.Character!.Id == Owner.Character!.Id;
         }
 
-        var companyMembership = OwningCompany?.Memberships!.SingleOrDefault(x => x.Character.Id == character.Id);
+        var companyMembership = Owner.Company!.Memberships!.SingleOrDefault(x => x.Character.Id == person.Id);
         return companyMembership is not null && MapFromCompanyPosition(companyMembership.Position.Permissions).Contains(capability);
     }
 
@@ -77,18 +70,18 @@ public class BankAccount : EntityBase, IHasDomainEvents
     /// Tries to execute a transaction to the destination bank-account.
     /// </summary>
     /// <param name="targetAccount">The destination bank-account.</param>
-    /// <param name="character">The executing character.</param>
-    /// <param name="amount">The amount to be transferred, without fees.</param>
+    /// <param name="amount">The amount to be transferred, without fees.</param> 
+    /// <param name="character">The executing person.</param>
     /// <returns>The transaction including fees.</returns>
     /// <exception cref="ELifeInvalidOperationException">Throws if the character is not allowed to execute the transaction.</exception>
-    public BankAccountTransaction TransferMoneyTo(BankAccount targetAccount, Character character, decimal amount)
+    public BankAccountTransaction TransferMoneyTo(BankAccount targetAccount, decimal amount, Character? character)
     {
         if (Bookings is null || targetAccount.Bookings is null)
         {
             throw new InvalidOperationException();
         }
         
-        if (!Can(character, BankAccountCapabilities.CommitTransactions))
+        if (character is not null && !Can(character.Person!, BankAccountCapabilities.CommitTransactions))
         {
             throw new ELifeInvalidOperationException();
         }
@@ -127,7 +120,7 @@ public class BankAccount : EntityBase, IHasDomainEvents
             throw new InvalidOperationException();
         }
         
-        if (!Can(character, BankAccountCapabilities.CommitTransactions))
+        if (!Can(character.Person!, BankAccountCapabilities.CommitTransactions))
         {
             throw new ELifeInvalidOperationException();
         }
@@ -148,16 +141,11 @@ public class BankAccount : EntityBase, IHasDomainEvents
         return transaction;
     }
     
-    public (BankAccountTransaction Transaction, BankAccountBooking Booking) DepositMoney(Character character, decimal amount)
+    public (BankAccountTransaction Transaction, BankAccountBooking Booking) DepositMoney(decimal amount)
     {
         if (Bookings is null)
         {
             throw new InvalidOperationException();
-        }
-        
-        if (!Can(character, BankAccountCapabilities.CommitTransactions))
-        {
-            throw new ELifeInvalidOperationException();
         }
 
         var transaction = new BankAccountTransaction(this, BankAccountTransactionType.CashDeposit, amount);
@@ -165,7 +153,7 @@ public class BankAccount : EntityBase, IHasDomainEvents
         Bookings.Add(booking);
         Balance += booking.Amount;
 
-        DomainEvents.Add(new BankAccountTransactionExecutedEvent(transaction, character));
+        DomainEvents.Add(new BankAccountTransactionExecutedEvent(transaction));
 
         return (transaction, booking);
     }

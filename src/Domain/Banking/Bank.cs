@@ -3,6 +3,7 @@ using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Companies;
 using ELifeRPG.Domain.Countries;
+using ELifeRPG.Domain.Persons;
 
 namespace ELifeRPG.Domain.Banking;
 
@@ -35,16 +36,9 @@ public class Bank : EntityBase, IHasDomainEvents
 
     public IReadOnlyCollection<BankAccount>? Accounts => _accounts;
 
-    public BankAccount OpenAccount(Character owningCharacter)
+    public BankAccount OpenAccount(Person person)
     {
-        var account = new BankAccount(this, owningCharacter);
-        HandleNewAccount(account);
-        return account;
-    }
-    
-    public BankAccount OpenAccount(Company owningCompany)
-    {
-        var account = new BankAccount(this, owningCompany);
+        var account = new BankAccount(this, person);
         HandleNewAccount(account);
         return account;
     }

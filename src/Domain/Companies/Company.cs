@@ -1,6 +1,6 @@
-﻿using ELifeRPG.Domain.Banking;
-using ELifeRPG.Domain.Characters;
+﻿using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
+using ELifeRPG.Domain.Persons;
 
 namespace ELifeRPG.Domain.Companies;
 
@@ -16,17 +16,18 @@ public class Company : EntityBase, IHasDomainEvents
         Name = name;
         Positions = new List<CompanyPosition> { new() { Name = "Rookie", Ordering = 10, } };
         Memberships = new List<CompanyMembership>();
+        Person = new Person();
     }
     
     public Guid Id { get; init; }
+    
+    public Person? Person { get; init; }
 
     public string Name { get; init; } = null!;
     
     public ICollection<CompanyPosition>? Positions { get; init; }
 
     public ICollection<CompanyMembership>? Memberships { get; init; }
-    
-    public ICollection<BankAccount>? BankAccounts { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
 

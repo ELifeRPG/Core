@@ -1,16 +1,20 @@
-﻿using ELifeRPG.Domain.Accounts;
+using ELifeRPG.Domain.Accounts;
 using ELifeRPG.Domain.Banking;
+using ELifeRPG.Domain.Characters.Events;
 using ELifeRPG.Domain.Characters.Sessions;
 using ELifeRPG.Domain.Common;
+using ELifeRPG.Domain.Common.Base;
 using ELifeRPG.Domain.Companies;
+using ELifeRPG.Domain.Persons;
 using ELifeRPG.Domain.ObjectPositions;
 
 namespace ELifeRPG.Domain.Characters;
 
-public class Character : EntityBase, IHasDomainEvents
+public class Character : EntityBase, IHasDomainEvents, IHuman
 {
     private CharacterName? _name;
     private PositionData _worldPosition;
+    private decimal _cash;
 
     internal Character()
     {
@@ -19,12 +23,15 @@ public class Character : EntityBase, IHasDomainEvents
     public Character(Character characterInfo)
     {
         SetValues(characterInfo);
+        Person = new Person(this);
         DomainEvents.Add(new CharacterCreatedEvent(this));
     }
-
+    
     public Guid Id { get; init; } = Guid.NewGuid();
     
     public Account? Account { get; init; }
+    
+    public Person? Person { get; init; }
 
     public CharacterName? Name
     {
@@ -38,11 +45,15 @@ public class Character : EntityBase, IHasDomainEvents
         init => _worldPosition = value;
     }
 
+    public decimal Cash
+    {
+        get => _cash;
+        init => _cash = value;
+    }
+
     public ICollection<CharacterSession>? Sessions { get; init; }
     
     public ICollection<CompanyMembership>? CompanyMemberships { get; init; }
-    
-    public ICollection<BankAccount>? BankAccounts { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
 
@@ -85,5 +96,28 @@ public class Character : EntityBase, IHasDomainEvents
     public CharacterSession? GetCurrentSession()
     {
         return Sessions?.SingleOrDefault(x => x.Ended is not null);
+    }
+
+    public bool HasCash(decimal amount)
+    {
+        return Cash >= amount;
+    }
+    
+    public bool PayCash(decimal amount, IHasCash receiver)
+    {
+        if (!HasCash(amount))
+        {
+            return false;
+        }
+        
+        _cash -= amount;
+        receiver.ReceiveCash(amount);
+        
+        return true;
+    }
+
+    public void ReceiveCash(decimal amount)
+    {
+        _cash += amount;
     }
 }

@@ -79,6 +79,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
     private async Task<BankAccount> OpenAccountForCharacter(Bank bank, Guid characterId, CancellationToken cancellationToken)
     {
         var character = await _databaseContext.Characters
+            .Include(x => x.Person)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == characterId, cancellationToken);
 
@@ -87,7 +88,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
             throw new ELifeEntityNotFoundException();
         }
 
-        var bankAccount = bank.OpenAccount(character);
+        var bankAccount = bank.OpenAccount(character.Person!);
         await _databaseContext.SaveChangesAsync(cancellationToken);
 
         return bankAccount;
@@ -96,6 +97,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
     private async Task<BankAccount> OpenAccountForCompany(Bank bank, CompanyId companyId, CancellationToken cancellationToken)
     {
         var company = await _databaseContext.Companies
+            .Include(x => x.Person)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == companyId.Value, cancellationToken);
 
@@ -104,7 +106,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
             throw new ELifeEntityNotFoundException();
         }
 
-        var bankAccount = bank.OpenAccount(company);
+        var bankAccount = bank.OpenAccount(company.Person!);
         await _databaseContext.SaveChangesAsync(cancellationToken);
 
         return bankAccount;

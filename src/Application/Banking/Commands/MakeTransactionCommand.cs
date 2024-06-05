@@ -60,7 +60,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
         var sourceBankAccount = selectedBankAccounts.First(x => x.Id == request.SourceBankAccountId);
         var targetBankAccount = selectedBankAccounts.First(x => x.Id == request.TargetBankAccountId);
         
-        var transaction = sourceBankAccount.TransferMoneyTo(targetBankAccount, character, request.Amount);
+        var transaction = sourceBankAccount.TransferMoneyTo(targetBankAccount, request.Amount, character);
         await _databaseContext.SaveChangesAsync(cancellationToken);
 
         return new MakeTransactionCommandResult(transaction);

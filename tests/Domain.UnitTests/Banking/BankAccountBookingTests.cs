@@ -1,5 +1,6 @@
 ﻿using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters;
+using ELifeRPG.Domain.Persons;
 using Xunit;
 
 namespace ELifeRPG.Core.Domain.UnitTests.Banking;
@@ -13,7 +14,7 @@ public class BankAccountBookingTests
         var bankAccount = new BankAccount
         {
             Type = BankAccountType.Personal,
-            OwningCharacter = character,
+            Owner = new Person(character),
             BankCondition = new BankCondition
             {
                 TransactionFeeBase = 0.20m,
@@ -34,7 +35,7 @@ public class BankAccountBookingTests
         var bankAccount = new BankAccount
         {
             Type = BankAccountType.Personal,
-            OwningCharacter = character,
+            Owner = new Person(character),
             BankCondition = new BankCondition
             {
                 TransactionFeeBase = 0.20m,
@@ -55,7 +56,7 @@ public class BankAccountBookingTests
         var bankAccount = new BankAccount
         {
             Type = BankAccountType.Personal,
-            OwningCharacter = character,
+            Owner = new Person(character),
             BankCondition = new BankCondition
             {
                 TransactionFeeBase = 0.20m,
@@ -66,7 +67,7 @@ public class BankAccountBookingTests
         var targetBankAccount = new BankAccount
         {
             Type = BankAccountType.Personal,
-            OwningCharacter = character,
+            Owner = new Person(character),
             BankCondition = new BankCondition
             {
                 TransactionFeeBase = 1m,
@@ -87,7 +88,7 @@ public class BankAccountBookingTests
         var sourceBankAccount = new BankAccount
         {
             Type = BankAccountType.Personal,
-            OwningCharacter = character,
+            Owner = new Person(character),
             BankCondition = new BankCondition
             {
                 TransactionFeeBase = 0.20m,
@@ -98,7 +99,7 @@ public class BankAccountBookingTests
         var bankAccount = new BankAccount
         {
             Type = BankAccountType.Personal,
-            OwningCharacter = character,
+            Owner = new Person(character),
             BankCondition = new BankCondition
             {
                 TransactionFeeBase = 1m,

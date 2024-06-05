@@ -64,14 +64,14 @@ public class DatabaseContextSeed
                 SteamId = AccountSteam64Id,
                 Characters = new List<Character>
                 {
-                    new()
+                    new(new Character
                     {
                         Id = _characterJonDoeId,
                         Name = new CharacterName("Jon", "Doe"),
-                    },
+                    }),
                 },
             });
-            
+
             await context.SaveChangesAsync();
         }
     }

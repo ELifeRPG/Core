@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Domain.Common;
 
-namespace ELifeRPG.Domain.Characters;
+namespace ELifeRPG.Domain.Characters.Events;
 
 public class CharacterCreatedEvent : DomainEvent
 {

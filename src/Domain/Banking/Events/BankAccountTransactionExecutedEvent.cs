@@ -5,13 +5,13 @@ namespace ELifeRPG.Domain.Banking.Events;
 
 public class BankAccountTransactionExecutedEvent : DomainEvent
 {
-    public BankAccountTransactionExecutedEvent(BankAccountTransaction transaction, Character executingCharacter)
+    public BankAccountTransactionExecutedEvent(BankAccountTransaction transaction, Character? character = null)
     {
         Transaction = transaction;
-        ExecutingCharacter = executingCharacter;
+        Character = character;
     }
 
     public BankAccountTransaction Transaction { get; }
 
-    public Character ExecutingCharacter { get; }
+    public Character? Character { get; }
 }
