@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using AspNet.Security.OpenId.Steam;
+using AspNet.Security.OAuth.Discord;
 using ELifeRPG.Application.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -24,26 +24,26 @@ public class Signin : PageModel
     {
         if (string.IsNullOrEmpty(provider) && string.IsNullOrEmpty(callback))
         {
-            provider = SteamAuthenticationDefaults.AuthenticationScheme;
+            provider = DiscordAuthenticationDefaults.AuthenticationScheme;
         }
         
-        if (provider?.Equals(SteamAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) ?? false)
+        if (provider?.Equals(DiscordAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) ?? false)
         {
-            var uri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.PathBase}{HttpContext.Request.Path}?callback={SteamAuthenticationDefaults.AuthenticationScheme}";
+            var uri = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.PathBase}{HttpContext.Request.Path}?callback={DiscordAuthenticationDefaults.AuthenticationScheme}";
             if (!string.IsNullOrEmpty(redirectUri))
             {
                 uri += $"&redirectUri={redirectUri}";
             }
             
-            return Challenge(new AuthenticationProperties { RedirectUri = uri }, SteamAuthenticationDefaults.AuthenticationScheme);
+            return Challenge(new AuthenticationProperties { RedirectUri = uri }, DiscordAuthenticationDefaults.AuthenticationScheme);
         }
         
-        if (callback?.Equals(SteamAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) ?? false)
+        if (callback?.Equals(DiscordAuthenticationDefaults.AuthenticationScheme, StringComparison.OrdinalIgnoreCase) ?? false)
         {
             var identity = User.Identities.First();
             var nameIdentifierClaim = identity.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier);
             var nameClaim = identity.Claims.Single(x => x.Type == ClaimTypes.Name);
-            await _mediator.Send(new UserSignedInRequest(long.Parse(nameIdentifierClaim.Value[^17..]), nameClaim.Value));
+            await _mediator.Send(new UserSignedInRequest(long.Parse(nameIdentifierClaim.Value), nameClaim.Value));
             return Redirect($"/{redirectUri ?? string.Empty}");
         }
 

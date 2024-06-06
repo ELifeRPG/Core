@@ -12,10 +12,10 @@ public class Account : EntityBase, IHasDomainEvents
     {
     }
 
-    public Account(long steamId)
+    public Account(long discordId)
     {
         Id = Guid.NewGuid();
-        SteamId = steamId;
+        DiscordId = discordId;
         
         DomainEvents.Add(new AccountCreatedEvent(this));
     }
@@ -30,7 +30,7 @@ public class Account : EntityBase, IHasDomainEvents
     
     public Guid Id { get; init; }
 
-    public long SteamId { get; init; }
+    public long DiscordId { get; init; }
     
     public Guid? BohemiaId { get; init; }
 

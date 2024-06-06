@@ -14,7 +14,7 @@
         </MudCardContent>
         <MudCardActions>
             <MudButtonGroup VerticalAlign="@(true)" OverrideStyles="@(false)" Style="width: 100%">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="@(true)" EndIcon="@Icons.Custom.Brands.Steam" OnClick="@(() => NavigationManager.NavigateTo($"/authentication/sign-in{GetQueryString()}", true))">Sign-In with Steam</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="@(true)" EndIcon="@Icons.Custom.Brands.Discord" OnClick="@(() => NavigationManager.NavigateTo($"/authentication/sign-in{GetQueryString()}", true))">Sign-In with Discord</MudButton>
                 <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="@(true)" EndIcon="@Icons.Filled.Home" OnClick="@(() => NavigationManager.NavigateTo("/", true))">Back to Home</MudButton>
             </MudButtonGroup>
         </MudCardActions>
