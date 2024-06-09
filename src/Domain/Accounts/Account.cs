@@ -59,4 +59,6 @@ public class Account : EntityBase, IHasDomainEvents
         _status = AccountStatus.Active;
         DomainEvents.Add(new AccountUnlockedEvent(this));
     }
+
+    public bool IsVerified => BohemiaId != null;
 }

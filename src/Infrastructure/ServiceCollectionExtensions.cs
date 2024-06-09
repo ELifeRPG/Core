@@ -1,4 +1,6 @@
-﻿using ELifeRPG.Application.Common;
+﻿using ELifeRPG.Application.Accounts;
+using ELifeRPG.Application.Common;
+using ELifeRPG.Infrastructure.Accounts;
 using ELifeRPG.Infrastructure.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +42,8 @@ public static class ServiceCollectionExtensions
 
                 tracingBuilder?.Invoke(tracing);
             });
+
+        services.AddSingleton<IVerificationTokenValidator, VerificationTokenValidator>();
 
         return services;
     }

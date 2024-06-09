@@ -1,0 +1,60 @@
+﻿@page "/authentication/link"
+@using ELifeRPG.Application.Accounts
+@using ELifeRPG.Application.Common
+
+@inject IMediator Mediator;
+
+<PageTitle>Link Bohemia Account</PageTitle>
+
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="4">
+        <MudStack>
+            <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full">
+                <MudImage ObjectFit="ObjectFit.ScaleDown" Width="600" Src="https://placehold.co/1200x400?text=ELifeRPG"/>
+                <MudText Class="mt-4 pa-4">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean tristique placerat erat eu faucibus. Sed rhoncus neque a nunc convallis hendrerit.
+                </MudText>
+            </MudPaper>
+            
+            @if (_messages != null)
+            {
+                @foreach (var message in _messages)
+                {
+                    <MudPaper>
+                        <MudAlert Severity="@(message.Type.ToMudSeverity())">@message.Summary<br/>@message.Text</MudAlert>
+                    </MudPaper>
+                }
+            }
+            
+            <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full mt-8 pa-4">
+                <MudText Typo="Typo.h5">Account Verification</MudText>
+                <MudForm @bind-IsValid="@_completed" Class="mud-width-full">
+                    <MudTextField @bind-Value="@(Token)" Label="Verification Token" Required="true" RequiredError="Verification Token is required!"/>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_completed)" OnClick="@(async () => await Verify())" Class="mud-width-full mt-6">Send</MudButton>
+                </MudForm>
+            </MudPaper>
+        </MudStack>
+    </MudItem>
+</MudGrid>
+
+@code
+{
+    bool _completed;
+    ICollection<Message>? _messages;
+    
+    private string? Token { get; set; }
+
+    private async Task Verify()
+    {
+        var result = await Mediator.Send(new VerifyAccountRequest { DiscordId = 0, Token = Token! });
+        result.Switch(
+            verified => {},
+            alreadyVerified =>
+            {
+                _messages = alreadyVerified.Messages;
+            },
+            verificationFailed => {
+                _messages = verificationFailed.Messages;
+            });
+    }
+}
