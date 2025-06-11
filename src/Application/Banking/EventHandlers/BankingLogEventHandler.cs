@@ -2,7 +2,7 @@
 using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Banking.Events;
-using MediatR;
+using Mediator;
 using Microsoft.Extensions.Logging;
 
 namespace ELifeRPG.Application.Banking.EventHandlers;
@@ -37,13 +37,13 @@ public class BankingLogEventHandler :
         _logger = logger;
     }
 
-    public Task Handle(BankAccountOpenedEvent notification, CancellationToken cancellationToken)
+    public ValueTask Handle(BankAccountOpenedEvent notification, CancellationToken cancellationToken)
     {
         BankAccountOpenedEvent(_logger, notification.BankAccount.Id, default!);
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 
-    public Task Handle(BankAccountTransactionExecutedEvent notification, CancellationToken cancellationToken)
+    public ValueTask Handle(BankAccountTransactionExecutedEvent notification, CancellationToken cancellationToken)
     {
         switch (notification.Transaction.Type)
         {
@@ -65,6 +65,6 @@ public class BankingLogEventHandler :
                 throw new ArgumentOutOfRangeException(nameof(notification), nameof(notification.Transaction.Type));
         }
 
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }

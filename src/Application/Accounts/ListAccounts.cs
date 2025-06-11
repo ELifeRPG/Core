@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Accounts;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Accounts;
@@ -28,7 +28,7 @@ public class ListAccountsHandler : IRequestHandler<ListAccountsQuery, ListAccoun
         _databaseContext = databaseContext;
     }
 
-    public async Task<ListAccountsResult> Handle(ListAccountsQuery request, CancellationToken cancellationToken)
+    public async ValueTask<ListAccountsResult> Handle(ListAccountsQuery request, CancellationToken cancellationToken)
     {
         var accounts = await _databaseContext.Accounts
             .OrderBy(x => x.Id)

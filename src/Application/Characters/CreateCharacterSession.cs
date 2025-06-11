@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Characters;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Characters;
@@ -34,7 +34,7 @@ internal class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSe
         _databaseContext = databaseContext;
     }
 
-    public async Task<CreateCharacterSessionResult> Handle(CreateCharacterSessionRequest request, CancellationToken cancellationToken)
+    public async ValueTask<CreateCharacterSessionResult> Handle(CreateCharacterSessionRequest request, CancellationToken cancellationToken)
     {
         var character = await _databaseContext.Characters
             .Include(x => x.Sessions!.Where(s => s.Ended == null))

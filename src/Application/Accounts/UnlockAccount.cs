@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Application.Common.Exceptions;
-using MediatR;
+using Mediator;
 
 namespace ELifeRPG.Application.Accounts;
 
@@ -27,7 +27,7 @@ public class UnlockAccountHandler : IRequestHandler<UnlockAccountCommand, Unlock
         _databaseContext = databaseContext;
     }
 
-    public async Task<UnlockAccountResult> Handle(UnlockAccountCommand request, CancellationToken cancellationToken)
+    public async ValueTask<UnlockAccountResult> Handle(UnlockAccountCommand request, CancellationToken cancellationToken)
     {
         var account = await _databaseContext.Accounts.FindAsync(new object?[] { request.AccountId }, cancellationToken);
         if (account is null)

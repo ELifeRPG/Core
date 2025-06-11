@@ -3,7 +3,7 @@ using AutoMapper;
 using ELifeRPG.Application.Banking.Commands;
 using ELifeRPG.Application.Banking.Queries;
 using ELifeRPG.Core.Api.Banking;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Mvc;
 
 // ReSharper disable once CheckNamespace

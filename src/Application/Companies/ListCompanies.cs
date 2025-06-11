@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Companies;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Companies;
@@ -28,7 +28,7 @@ public class ListCompaniesHandler : IRequestHandler<ListCompaniesQuery, ListComp
         _databaseContext = databaseContext;
     }
 
-    public async Task<ListCompaniesResult> Handle(ListCompaniesQuery request, CancellationToken cancellationToken)
+    public async ValueTask<ListCompaniesResult> Handle(ListCompaniesQuery request, CancellationToken cancellationToken)
     {
         var characters = await _databaseContext.Companies.OrderBy(x => x.Id).ToListAsync(cancellationToken);
         return new ListCompaniesResult(characters);

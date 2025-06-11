@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Accounts;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Accounts;
@@ -31,7 +31,7 @@ public class UserSignedInHandler : IRequestHandler<UserSignedInRequest, UserSign
         _databaseContext = databaseContext;
     }
 
-    public async Task<UserSignedInResult> Handle(UserSignedInRequest request, CancellationToken cancellationToken)
+    public async ValueTask<UserSignedInResult> Handle(UserSignedInRequest request, CancellationToken cancellationToken)
     {
         var account = await _databaseContext.Accounts.SingleOrDefaultAsync(x => x.DiscordId == request.DiscordId, cancellationToken);
         if (account is null)

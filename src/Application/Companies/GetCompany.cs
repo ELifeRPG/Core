@@ -1,7 +1,7 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Application.Common.Exceptions;
 using ELifeRPG.Domain.Companies;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Companies;
@@ -38,7 +38,7 @@ public class GetCompanyHandler : IRequestHandler<GetCompanyQuery, GetCompanyResu
         _databaseContext = databaseContext;
     }
 
-    public async Task<GetCompanyResult> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
+    public async ValueTask<GetCompanyResult> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
     {
         var company = await _databaseContext.Companies
             .Include(x => x.Memberships!.OrderBy(m => m.Position.Ordering).Take(5))

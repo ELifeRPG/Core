@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Characters;
-using MediatR;
+using Mediator;
 
 namespace ELifeRPG.Application.Characters;
 
@@ -33,7 +33,7 @@ public class CreateCharacterHandler : IRequestHandler<CreateCharacterRequest, Cr
         _databaseContext = databaseContext;
     }
 
-    public async Task<CreateCharacterResult> Handle(CreateCharacterRequest request, CancellationToken cancellationToken)
+    public async ValueTask<CreateCharacterResult> Handle(CreateCharacterRequest request, CancellationToken cancellationToken)
     {
         var character = new Character(request.CharacterInfo);
         _databaseContext.Characters.Add(character);

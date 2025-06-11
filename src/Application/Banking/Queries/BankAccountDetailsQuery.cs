@@ -1,7 +1,7 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Application.Common.Exceptions;
 using ELifeRPG.Domain.Banking;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Banking.Queries;
@@ -35,7 +35,7 @@ internal class BankAccountDetailsQueryHandler : IRequestHandler<BankAccountDetai
         _databaseContext = databaseContext;
     }
 
-    public async Task<BankAccountDetailsQueryResult> Handle(BankAccountDetailsQuery request, CancellationToken cancellationToken)
+    public async ValueTask<BankAccountDetailsQueryResult> Handle(BankAccountDetailsQuery request, CancellationToken cancellationToken)
     {
         var bankAccount = await _databaseContext.BankAccounts.AsQueryable()
             .Include(x => x.Bookings!.OrderByDescending(b => b.Created).Take(30))

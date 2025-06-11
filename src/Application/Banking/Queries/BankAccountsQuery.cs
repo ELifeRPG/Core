@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Banking;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Banking.Queries;
@@ -29,7 +29,7 @@ internal class BankAccountsQueryHandler : IRequestHandler<BankAccountsQuery, Ban
         _databaseContext = databaseContext;
     }
 
-    public async Task<BankAccountsQueryResult> Handle(BankAccountsQuery request, CancellationToken cancellationToken)
+    public async ValueTask<BankAccountsQueryResult> Handle(BankAccountsQuery request, CancellationToken cancellationToken)
     {
         var query = _databaseContext.BankAccounts.AsQueryable();
 

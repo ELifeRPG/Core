@@ -2,7 +2,7 @@
 using ELifeRPG.Application.Companies;
 using ELifeRPG.Core.Api.Companies;
 using ELifeRPG.Core.Api.Models;
-using MediatR;
+using Mediator;
 using Microsoft.AspNetCore.Mvc;
 
 // ReSharper disable once CheckNamespace

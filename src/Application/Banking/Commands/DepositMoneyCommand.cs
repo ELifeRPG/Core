@@ -1,7 +1,7 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Application.Common.Exceptions;
 using ELifeRPG.Domain.Banking;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Banking.Commands;
@@ -35,7 +35,7 @@ internal class DepositMoneyCommandHandler : IRequestHandler<DepositMoneyCommand,
         _databaseContext = databaseContext;
     }
 
-    public async Task<DepositMoneyCommandResult> Handle(DepositMoneyCommand request, CancellationToken cancellationToken)
+    public async ValueTask<DepositMoneyCommandResult> Handle(DepositMoneyCommand request, CancellationToken cancellationToken)
     {
         var bankAccount = await _databaseContext.BankAccounts
             .Include(x => x.Owner.Character)

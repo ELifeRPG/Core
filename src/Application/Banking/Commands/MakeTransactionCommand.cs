@@ -1,7 +1,7 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Application.Common.Exceptions;
 using ELifeRPG.Domain.Banking;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Banking.Commands;
@@ -36,7 +36,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
         _databaseContext = databaseContext;
     }
 
-    public async Task<MakeTransactionCommandResult> Handle(MakeTransactionCommand request, CancellationToken cancellationToken)
+    public async ValueTask<MakeTransactionCommandResult> Handle(MakeTransactionCommand request, CancellationToken cancellationToken)
     {
         var selectedBankAccounts = await _databaseContext.BankAccounts
             .Include(x => x.Bookings)

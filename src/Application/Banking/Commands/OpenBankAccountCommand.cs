@@ -4,7 +4,7 @@ using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common.Exceptions;
 using ELifeRPG.Domain.Companies;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Banking.Commands;
@@ -49,7 +49,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
         _databaseContext = databaseContext;
     }
 
-    public async Task<OpenBankAccountCommandResult> Handle(OpenBankAccountCommand request, CancellationToken cancellationToken)
+    public async ValueTask<OpenBankAccountCommandResult> Handle(OpenBankAccountCommand request, CancellationToken cancellationToken)
     {
         if (request.CharacterId is null && request.CompanyId is null)
         {

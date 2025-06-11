@@ -6,7 +6,7 @@ using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Companies;
 using ELifeRPG.Domain.Countries;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Infrastructure.Common;

@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Characters;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Characters;
@@ -38,7 +38,7 @@ public class ListCharactersHandler : IRequestHandler<ListCharactersQuery, ListCh
         _databaseContext = databaseContext;
     }
 
-    public async Task<ListCharactersResult> Handle(ListCharactersQuery request, CancellationToken cancellationToken)
+    public async ValueTask<ListCharactersResult> Handle(ListCharactersQuery request, CancellationToken cancellationToken)
     {
         var query = _databaseContext.Characters.AsQueryable();
 

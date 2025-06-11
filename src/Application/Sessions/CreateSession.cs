@@ -1,6 +1,6 @@
 ﻿using ELifeRPG.Application.Common;
 using ELifeRPG.Domain.Accounts;
-using MediatR;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 namespace ELifeRPG.Application.Sessions;
@@ -31,7 +31,7 @@ public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, Create
         _databaseContext = databaseContext;
     }
 
-    public async Task<CreateSessionResult> Handle(CreateSessionRequest request, CancellationToken cancellationToken)
+    public async ValueTask<CreateSessionResult> Handle(CreateSessionRequest request, CancellationToken cancellationToken)
     {
         var account = await _databaseContext.Accounts
             .SingleOrDefaultAsync(x => x.BohemiaId == request.BohemiaId, cancellationToken);
