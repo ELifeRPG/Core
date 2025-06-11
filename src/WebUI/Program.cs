@@ -1,4 +1,4 @@
-using AspNet.Security.OpenId.Steam;
+using AspNet.Security.OAuth.Discord;
 using ELifeRPG.Application;
 using ELifeRPG.Core.WebUI.Shared;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,7 +14,7 @@ builder.Services
     .AddAuthentication(options =>
     {
         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = SteamAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = DiscordAuthenticationDefaults.AuthenticationScheme;
     })
     .AddCookie(options =>
     {
@@ -22,10 +22,11 @@ builder.Services
         options.LoginPath = "/authentication/sign-in";
         options.LogoutPath = "/authentication/sign-out";
     })
-    .AddSteam(options =>
+    .AddDiscord(options =>
     {
         options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.ApplicationKey = builder.Configuration.GetValue<string>("ELifeRPG:SteamApiKey");
+        options.ClientId = builder.Configuration.GetValue<string>("OIDC:Discord:ClientId")!;
+        options.ClientSecret = builder.Configuration.GetValue<string>("OIDC:Discord:ClientSecret")!;
     });
 
 builder.Services.AddAntiforgery(options =>

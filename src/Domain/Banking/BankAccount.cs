@@ -1,4 +1,5 @@
-﻿using ELifeRPG.Domain.Banking.Events;
+using System.Buffers;
+using ELifeRPG.Domain.Banking.Events;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Common.Exceptions;

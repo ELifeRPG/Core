@@ -1,4 +1,4 @@
-﻿using ELifeRPG.Application.Common;
+using ELifeRPG.Application.Common;
 using ELifeRPG.Application.Common.Exceptions;
 using ELifeRPG.Domain.Accounts;
 using ELifeRPG.Domain.Banking;
@@ -61,7 +61,7 @@ public class DatabaseContextSeed
             context.Accounts.Add(new Account
             {
                 Id = Guid.NewGuid(),
-                SteamId = AccountSteam64Id,
+                DiscordId = AccountDiscordId,
                 Characters = new List<Character>
                 {
                     new(new Character

@@ -1,4 +1,4 @@
-﻿using ELifeRPG.Domain.Banking;
+using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Companies;

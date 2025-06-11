@@ -11,13 +11,13 @@ public class UserSignedInResult : AbstractResult
 
 public class UserSignedInRequest : IRequest<UserSignedInResult>
 {
-    public UserSignedInRequest(long steamId, string accountName)
+    public UserSignedInRequest(long discordId, string accountName)
     {
-        SteamId = steamId;
+        DiscordId = discordId;
         AccountName = accountName;
     }
     
-    public long SteamId { get; }
+    public long DiscordId { get; }
     
     public string AccountName { get; }
 }
@@ -33,10 +33,10 @@ public class UserSignedInHandler : IRequestHandler<UserSignedInRequest, UserSign
 
     public async Task<UserSignedInResult> Handle(UserSignedInRequest request, CancellationToken cancellationToken)
     {
-        var account = await _databaseContext.Accounts.SingleOrDefaultAsync(x => x.SteamId == request.SteamId, cancellationToken);
+        var account = await _databaseContext.Accounts.SingleOrDefaultAsync(x => x.DiscordId == request.DiscordId, cancellationToken);
         if (account is null)
         {
-            account = new Account(request.SteamId);
+            account = new Account(request.DiscordId);
             _databaseContext.Accounts.Add(account);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }

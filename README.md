@@ -35,8 +35,8 @@ A list of dependencies which can be started by using `(docker compose)|(podman-c
 You need to configure your local secrets which are not meant to be shared among developers using `dotnet user-secrets`.
 Since the projects do use the same user-secrets-id, we can do it only for the most common project, which is the Migrator:
 ```sh
-# required: the steam-api key
-dotnet user-secrets --project src/Migrator set "ELifeRPG:SteamApiKey" "<your-steam-api-key>"
+# required for Web-UI: discord application secret
+ dotnet user-secrets --project src/Migrator set "OIDC:Discord:ClientSecret" "foo"
 # optional: override connection-string to postgresql
 dotnet user-secrets --project src/Migrator set "ConnectionStrings:Database" "Host=localhost;Database=foo;Username=bar;Password=baz"
 ```
@@ -47,5 +47,5 @@ dotnet user-secrets --project src/Migrator set "ConnectionStrings:Database" "Hos
 
 To use dotnet-ef tool, you need to specify the project and startup project like this:
 ```sh
-dotnet ef --project src/Infrastructure --startup-project src/Migrator <command>
+dotn <command>
 ```

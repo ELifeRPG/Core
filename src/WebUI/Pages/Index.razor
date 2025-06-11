@@ -12,7 +12,7 @@
             <MudButton OnClick="@(() => NavigationManager.NavigateTo("/authentication/sign-out", true))">Sign-Out</MudButton>
         </Authorized>
         <NotAuthorized>
-            <MudButton OnClick="@(() => NavigationManager.NavigateTo("/authentication/sign-in?provider=steam", true))">Sign-In</MudButton>
+            <MudButton OnClick="@(() => NavigationManager.NavigateTo("/authentication/sign-in", true))">Sign-In</MudButton>
         </NotAuthorized>
     </AuthorizeView>
 </MudContainer>
