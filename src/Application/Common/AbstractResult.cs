@@ -2,7 +2,7 @@
 
 public abstract class AbstractResult
 {
-    public List<Message> Messages { get; } = new();
+    public List<Message> Messages { get; } = [];
 }
 
 public static class ResponseBaseExtensions

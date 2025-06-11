@@ -18,9 +18,15 @@ public static class CharacterEndpoints
         app
             .MapGet(
                 "/accounts/{accountId:guid}/characters",
-                async (Guid accountId, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
-                    => Results.Ok(mapper.Map<ResultDto<List<CharacterDto>>>(await mediator.Send(new ListCharactersQuery(accountId), cancellationToken))))
-            .Produces<ResultDto<List<CharacterDto>>>();
+                async (Guid accountId, IMediator mediator, IMapper mapper, CancellationToken cancellationToken) =>
+                    {
+                        var response = await mediator.Send(new CharactersQuery(accountId), cancellationToken);
+                        return response.Match(
+                            characters => Results.Ok(CharacterListDto.Create(characters)));
+                    })
+            .Produces<ResultDto<List<CharacterDto>>>()
+            .WithTags(Tag)
+            .WithSummary("List characters of the given account.");
         
         app
             .MapPost(

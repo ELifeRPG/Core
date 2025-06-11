@@ -17,8 +17,5 @@ public class CharacterProfile : Profile
         
         CreateMap<CreateCharacterResult, ResultDto<CharacterDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s.Character));
-        
-        CreateMap<ListCharactersResult, ResultDto<List<CharacterDto>>>()
-            .ForMember(d => d.Data, o => o.MapFrom(s => s.Characters));
     }
 }
