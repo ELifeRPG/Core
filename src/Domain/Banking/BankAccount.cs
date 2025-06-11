@@ -1,4 +1,4 @@
-﻿using System.Buffers;
+using System.Buffers;
 using ELifeRPG.Domain.Banking.Events;
 using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
@@ -50,10 +50,12 @@ public class BankAccount : EntityBase, IHasDomainEvents
     public BankCondition? BankCondition { get; init; }
 
     public Person Owner { get; init; } = null!;
-
+    
     public ICollection<BankAccountBooking>? Bookings { get; init; }
+    
+    public ICollection<BankAccountBooking>? OutgoingBookings { get; init; }
 
-    public List<DomainEvent> DomainEvents { get; } = new();
+    public List<DomainEvent> DomainEvents { get; } = [];
 
     public bool Can(Person person, BankAccountCapabilities capability)
     {
@@ -107,7 +109,7 @@ public class BankAccount : EntityBase, IHasDomainEvents
     }
 
     /// <summary>
-    /// Tries to withdraw money from a bank-account, eg. for ATM's.
+    /// Tries to withdraw money from a bank-account, e.g. for ATM's.
     /// </summary>
     /// <param name="character">The executing character.</param>
     /// <param name="amount">The amount to be withdrawn, without fees.</param>

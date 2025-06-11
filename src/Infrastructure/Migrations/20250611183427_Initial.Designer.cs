@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ELifeRPG.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240522184447_Initial")]
+    [Migration("20250611183427_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace ELifeRPG.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -39,13 +39,13 @@ namespace ELifeRPG.Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("DiscordId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("DiscordId");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer")
                         .HasColumnName("Status");
-
-                    b.Property<long>("SteamId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("SteamId");
 
                     b.HasKey("Id")
                         .HasName("PK_Account_Id");
@@ -53,8 +53,8 @@ namespace ELifeRPG.Infrastructure.Migrations
                     b.HasIndex("BohemiaId")
                         .HasDatabaseName("IDX_Account_BohemiaId");
 
-                    b.HasIndex("SteamId")
-                        .HasDatabaseName("IDX_Account_SteamId");
+                    b.HasIndex("DiscordId")
+                        .HasDatabaseName("IDX_Account_DiscordId");
 
                     b.ToTable("Account", (string)null);
                 });
@@ -104,13 +104,13 @@ namespace ELifeRPG.Infrastructure.Migrations
                     b.Property<Guid?>("FK_Bank_Id")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("FK_Person_Id")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("Number");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
@@ -123,10 +123,10 @@ namespace ELifeRPG.Infrastructure.Migrations
 
                     b.HasIndex("FK_Bank_Id");
 
+                    b.HasIndex("FK_Person_Id");
+
                     b.HasIndex("Number")
                         .IsUnique();
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("BankAccount", (string)null);
                 });
@@ -210,6 +210,12 @@ namespace ELifeRPG.Infrastructure.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("WorldPosition")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("jsonb")
+                        .HasDefaultValue("{\n  \"location\": {\n    \"x\": 0.0,\n    \"y\": 0.0,\n    \"z\": 0.0\n  },\n  \"rotation\": {\n    \"a\": 0.0,\n    \"b\": 0.0,\n    \"c\": 0.0,\n    \"d\": 0.0\n  }\n}");
 
                     b.HasKey("Id")
                         .HasName("PK_Character_Id");
@@ -404,10 +410,11 @@ namespace ELifeRPG.Infrastructure.Migrations
                         .HasConstraintName("FK_BankAccount_Bank_Id");
 
                     b.HasOne("ELifeRPG.Domain.Persons.Person", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
+                        .WithMany("BankAccounts")
+                        .HasForeignKey("FK_Person_Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Person_BankAccount_Id");
 
                     b.Navigation("Bank");
 
@@ -426,7 +433,7 @@ namespace ELifeRPG.Infrastructure.Migrations
                         .HasConstraintName("FK_BankAccountBooking_BankAccount_Id");
 
                     b.HasOne("ELifeRPG.Domain.Banking.BankAccount", "Source")
-                        .WithMany()
+                        .WithMany("OutgoingBookings")
                         .HasForeignKey("SourceId");
 
                     b.Navigation("BankAccount");
@@ -567,6 +574,8 @@ namespace ELifeRPG.Infrastructure.Migrations
             modelBuilder.Entity("ELifeRPG.Domain.Banking.BankAccount", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("OutgoingBookings");
                 });
 
             modelBuilder.Entity("ELifeRPG.Domain.Banking.BankCondition", b =>
@@ -597,6 +606,8 @@ namespace ELifeRPG.Infrastructure.Migrations
 
             modelBuilder.Entity("ELifeRPG.Domain.Persons.Person", b =>
                 {
+                    b.Navigation("BankAccounts");
+
                     b.Navigation("Company");
                 });
 #pragma warning restore 612, 618

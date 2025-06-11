@@ -1,5 +1,4 @@
 using ELifeRPG.Domain.Accounts;
-using ELifeRPG.Domain.Banking;
 using ELifeRPG.Domain.Characters.Events;
 using ELifeRPG.Domain.Characters.Sessions;
 using ELifeRPG.Domain.Common;

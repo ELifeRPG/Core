@@ -1,4 +1,5 @@
-﻿using ELifeRPG.Domain.Characters;
+using ELifeRPG.Domain.Banking;
+using ELifeRPG.Domain.Characters;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Companies;
 
@@ -35,4 +36,6 @@ public class Person : EntityBase
     public Character? Character { get; init; }
     
     public Company? Company { get; init; }
+
+    public ICollection<BankAccount>? BankAccounts { get; init; }
 }

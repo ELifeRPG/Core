@@ -1,4 +1,4 @@
-﻿using ELifeRPG.Application.Common;
+using ELifeRPG.Application.Common;
 using ELifeRPG.Application.Common.Exceptions;
 using ELifeRPG.Domain.Accounts;
 using ELifeRPG.Domain.Banking;
@@ -12,10 +12,10 @@ namespace ELifeRPG.Infrastructure.Common;
 public class DatabaseContextSeed
 {
     private const long AccountDiscordId = 150097863991492608;
-    private static readonly Guid _stateBankId = Guid.Parse("48654229-7f6e-4961-bc2e-52247d10ff22");
-    private static readonly Guid _characterJonDoeId = Guid.Parse("f408a4bd-cb83-4df5-a6a7-c4c3ddc5e4b2");
-    private static readonly Guid _stateCompanyId = new CompanyId(Guid.Parse("98a58b46-f9fd-4174-9d35-978fd3e5c41e")).Value;
-    private static readonly Guid _statePolicyCompanyId = new CompanyId(Guid.Parse("616c7e2c-c76d-4482-ae03-8e7afbb5ee39")).Value;
+    private static readonly Guid StateBankId = Guid.Parse("48654229-7f6e-4961-bc2e-52247d10ff22");
+    private static readonly Guid CharacterJonDoeId = Guid.Parse("f408a4bd-cb83-4df5-a6a7-c4c3ddc5e4b2");
+    private static readonly Guid StateCompanyId = new CompanyId(Guid.Parse("98a58b46-f9fd-4174-9d35-978fd3e5c41e")).Value;
+    private static readonly Guid StatePolicyCompanyId = new CompanyId(Guid.Parse("616c7e2c-c76d-4482-ae03-8e7afbb5ee39")).Value;
     
     public static async Task SeedSampleDataAsync(IDatabaseContext context)
     {
@@ -37,7 +37,7 @@ public class DatabaseContextSeed
     
     private static async Task SeedBanking(IDatabaseContext context)
     {
-        var stateBank = await context.Banks.SingleOrDefaultAsync(x => x.Id == _stateBankId);
+        var stateBank = await context.Banks.SingleOrDefaultAsync(x => x.Id == StateBankId);
         if (stateBank is null)
         {
             var country = await context.Countries
@@ -56,7 +56,7 @@ public class DatabaseContextSeed
 
     private static async Task SeedAccountsCharacters(IDatabaseContext context)
     {
-        if ((await context.Characters.SingleOrDefaultAsync(x => x.Id == _characterJonDoeId)) is null)
+        if ((await context.Characters.SingleOrDefaultAsync(x => x.Id == CharacterJonDoeId)) is null)
         {
             context.Accounts.Add(new Account
             {
@@ -66,7 +66,7 @@ public class DatabaseContextSeed
                 {
                     new(new Character
                     {
-                        Id = _characterJonDoeId,
+                        Id = CharacterJonDoeId,
                         Name = new CharacterName("Jon", "Doe"),
                     }),
                 },
@@ -78,7 +78,7 @@ public class DatabaseContextSeed
 
     private static async Task SeedCompanies(IDatabaseContext context)
     {
-        if ((await context.Companies.SingleOrDefaultAsync(x => x.Id == _stateCompanyId)) is null)
+        if ((await context.Companies.SingleOrDefaultAsync(x => x.Id == StateCompanyId)) is null)
         {
             var companyPosition = new CompanyPosition
             {
@@ -88,7 +88,7 @@ public class DatabaseContextSeed
             
             var company = new Company
             {
-                Id = _stateCompanyId,
+                Id = StateCompanyId,
                 Name = "State",
                 Positions = new List<CompanyPosition> { companyPosition },
                 Memberships = new List<CompanyMembership>(),
@@ -100,7 +100,7 @@ public class DatabaseContextSeed
             await context.SaveChangesAsync();
         }
         
-        if ((await context.Companies.SingleOrDefaultAsync(x => x.Id == _statePolicyCompanyId)) is null)
+        if ((await context.Companies.SingleOrDefaultAsync(x => x.Id == StatePolicyCompanyId)) is null)
         {
             var companyPosition = new CompanyPosition
             {
@@ -110,7 +110,7 @@ public class DatabaseContextSeed
             
             var company = new Company
             {
-                Id = _statePolicyCompanyId,
+                Id = StatePolicyCompanyId,
                 Name = "State Police",
                 Positions = new List<CompanyPosition> { companyPosition },
                 Memberships = new List<CompanyMembership>(),
