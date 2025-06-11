@@ -46,6 +46,7 @@ namespace ELifeRPG.Infrastructure.Migrations
                     AccountId = table.Column<Guid>(type: "uuid", nullable: true),
                     FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    WorldPosition = table.Column<string>(type: "jsonb", nullable: false, defaultValue: "{\n  \"location\": {\n    \"x\": 0.0,\n    \"y\": 0.0,\n    \"z\": 0.0\n  },\n  \"rotation\": {\n    \"a\": 0.0,\n    \"b\": 0.0,\n    \"c\": 0.0,\n    \"d\": 0.0\n  }\n}"),
                     Cash = table.Column<decimal>(type: "numeric", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -166,7 +167,7 @@ namespace ELifeRPG.Infrastructure.Migrations
                     Balance = table.Column<decimal>(type: "numeric", nullable: false),
                     FK_Bank_Id = table.Column<Guid>(type: "uuid", nullable: true),
                     FK_BankCondition_Id = table.Column<Guid>(type: "uuid", nullable: true),
-                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FK_Person_Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -183,8 +184,8 @@ namespace ELifeRPG.Infrastructure.Migrations
                         principalTable: "Bank",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_BankAccount_Person_OwnerId",
-                        column: x => x.OwnerId,
+                        name: "FK_Person_BankAccount_Id",
+                        column: x => x.FK_Person_Id,
                         principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -305,15 +306,15 @@ namespace ELifeRPG.Infrastructure.Migrations
                 column: "FK_BankCondition_Id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BankAccount_FK_Person_Id",
+                table: "BankAccount",
+                column: "FK_Person_Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BankAccount_Number",
                 table: "BankAccount",
                 column: "Number",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BankAccount_OwnerId",
-                table: "BankAccount",
-                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BankAccountBooking_FK_BankAccount_Id",

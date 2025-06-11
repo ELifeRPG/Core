@@ -17,5 +17,11 @@ public class BankAccountBookingTypeConfiguration : IEntityTypeConfiguration<Bank
         
         builder.Property(x => x.Type).HasColumnName("Type");
         builder.Property(x => x.Amount).HasColumnName("Amount");
+        
+        builder
+            .HasOne(x => x.Source)
+            .WithMany(x => x.OutgoingBookings)
+            .HasForeignKey("FK_BankAccount_Id")
+            .HasConstraintName("FK_BankAccount_BankAccountBooking_Id");
     }
 }

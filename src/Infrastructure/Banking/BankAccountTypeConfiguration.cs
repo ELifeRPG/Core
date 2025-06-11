@@ -21,6 +21,12 @@ public class BankAccountTypeConfiguration : IEntityTypeConfiguration<BankAccount
         builder.HasIndex(x => x.Number).IsUnique();
         
         builder
+            .HasOne(x => x.Owner)
+            .WithMany(x => x.BankAccounts)
+            .HasForeignKey("FK_Person_Id")
+            .HasConstraintName("FK_Person_BankAccount_Id");
+        
+        builder
             .HasMany(x => x.Bookings)
             .WithOne(x => x.BankAccount)
             .HasForeignKey("FK_BankAccount_Id")
