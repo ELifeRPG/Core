@@ -16,7 +16,7 @@ namespace ELifeRPG.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    SteamId = table.Column<long>(type: "bigint", nullable: false),
+                    DiscordId = table.Column<long>(type: "bigint", nullable: false),
                     BohemiaId = table.Column<Guid>(type: "uuid", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -280,9 +280,9 @@ namespace ELifeRPG.Infrastructure.Migrations
                 column: "BohemiaId");
 
             migrationBuilder.CreateIndex(
-                name: "IDX_Account_SteamId",
+                name: "IDX_Account_DiscordId",
                 table: "Account",
-                column: "SteamId");
+                column: "DiscordId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bank_FK_Country_Id",

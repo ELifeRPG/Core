@@ -11,7 +11,7 @@ namespace ELifeRPG.Infrastructure.Common;
 
 public class DatabaseContextSeed
 {
-    private const long AccountSteam64Id = 76561198033445663;
+    private const long AccountDiscordId = 150097863991492608;
     private static readonly Guid StateBankId = Guid.Parse("48654229-7f6e-4961-bc2e-52247d10ff22");
     private static readonly Guid CharacterJonDoeId = Guid.Parse("f408a4bd-cb83-4df5-a6a7-c4c3ddc5e4b2");
     private static readonly Guid StateCompanyId = new CompanyId(Guid.Parse("98a58b46-f9fd-4174-9d35-978fd3e5c41e")).Value;
