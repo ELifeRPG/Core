@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 namespace ELifeRPG.Infrastructure.Common;
 
 public sealed class ReadWriteDatabaseContext(IConfiguration configuration, IMediator mediator)
-    : DatabaseContextBase(configuration.GetConnectionString("database+read+write")), IReadWriteDatabaseContext
+    : DatabaseContextBase(configuration.GetConnectionString("DatabaseReadWrite")), IReadWriteDatabaseContext
 {
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

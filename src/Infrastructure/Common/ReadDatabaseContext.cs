@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 namespace ELifeRPG.Infrastructure.Common;
 
 public sealed class ReadDatabaseContext(IConfiguration configuration)
-    : DatabaseContextBase(configuration.GetConnectionString("database+read")), IReadDatabaseContext
+    : DatabaseContextBase(configuration.GetConnectionString("DatabaseRead")), IReadDatabaseContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

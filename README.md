@@ -38,7 +38,8 @@ Since the projects do use the same user-secrets-id, we can do it only for the mo
 # required for Web-UI: discord application secret
  dotnet user-secrets --project src/Migrator set "OIDC:Discord:ClientSecret" "foo"
 # optional: override connection-string to postgresql
-dotnet user-secrets --project src/Migrator set "ConnectionStrings:Database" "Host=localhost;Database=foo;Username=bar;Password=baz"
+dotnet user-secrets --project src/Migrator set "ConnectionStrings:DatabaseRead" "Host=localhost;Database=foo;Username=bar;Password=baz"
+dotnet user-secrets --project src/Migrator set "ConnectionStrings:DatabaseReadWrite" "Host=localhost;Database=foo;Username=bar;Password=baz"
 ```
 
 ### Development hints

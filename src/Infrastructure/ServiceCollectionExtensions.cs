@@ -31,7 +31,7 @@ public static class ServiceCollectionExtensions
                 tracing.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(hostEnvironment.ApplicationName));
                 tracing.AddSource(Activities.SourceName);
                 tracing.AddEntityFrameworkCoreInstrumentation();
-                tracing.AddOtlpExporter(options => options.Endpoint = new Uri(configuration.GetConnectionString("tracing")!));
+                tracing.AddOtlpExporter(options => options.Endpoint = new Uri(configuration.GetConnectionString("Tracing")!));
 
                 tracingBuilder?.Invoke(tracing);
             });
