@@ -48,5 +48,5 @@ dotnet user-secrets --project src/Migrator set "ConnectionStrings:DatabaseReadWr
 
 To use dotnet-ef tool, you need to specify the project and startup project like this:
 ```sh
-dotn <command>
+dotnet ef --project src/Infrastructure --startup-project src/Migrator <command>
 ```
