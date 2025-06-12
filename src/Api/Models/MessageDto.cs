@@ -1,5 +1,13 @@
 ﻿namespace ELifeRPG.Core.Api.Models;
 
+public enum MessageTypeEnumDto
+{
+    Information,
+    Success,
+    Warning,
+    Error,
+}
+
 public class MessageDto
 {
     public MessageTypeEnumDto Type { get; init; }
@@ -7,12 +15,4 @@ public class MessageDto
     public string Summary { get; init; } = null!;
 
     public string? Text { get; init; }
-}
-
-public enum MessageTypeEnumDto
-{
-    Information,
-    Success,
-    Warning,
-    Error,
 }
