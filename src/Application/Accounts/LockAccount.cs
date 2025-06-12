@@ -20,23 +20,23 @@ public class LockAccountCommand : IRequest<LockAccountResult>
 
 public class LockAccountHandler : IRequestHandler<LockAccountCommand, LockAccountResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public LockAccountHandler(IDatabaseContext databaseContext)
+    public LockAccountHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<LockAccountResult> Handle(LockAccountCommand request, CancellationToken cancellationToken)
     {
-        var account = await _databaseContext.Accounts.FindAsync([request.AccountId], cancellationToken);
+        var account = await _readWriteDatabaseContext.Accounts.FindAsync([request.AccountId], cancellationToken);
         if (account is null)
         {
             throw new ELifeEntityNotFoundException("Account does not exist.");
         }
 
         account.Lock();
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
 
         return new LockAccountResult()
             .AddSuccessMessage($"Account `{account.Id}` has been locked.");

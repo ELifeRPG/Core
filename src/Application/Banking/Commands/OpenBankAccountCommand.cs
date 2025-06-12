@@ -42,11 +42,11 @@ public class OpenBankAccountCommand : IRequest<OpenBankAccountCommandResult>
 
 internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCommand, OpenBankAccountCommandResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public OpenBankAccountCommandHandler(IDatabaseContext databaseContext)
+    public OpenBankAccountCommandHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<OpenBankAccountCommandResult> Handle(OpenBankAccountCommand request, CancellationToken cancellationToken)
@@ -56,7 +56,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
             throw new ELifeInvalidOperationException();
         }
 
-        var bank = await _databaseContext.Banks
+        var bank = await _readWriteDatabaseContext.Banks
             .Include(x => x.Country)
             .Include(x => x.Accounts)
             .Include(x => x.Conditions)
@@ -71,14 +71,14 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
             ? await OpenAccountForCharacter(bank, request.CharacterId!.Value, cancellationToken)
             : await OpenAccountForCompany(bank, request.CompanyId.Value, cancellationToken);
 
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
 
         return new OpenBankAccountCommandResult(bankAccount);
     }
 
     private async Task<BankAccount> OpenAccountForCharacter(Bank bank, Guid characterId, CancellationToken cancellationToken)
     {
-        var character = await _databaseContext.Characters
+        var character = await _readWriteDatabaseContext.Characters
             .Include(x => x.Person)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == characterId, cancellationToken);
@@ -89,14 +89,14 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
         }
 
         var bankAccount = bank.OpenAccount(character.Person!);
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
 
         return bankAccount;
     }
 
     private async Task<BankAccount> OpenAccountForCompany(Bank bank, CompanyId companyId, CancellationToken cancellationToken)
     {
-        var company = await _databaseContext.Companies
+        var company = await _readWriteDatabaseContext.Companies
             .Include(x => x.Person)
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id == companyId.Value, cancellationToken);
@@ -107,7 +107,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
         }
 
         var bankAccount = bank.OpenAccount(company.Person!);
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
 
         return bankAccount;
     }

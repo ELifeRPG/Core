@@ -17,7 +17,7 @@ public class DatabaseContextSeed
     private static readonly Guid StateCompanyId = new CompanyId(Guid.Parse("98a58b46-f9fd-4174-9d35-978fd3e5c41e")).Value;
     private static readonly Guid StatePolicyCompanyId = new CompanyId(Guid.Parse("616c7e2c-c76d-4482-ae03-8e7afbb5ee39")).Value;
 
-    public static async Task SeedSampleDataAsync(IDatabaseContext context)
+    public static async Task SeedSampleDataAsync(IReadWriteDatabaseContext context)
     {
         await SeedCountries(context);
         await SeedBanking(context);
@@ -25,7 +25,7 @@ public class DatabaseContextSeed
         await SeedCompanies(context);
     }
 
-    private static async Task SeedCountries(IDatabaseContext context)
+    private static async Task SeedCountries(IReadWriteDatabaseContext context)
     {
         var country = await context.Countries.SingleOrDefaultAsync(x => x.Id == Country.Default.Id);
         if (country is null)
@@ -35,7 +35,7 @@ public class DatabaseContextSeed
         }
     }
 
-    private static async Task SeedBanking(IDatabaseContext context)
+    private static async Task SeedBanking(IReadWriteDatabaseContext context)
     {
         var stateBank = await context.Banks.SingleOrDefaultAsync(x => x.Id == StateBankId);
         if (stateBank is null)
@@ -54,7 +54,7 @@ public class DatabaseContextSeed
         }
     }
 
-    private static async Task SeedAccountsCharacters(IDatabaseContext context)
+    private static async Task SeedAccountsCharacters(IReadWriteDatabaseContext context)
     {
         if ((await context.Characters.SingleOrDefaultAsync(x => x.Id == CharacterJonDoeId)) is null)
         {
@@ -76,7 +76,7 @@ public class DatabaseContextSeed
         }
     }
 
-    private static async Task SeedCompanies(IDatabaseContext context)
+    private static async Task SeedCompanies(IReadWriteDatabaseContext context)
     {
         if ((await context.Companies.SingleOrDefaultAsync(x => x.Id == StateCompanyId)) is null)
         {

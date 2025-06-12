@@ -27,16 +27,16 @@ public class CreateCharacterSessionRequest : IRequest<CreateCharacterSessionResu
 
 internal class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSessionRequest, CreateCharacterSessionResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public CreateCharacterSessionHandler(IDatabaseContext databaseContext)
+    public CreateCharacterSessionHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<CreateCharacterSessionResult> Handle(CreateCharacterSessionRequest request, CancellationToken cancellationToken)
     {
-        var character = await _databaseContext.Characters
+        var character = await _readWriteDatabaseContext.Characters
             .Include(x => x.Sessions!.Where(s => s.Ended == null))
             .SingleOrDefaultAsync(x => x.Id == request.CharacterId, cancellationToken);
 
@@ -46,7 +46,7 @@ internal class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSe
         }
 
         character.CreateSession();
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
 
         return new CreateCharacterSessionResult(character);
     }

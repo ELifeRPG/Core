@@ -31,16 +31,16 @@ public class GetCompanyQuery : IRequest<GetCompanyResult>
 
 public class GetCompanyHandler : IRequestHandler<GetCompanyQuery, GetCompanyResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public GetCompanyHandler(IDatabaseContext databaseContext)
+    public GetCompanyHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<GetCompanyResult> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
     {
-        var company = await _databaseContext.Companies
+        var company = await _readWriteDatabaseContext.Companies
             .Include(x => x.Memberships!.OrderBy(m => m.Position.Ordering).Take(5))
             .SingleOrDefaultAsync(x => x.Id == request.CompanyId.Value, cancellationToken);
 

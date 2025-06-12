@@ -16,13 +16,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment hostEnvironment, Action<TracerProviderBuilder>? tracingBuilder = null)
     {
-        services.AddDbContext<IDatabaseContext, DatabaseContext>(options =>
-            options.UseNpgsql(
-                configuration.GetConnectionString("Database"),
-                pgsql =>
-                {
-                    pgsql.MigrationsAssembly(typeof(DatabaseContext).Assembly.GetName().Name);
-                }));
+        services.AddDbContext<IReadDatabaseContext, ReadDatabaseContext>();
+        services.AddDbContext<IReadWriteDatabaseContext, ReadWriteDatabaseContext>();
 
         services.AddOpenTelemetry()
             .WithMetrics(metrics =>

@@ -24,21 +24,21 @@ public class UserSignedInRequest : IRequest<UserSignedInResult>
 
 public class UserSignedInHandler : IRequestHandler<UserSignedInRequest, UserSignedInResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public UserSignedInHandler(IDatabaseContext databaseContext)
+    public UserSignedInHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<UserSignedInResult> Handle(UserSignedInRequest request, CancellationToken cancellationToken)
     {
-        var account = await _databaseContext.Accounts.SingleOrDefaultAsync(x => x.DiscordId == request.DiscordId, cancellationToken);
+        var account = await _readWriteDatabaseContext.Accounts.SingleOrDefaultAsync(x => x.DiscordId == request.DiscordId, cancellationToken);
         if (account is null)
         {
             account = new Account(request.DiscordId);
-            _databaseContext.Accounts.Add(account);
-            await _databaseContext.SaveChangesAsync(cancellationToken);
+            _readWriteDatabaseContext.Accounts.Add(account);
+            await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
         }
 
         return new UserSignedInResult();

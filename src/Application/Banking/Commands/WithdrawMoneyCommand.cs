@@ -27,16 +27,16 @@ public class WithdrawMoneyCommand : IRequest<WithdrawMoneyCommandResult>
 
 internal class WithdrawMoneyCommandHandler : IRequestHandler<WithdrawMoneyCommand, WithdrawMoneyCommandResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public WithdrawMoneyCommandHandler(IDatabaseContext databaseContext)
+    public WithdrawMoneyCommandHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<WithdrawMoneyCommandResult> Handle(WithdrawMoneyCommand request, CancellationToken cancellationToken)
     {
-        var bankAccount = await _databaseContext.BankAccounts
+        var bankAccount = await _readWriteDatabaseContext.BankAccounts
             .Include(x => x.Owner.Character)
             .Include(x => x.BankCondition)
             .Include(x => x.Bookings!.Take(0))
@@ -47,7 +47,7 @@ internal class WithdrawMoneyCommandHandler : IRequestHandler<WithdrawMoneyComman
             throw new ELifeEntityNotFoundException();
         }
 
-        var character = await _databaseContext.Characters
+        var character = await _readWriteDatabaseContext.Characters
             .SingleOrDefaultAsync(x => x.Id == request.CharacterId, cancellationToken);
 
         if (character is null)
@@ -57,7 +57,7 @@ internal class WithdrawMoneyCommandHandler : IRequestHandler<WithdrawMoneyComman
 
         var transaction = bankAccount.WithdrawMoney(character, request.Amount);
 
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
 
         return new WithdrawMoneyCommandResult(transaction);
     }

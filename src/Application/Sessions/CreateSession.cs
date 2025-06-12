@@ -24,24 +24,24 @@ public class CreateSessionRequest : IRequest<CreateSessionResult>
 
 public class CreateSessionHandler : IRequestHandler<CreateSessionRequest, CreateSessionResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public CreateSessionHandler(IDatabaseContext databaseContext)
+    public CreateSessionHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<CreateSessionResult> Handle(CreateSessionRequest request, CancellationToken cancellationToken)
     {
-        var account = await _databaseContext.Accounts
+        var account = await _readWriteDatabaseContext.Accounts
             .SingleOrDefaultAsync(x => x.BohemiaId == request.BohemiaId, cancellationToken);
 
         if (account is null)
         {
             // temporary until ingame account linking is finished, then blocking this case -> https://github.com/ELifeRPG/Core/issues/96
             account = new Account(request.BohemiaId);
-            _databaseContext.Accounts.Add(account);
-            await _databaseContext.SaveChangesAsync(cancellationToken);
+            _readWriteDatabaseContext.Accounts.Add(account);
+            await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
         }
 
         var response = new CreateSessionResult

@@ -29,16 +29,16 @@ public class MakeTransactionCommand : IRequest<MakeTransactionCommandResult>
 
 internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCommand, MakeTransactionCommandResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public MakeTransactionCommandHandler(IDatabaseContext databaseContext)
+    public MakeTransactionCommandHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<MakeTransactionCommandResult> Handle(MakeTransactionCommand request, CancellationToken cancellationToken)
     {
-        var selectedBankAccounts = await _databaseContext.BankAccounts
+        var selectedBankAccounts = await _readWriteDatabaseContext.BankAccounts
             .Include(x => x.Bookings)
             .Include(x => x.BankCondition)
             .Where(x => x.Id == request.SourceBankAccountId || x.Id == request.TargetBankAccountId)
@@ -49,7 +49,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
             throw new ELifeEntityNotFoundException();
         }
 
-        var character = await _databaseContext.Characters
+        var character = await _readWriteDatabaseContext.Characters
             .SingleOrDefaultAsync(x => x.Id == request.CharacterId, cancellationToken);
 
         if (character is null)
@@ -61,7 +61,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
         var targetBankAccount = selectedBankAccounts.First(x => x.Id == request.TargetBankAccountId);
 
         var transaction = sourceBankAccount.TransferMoneyTo(targetBankAccount, request.Amount, character);
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
 
         return new MakeTransactionCommandResult(transaction);
     }

@@ -22,16 +22,16 @@ public class BanksQuery : IRequest<BanksQueryResult>
 
 internal class BanksQueryHandler : IRequestHandler<BanksQuery, BanksQueryResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public BanksQueryHandler(IDatabaseContext databaseContext)
+    public BanksQueryHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<BanksQueryResult> Handle(BanksQuery request, CancellationToken cancellationToken)
     {
-        var query = _databaseContext.Banks.AsQueryable();
+        var query = _readWriteDatabaseContext.Banks.AsQueryable();
 
         if (request.BankId is not null)
         {

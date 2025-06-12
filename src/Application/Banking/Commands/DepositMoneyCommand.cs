@@ -28,16 +28,16 @@ public class DepositMoneyCommand : IRequest<DepositMoneyCommandResult>
 
 internal class DepositMoneyCommandHandler : IRequestHandler<DepositMoneyCommand, DepositMoneyCommandResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public DepositMoneyCommandHandler(IDatabaseContext databaseContext)
+    public DepositMoneyCommandHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<DepositMoneyCommandResult> Handle(DepositMoneyCommand request, CancellationToken cancellationToken)
     {
-        var bankAccount = await _databaseContext.BankAccounts
+        var bankAccount = await _readWriteDatabaseContext.BankAccounts
             .Include(x => x.Owner.Character)
             .Include(x => x.Owner.Company)
             .Include(x => x.BankCondition)
@@ -51,7 +51,7 @@ internal class DepositMoneyCommandHandler : IRequestHandler<DepositMoneyCommand,
 
         var (transaction, booking) = bankAccount.DepositMoney(request.Amount);
 
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
 
         return new DepositMoneyCommandResult(transaction, booking);
     }

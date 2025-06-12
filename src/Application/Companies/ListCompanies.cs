@@ -21,16 +21,16 @@ public class ListCompaniesQuery : IRequest<ListCompaniesResult>
 
 public class ListCompaniesHandler : IRequestHandler<ListCompaniesQuery, ListCompaniesResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public ListCompaniesHandler(IDatabaseContext databaseContext)
+    public ListCompaniesHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<ListCompaniesResult> Handle(ListCompaniesQuery request, CancellationToken cancellationToken)
     {
-        var characters = await _databaseContext.Companies.OrderBy(x => x.Id).ToListAsync(cancellationToken);
+        var characters = await _readWriteDatabaseContext.Companies.OrderBy(x => x.Id).ToListAsync(cancellationToken);
         return new ListCompaniesResult(characters);
     }
 }

@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ELifeRPG.Infrastructure.Migrations
 {
-    [DbContext(typeof(DatabaseContext))]
+    [DbContext(typeof(DatabaseContextBase))]
     [Migration("20250611183427_Initial")]
     partial class Initial
     {

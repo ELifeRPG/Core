@@ -26,18 +26,18 @@ public class CreateCharacterRequest : IRequest<CreateCharacterResult>
 
 public class CreateCharacterHandler : IRequestHandler<CreateCharacterRequest, CreateCharacterResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public CreateCharacterHandler(IDatabaseContext databaseContext)
+    public CreateCharacterHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<CreateCharacterResult> Handle(CreateCharacterRequest request, CancellationToken cancellationToken)
     {
         var character = new Character(request.CharacterInfo);
-        _databaseContext.Characters.Add(character);
-        await _databaseContext.SaveChangesAsync(cancellationToken);
+        _readWriteDatabaseContext.Characters.Add(character);
+        await _readWriteDatabaseContext.SaveChangesAsync(cancellationToken);
         return new CreateCharacterResult(character);
     }
 }

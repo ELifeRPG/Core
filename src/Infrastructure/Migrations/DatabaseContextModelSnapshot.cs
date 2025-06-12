@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ELifeRPG.Infrastructure.Migrations
 {
-    [DbContext(typeof(DatabaseContext))]
+    [DbContext(typeof(DatabaseContextBase))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

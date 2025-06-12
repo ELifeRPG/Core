@@ -28,16 +28,16 @@ public class BankAccountDetailsQuery : IRequest<BankAccountDetailsQueryResult>
 
 internal class BankAccountDetailsQueryHandler : IRequestHandler<BankAccountDetailsQuery, BankAccountDetailsQueryResult>
 {
-    private readonly IDatabaseContext _databaseContext;
+    private readonly IReadWriteDatabaseContext _readWriteDatabaseContext;
 
-    public BankAccountDetailsQueryHandler(IDatabaseContext databaseContext)
+    public BankAccountDetailsQueryHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     {
-        _databaseContext = databaseContext;
+        _readWriteDatabaseContext = readWriteDatabaseContext;
     }
 
     public async ValueTask<BankAccountDetailsQueryResult> Handle(BankAccountDetailsQuery request, CancellationToken cancellationToken)
     {
-        var bankAccount = await _databaseContext.BankAccounts.AsQueryable()
+        var bankAccount = await _readWriteDatabaseContext.BankAccounts.AsQueryable()
             .Include(x => x.Bookings!.OrderByDescending(b => b.Created).Take(30))
             .SingleOrDefaultAsync(x => x.Id == request.BankAccountId, cancellationToken: cancellationToken);
 

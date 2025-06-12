@@ -14,12 +14,12 @@ public class CharactersQuery(Guid accountId) : IRequest<ListCharactersResponse>
     public Guid? AccountId { get; } = accountId;
 }
 
-public class ListCharactersHandler(IDatabaseContext databaseContext)
+public class ListCharactersHandler(IReadWriteDatabaseContext readWriteDatabaseContext)
     : IRequestHandler<CharactersQuery, ListCharactersResponse>
 {
     public async ValueTask<ListCharactersResponse> Handle(CharactersQuery request, CancellationToken cancellationToken)
     {
-        var query = databaseContext.Characters
+        var query = readWriteDatabaseContext.Characters
             .AsNoTracking()
             .AsQueryable();
 
