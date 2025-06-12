@@ -28,7 +28,7 @@ Please refer to the [server setup guide](https://github.com/ELifeRPG/ELifeRPG/bl
 
 A list of dependencies which can be started by using `(docker compose)|(podman-compose) up -d`
 - PostgreSQL on port 5432
-  - additionally Adminer on port [8080](http://localhost:8080/)
+  - additionally pgAdmin on port [9000](http://localhost:9000/)
 
 #### Local secrets
 
