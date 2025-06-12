@@ -10,10 +10,17 @@ namespace Microsoft.AspNetCore.Builder;
 
 public static class CompanyEndpoints
 {
+    public const string Tag = "Companies";
+
     public static WebApplication MapCompanyEndpoints(this WebApplication app)
     {
-        app
-            .MapGet("/companies", GetCompanies)
+        var group = app
+            .MapGroup(string.Empty)
+            .WithGroupName("v1")
+            .WithTags(Tag);
+
+        group
+            .MapGet("companies", GetCompanies)
             .Produces<ResultDto<List<CompanyDto>>>();
 
         return app;

@@ -15,50 +15,51 @@ public static class BankingEndpoints
 
     public static WebApplication MapBankingEndpoints(this WebApplication app)
     {
-        app
+        var group = app
+            .MapGroup(string.Empty)
+            .WithGroupName("v1")
+            .WithTags(Tag);
+
+        group
             .MapGet(
-                "/banks",
+                "banks",
                 async (IMediator mediator, CancellationToken cancellationToken)
                     => Results.Ok((await mediator.Send(new BanksQuery(), cancellationToken)).Banks))
             .Produces<string>()
-            .WithTags(Tag)
             .WithSummary("Lists all banks.");
 
-        app
+        group
             .MapPost(
-                "/banks/{bankId:guid}/accounts",
+                "banks/{bankId:guid}/accounts",
                 async ([FromRoute] Guid bankId, [FromQuery] Guid characterId, IMediator mediator, IMapper mapper)
                     => Results.Ok(mapper.Map<BankAccountDto>(
                         (await mediator.Send(new OpenBankAccountCommand(bankId, characterId))).BankAccount)))
             .Produces<string>()
-            .WithTags(Tag)
             .WithSummary("Creates a new bank account.");
 
-        app
+        group
             .MapGet(
-                "/characters/{characterId:guid}/bank-accounts",
+                "characters/{characterId:guid}/bank-accounts",
                 async (Guid characterId, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
                     => Results.Ok(mapper.Map<List<BankAccountDto>>(
                         (await mediator.Send(new BankAccountsQuery { CharacterId = characterId }, cancellationToken))
                         .BankAccounts)))
             .Produces<string>()
-            .WithTags(Tag)
             .WithSummary("Lists bank-accounts of the given character.");
 
-        app
+        group
             .MapGet(
-                "/bank-accounts/{bankAccountId:guid}",
+                "bank-accounts/{bankAccountId:guid}",
                 async (Guid bankAccountId, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
                     => Results.Ok(mapper.Map<BankAccountDto>(
                         (await mediator.Send(new BankAccountDetailsQuery(bankAccountId), cancellationToken))
                         .BankAccount)))
             .Produces<string>()
-            .WithTags(Tag)
             .WithSummary("Gets bank-account with details.");
 
-        app
+        group
             .MapPut(
-                "/bank-accounts/{bankAccountId:guid}/transaction",
+                "bank-accounts/{bankAccountId:guid}/transaction",
                 async ([FromRoute] Guid bankAccountId, [FromQuery] Guid characterId, [FromBody] BankAccountTransactionCommandDto transaction, IMediator mediator, IMapper mapper)
                     => Results.Ok(
                         mapper.Map<BankAccountTransactionDto>(
@@ -72,12 +73,11 @@ public static class BankingEndpoints
                                 }))
                             .Transaction)))
             .Produces<string>()
-            .WithTags(Tag)
             .WithSummary("Performs a transaction to a bank-account.");
 
-        app
+        group
             .MapPut(
-                "/bank-accounts/{bankAccountId:guid}/withdraw",
+                "bank-accounts/{bankAccountId:guid}/withdraw",
                 async ([FromRoute] Guid bankAccountId, [FromQuery] [Required] Guid characterId, [FromBody] BankAccountWithdrawalCommandDto withdrawal, IMediator mediator, IMapper mapper)
                     => Results.Ok(
                         mapper.Map<BankAccountWithdrawalResultDto>(
@@ -90,12 +90,11 @@ public static class BankingEndpoints
                                 }))
                             .Transaction)))
             .Produces<string>()
-            .WithTags(Tag)
             .WithSummary("Withdraws money from a bank-account.");
 
-        app
+        group
             .MapPut(
-                "/bank-accounts/{bankAccountId:guid}/deposit",
+                "bank-accounts/{bankAccountId:guid}/deposit",
                 async ([FromRoute] Guid bankAccountId, [FromBody] BankAccountDepositCommandDto deposit, IMediator mediator, IMapper mapper)
                     => Results.Ok(
                         mapper.Map<BankAccountDepositResultDto>(
@@ -106,7 +105,6 @@ public static class BankingEndpoints
                                     Amount = deposit.Amount,
                                 }))))
             .Produces<string>()
-            .WithTags(Tag)
             .WithSummary("Deposits money to a bank-account.");
 
         return app;

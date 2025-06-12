@@ -15,9 +15,14 @@ public static class CharacterEndpoints
 
     public static WebApplication MapCharacterEndpoints(this WebApplication app)
     {
-        app
+        var group = app
+            .MapGroup(string.Empty)
+            .WithGroupName("v1")
+            .WithTags(Tag);
+
+        group
             .MapGet(
-                "/accounts/{accountId:guid}/characters",
+                "accounts/{accountId:guid}/characters",
                 async (Guid accountId, IMediator mediator, CancellationToken cancellationToken) =>
                     {
                         var response = await mediator.Send(new CharactersQuery(accountId), cancellationToken);
@@ -28,18 +33,18 @@ public static class CharacterEndpoints
             .WithTags(Tag)
             .WithSummary("List characters of the given account.");
 
-        app
+        group
             .MapPost(
-                "/characters",
+                "characters",
                 async ([FromBody] CharacterDto character, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
                     => Results.Ok(mapper.Map<ResultDto<CharacterDto>>(await mediator.Send(new CreateCharacterRequest(mapper.Map<Character>(character)), cancellationToken))))
             .Produces<ResultDto<CharacterDto>>()
             .WithTags(Tag)
             .WithSummary("Create new character.");
 
-        app
+        group
             .MapPost(
-                "/characters/{characterId:guid}/sessions",
+                "characters/{characterId:guid}/sessions",
                 async (Guid characterId, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
                     => Results.Ok(mapper.Map<ResultDto<CharacterDto>>(await mediator.Send(new CreateCharacterSessionRequest(characterId), cancellationToken))))
             .Produces<ResultDto<CharacterDto>>()

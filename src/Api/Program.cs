@@ -1,25 +1,15 @@
-using System.Reflection;
 using System.Text.Json.Serialization;
 using ELifeRPG.Application;
-using ELifeRPG.Core.Api.OpenAPI;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Extensions.Primitives;
 using OpenTelemetry.Trace;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-});
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-    options.SchemaFilter<EnumSchemaFilter>();
-    options.EnableAnnotations();
 });
 
 builder.Services.AddAutoMapper(options => options.AllowNullCollections = true, typeof(Program));
@@ -30,6 +20,13 @@ builder.Services.AddInfrastructure(
     tracingBuilder: x =>
     {
         x.AddAspNetCoreInstrumentation();
+    });
+
+builder.Services.AddOpenApi(
+    "v1",
+    options =>
+    {
+        options.ShouldInclude = description => description.GroupName == "v1";
     });
 
 var app = builder.Build();
@@ -48,8 +45,14 @@ app.Use(async (context, next) =>
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference(
+        "/docs",
+        options =>
+        {
+            options.WithDynamicBaseServerUrl();
+            options.AddDocuments("v1");
+        });
 }
 
 app.UseRouting();

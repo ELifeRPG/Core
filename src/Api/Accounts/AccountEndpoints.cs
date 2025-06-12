@@ -16,9 +16,14 @@ public static class AccountEndpoints
 
     public static WebApplication MapAccountEndpoints(this WebApplication app)
     {
-        app
+        var group = app
+            .MapGroup("account")
+            .WithGroupName("v1")
+            .WithTags(Tag);
+
+        group
             .MapPost(
-                "/sessions",
+                "sessions",
                 async ([FromBody] SessionRequestDto sessionRequest, IMediator mediator, IMapper mapper, CancellationToken cancellationToken)
                     => Results.Ok(mapper.Map<ResultDto<SessionDto>>(await mediator.Send(new CreateSessionRequest(sessionRequest.BohemiaId), cancellationToken))))
             .Produces<ResultDto<SessionDto>>();
