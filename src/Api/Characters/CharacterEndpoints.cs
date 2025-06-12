@@ -16,7 +16,7 @@ public static class CharacterEndpoints
     public static WebApplication MapCharacterEndpoints(this WebApplication app)
     {
         var group = app
-            .MapGroup(string.Empty)
+            .MapGroup("v1")
             .WithGroupName("v1")
             .WithTags(Tag);
 

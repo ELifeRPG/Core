@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using ELifeRPG.Application.Characters;
 using ELifeRPG.Application.Sessions;
 using ELifeRPG.Core.Api.Accounts;
-using ELifeRPG.Core.Api.Characters;
 using ELifeRPG.Core.Api.Models;
 using Mediator;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +15,7 @@ public static class AccountEndpoints
     public static WebApplication MapAccountEndpoints(this WebApplication app)
     {
         var group = app
-            .MapGroup("account")
+            .MapGroup("v1")
             .WithGroupName("v1")
             .WithTags(Tag);
 
