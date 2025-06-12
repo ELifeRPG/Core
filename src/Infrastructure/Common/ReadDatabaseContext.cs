@@ -4,4 +4,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace ELifeRPG.Infrastructure.Common;
 
-public class ReadDatabaseContext(DbContextOptions<DatabaseContextBase> options, IConfiguration configuration) : DatabaseContextBase(options, configuration.GetConnectionString("database+read")), IReadDatabaseContext;
+public sealed class ReadDatabaseContext(IConfiguration configuration)
+    : DatabaseContextBase(configuration.GetConnectionString("database+read")), IReadDatabaseContext
+{
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+
+        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    }
+}

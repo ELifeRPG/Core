@@ -12,8 +12,8 @@ namespace ELifeRPG.Infrastructure.Common;
 
 #pragma warning disable CS8618
 
-public class DatabaseContextBase(DbContextOptions<DatabaseContextBase> options, string? connectionString)
-    : DbContext(options), IDatabaseContext
+public class DatabaseContextBase(string? connectionString)
+    : DbContext, IDatabaseContext
 {
     public DbSet<Account> Accounts { get; set; }
 

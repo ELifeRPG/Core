@@ -13,7 +13,7 @@ var host = Host.CreateDefaultBuilder(args)
     .Build();
 
 using var scope = host.Services.CreateScope();
-var context = scope.ServiceProvider.GetRequiredService<DatabaseContextBase>();
+var context = scope.ServiceProvider.GetRequiredService<ReadWriteDatabaseContext>();
 
 await context.Database.MigrateAsync();
 await DatabaseContextSeed.SeedSampleDataAsync(context);
