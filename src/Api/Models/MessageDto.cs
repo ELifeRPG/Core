@@ -5,7 +5,7 @@ public class MessageDto
     public MessageTypeEnumDto Type { get; init; }
 
     public string Summary { get; init; } = null!;
-    
+
     public string? Text { get; init; }
 }
 

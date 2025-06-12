@@ -16,7 +16,7 @@ public class DatabaseContextSeed
     private static readonly Guid CharacterJonDoeId = Guid.Parse("f408a4bd-cb83-4df5-a6a7-c4c3ddc5e4b2");
     private static readonly Guid StateCompanyId = new CompanyId(Guid.Parse("98a58b46-f9fd-4174-9d35-978fd3e5c41e")).Value;
     private static readonly Guid StatePolicyCompanyId = new CompanyId(Guid.Parse("616c7e2c-c76d-4482-ae03-8e7afbb5ee39")).Value;
-    
+
     public static async Task SeedSampleDataAsync(IDatabaseContext context)
     {
         await SeedCountries(context);
@@ -34,7 +34,7 @@ public class DatabaseContextSeed
             await context.SaveChangesAsync();
         }
     }
-    
+
     private static async Task SeedBanking(IDatabaseContext context)
     {
         var stateBank = await context.Banks.SingleOrDefaultAsync(x => x.Id == StateBankId);
@@ -43,12 +43,12 @@ public class DatabaseContextSeed
             var country = await context.Countries
                 .Include(x => x.Banks)
                 .SingleOrDefaultAsync(x => x.Id == Country.Default.Id);
-            
+
             if (country is null)
             {
                 throw new ELifeEntityNotFoundException();
             }
-            
+
             context.Banks.Add(new Bank(country));
             await context.SaveChangesAsync();
         }
@@ -82,10 +82,10 @@ public class DatabaseContextSeed
         {
             var companyPosition = new CompanyPosition
             {
-                Name = "Head of State", 
+                Name = "Head of State",
                 Ordering = 100,
             };
-            
+
             var company = new Company
             {
                 Id = StateCompanyId,
@@ -93,21 +93,21 @@ public class DatabaseContextSeed
                 Positions = new List<CompanyPosition> { companyPosition },
                 Memberships = new List<CompanyMembership>(),
             };
-            
+
             company.AddMembership(await context.Characters.FirstAsync(), companyPosition);
 
             context.Companies.Add(company);
             await context.SaveChangesAsync();
         }
-        
+
         if ((await context.Companies.SingleOrDefaultAsync(x => x.Id == StatePolicyCompanyId)) is null)
         {
             var companyPosition = new CompanyPosition
             {
-                Name = "Head of State Police", 
+                Name = "Head of State Police",
                 Ordering = 100,
             };
-            
+
             var company = new Company
             {
                 Id = StatePolicyCompanyId,
@@ -115,7 +115,7 @@ public class DatabaseContextSeed
                 Positions = new List<CompanyPosition> { companyPosition },
                 Memberships = new List<CompanyMembership>(),
             };
-            
+
             company.AddMembership(await context.Characters.FirstAsync(), companyPosition);
 
             context.Companies.Add(company);

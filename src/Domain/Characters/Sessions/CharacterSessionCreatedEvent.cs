@@ -8,6 +8,6 @@ public class CharacterSessionCreatedEvent : DomainEvent
     {
         Character = character;
     }
-    
+
     public Character Character { get; }
 }

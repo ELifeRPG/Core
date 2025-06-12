@@ -4,8 +4,8 @@ using ELifeRPG.Domain.Characters.Sessions;
 using ELifeRPG.Domain.Common;
 using ELifeRPG.Domain.Common.Base;
 using ELifeRPG.Domain.Companies;
-using ELifeRPG.Domain.Persons;
 using ELifeRPG.Domain.ObjectPositions;
+using ELifeRPG.Domain.Persons;
 
 namespace ELifeRPG.Domain.Characters;
 
@@ -15,21 +15,21 @@ public class Character : EntityBase, IHasDomainEvents, IHuman
     private PositionData _worldPosition;
     private decimal _cash;
 
-    internal Character()
-    {
-    }
-
     public Character(Character characterInfo)
     {
         SetValues(characterInfo);
         Person = new Person(this);
         DomainEvents.Add(new CharacterCreatedEvent(this));
     }
-    
+
+    internal Character()
+    {
+    }
+
     public Guid Id { get; init; } = Guid.NewGuid();
-    
+
     public Account? Account { get; init; }
-    
+
     public Person? Person { get; init; }
 
     public CharacterName? Name
@@ -51,7 +51,7 @@ public class Character : EntityBase, IHasDomainEvents, IHuman
     }
 
     public ICollection<CharacterSession>? Sessions { get; init; }
-    
+
     public ICollection<CompanyMembership>? CompanyMemberships { get; init; }
 
     public List<DomainEvent> DomainEvents { get; set; } = new();
@@ -62,7 +62,7 @@ public class Character : EntityBase, IHasDomainEvents, IHuman
         _worldPosition = characterInfo.WorldPosition;
         return this;
     }
-    
+
     public void CreateSession()
     {
         var currentSession = GetCurrentSession();
@@ -70,7 +70,7 @@ public class Character : EntityBase, IHasDomainEvents, IHuman
         {
             EndSession(currentSession);
         }
-        
+
         Sessions!.Add(new CharacterSession());
         DomainEvents.Add(new CharacterSessionCreatedEvent(this));
     }
@@ -82,10 +82,10 @@ public class Character : EntityBase, IHasDomainEvents, IHuman
         {
             throw new InvalidOperationException();
         }
-        
+
         EndSession(currentSession);
     }
-    
+
     public void EndSession(CharacterSession session)
     {
         DomainEvents.Add(new CharacterSessionEndedEvent(this));
@@ -101,17 +101,17 @@ public class Character : EntityBase, IHasDomainEvents, IHuman
     {
         return Cash >= amount;
     }
-    
+
     public bool PayCash(decimal amount, IHasCash receiver)
     {
         if (!HasCash(amount))
         {
             return false;
         }
-        
+
         _cash -= amount;
         receiver.ReceiveCash(amount);
-        
+
         return true;
     }
 

@@ -11,7 +11,7 @@ public class BanksQueryResult : AbstractResult
     {
         Banks = banks;
     }
-    
+
     public ICollection<Bank> Banks { get; }
 }
 

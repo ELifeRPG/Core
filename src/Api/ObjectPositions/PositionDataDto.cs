@@ -3,5 +3,6 @@
 public class PositionDataDto
 {
     public EnfusionVectorDto Location { get; set; } = null!;
+
     public EnfusionQuaternionDto Rotation { get; set; } = null!;
 }

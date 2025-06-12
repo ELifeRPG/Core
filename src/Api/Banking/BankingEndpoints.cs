@@ -44,7 +44,7 @@ public static class BankingEndpoints
             .Produces<string>()
             .WithTags(Tag)
             .WithSummary("Lists bank-accounts of the given character.");
-        
+
         app
             .MapGet(
                 "/bank-accounts/{bankAccountId:guid}",
@@ -69,8 +69,8 @@ public static class BankingEndpoints
                                     TargetBankAccountId = transaction.TargetBankAccountId,
                                     CharacterId = characterId,
                                     Amount = transaction.Amount,
-                                })
-                            ).Transaction)))
+                                }))
+                            .Transaction)))
             .Produces<string>()
             .WithTags(Tag)
             .WithSummary("Performs a transaction to a bank-account.");
@@ -87,8 +87,8 @@ public static class BankingEndpoints
                                     BankAccountId = bankAccountId,
                                     CharacterId = characterId,
                                     Amount = withdrawal.Amount,
-                                })
-                            ).Transaction)))
+                                }))
+                            .Transaction)))
             .Produces<string>()
             .WithTags(Tag)
             .WithSummary("Withdraws money from a bank-account.");
@@ -99,13 +99,12 @@ public static class BankingEndpoints
                 async ([FromRoute] Guid bankAccountId, [FromBody] BankAccountDepositCommandDto deposit, IMediator mediator, IMapper mapper)
                     => Results.Ok(
                         mapper.Map<BankAccountDepositResultDto>(
-                            (await mediator.Send(
+                            await mediator.Send(
                                 new DepositMoneyCommand
                                 {
                                     BankAccountId = bankAccountId,
                                     Amount = deposit.Amount,
-                                })
-                            ))))
+                                }))))
             .Produces<string>()
             .WithTags(Tag)
             .WithSummary("Deposits money to a bank-account.");

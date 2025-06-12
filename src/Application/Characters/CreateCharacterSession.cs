@@ -11,7 +11,7 @@ public class CreateCharacterSessionResult : AbstractResult
     {
         Character = character;
     }
-    
+
     public Character Character { get; }
 }
 
@@ -21,7 +21,7 @@ public class CreateCharacterSessionRequest : IRequest<CreateCharacterSessionResu
     {
         CharacterId = characterId;
     }
-    
+
     public Guid CharacterId { get; }
 }
 
@@ -39,12 +39,12 @@ internal class CreateCharacterSessionHandler : IRequestHandler<CreateCharacterSe
         var character = await _databaseContext.Characters
             .Include(x => x.Sessions!.Where(s => s.Ended == null))
             .SingleOrDefaultAsync(x => x.Id == request.CharacterId, cancellationToken);
-        
+
         if (character is null)
         {
             throw new InvalidOperationException();
         }
-        
+
         character.CreateSession();
         await _databaseContext.SaveChangesAsync(cancellationToken);
 

@@ -15,7 +15,7 @@ public class OpenBankAccountCommandResult : AbstractResult
     {
         BankAccount = bankAccount;
     }
-    
+
     public BankAccount BankAccount { get; }
 }
 
@@ -26,17 +26,17 @@ public class OpenBankAccountCommand : IRequest<OpenBankAccountCommandResult>
         BankId = bankId;
         CharacterId = characterId;
     }
-    
+
     public OpenBankAccountCommand(Guid bankId, CompanyId companyId)
     {
         BankId = bankId;
         CompanyId = companyId;
     }
-    
+
     public Guid BankId { get; }
 
     public Guid? CharacterId { get; }
-    
+
     public CompanyId? CompanyId { get; }
 }
 
@@ -55,7 +55,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
         {
             throw new ELifeInvalidOperationException();
         }
-        
+
         var bank = await _databaseContext.Banks
             .Include(x => x.Country)
             .Include(x => x.Accounts)
@@ -66,7 +66,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
         {
             throw new ELifeEntityNotFoundException();
         }
-        
+
         var bankAccount = request.CompanyId is null
             ? await OpenAccountForCharacter(bank, request.CharacterId!.Value, cancellationToken)
             : await OpenAccountForCompany(bank, request.CompanyId.Value, cancellationToken);
@@ -93,7 +93,7 @@ internal class OpenBankAccountCommandHandler : IRequestHandler<OpenBankAccountCo
 
         return bankAccount;
     }
-    
+
     private async Task<BankAccount> OpenAccountForCompany(Bank bank, CompanyId companyId, CancellationToken cancellationToken)
     {
         var company = await _databaseContext.Companies

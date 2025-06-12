@@ -10,6 +10,6 @@ public class CharacterListDto : ResultDto<List<CharacterDto>>
         {
             Data = characters
                 .Select(CharacterDto.Create)
-                .ToList()
+                .ToList(),
         };
 }

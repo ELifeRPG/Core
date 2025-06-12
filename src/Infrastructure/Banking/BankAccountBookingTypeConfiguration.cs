@@ -11,13 +11,13 @@ public class BankAccountBookingTypeConfiguration : IEntityTypeConfiguration<Bank
     public void Configure(EntityTypeBuilder<BankAccountBooking> builder)
     {
         builder.ToTable("BankAccountBooking");
-        
+
         builder.HasKey(x => x.Id).HasName("PK_BankAccountBooking_Id");
         builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedNever();
-        
+
         builder.Property(x => x.Type).HasColumnName("Type");
         builder.Property(x => x.Amount).HasColumnName("Amount");
-        
+
         builder
             .HasOne(x => x.Source)
             .WithMany(x => x.OutgoingBookings)

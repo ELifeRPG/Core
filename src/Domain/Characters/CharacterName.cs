@@ -4,8 +4,8 @@ public class CharacterName
 {
     public CharacterName()
     {
-    } 
-    
+    }
+
     public CharacterName(string firstName, string lastName)
     {
         FirstName = firstName;

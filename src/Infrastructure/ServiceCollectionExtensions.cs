@@ -36,7 +36,7 @@ public static class ServiceCollectionExtensions
                 tracing.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(hostEnvironment.ApplicationName));
                 tracing.AddSource(Activities.SourceName);
                 tracing.AddEntityFrameworkCoreInstrumentation();
-                tracing.AddOtlpExporter(options => options.Endpoint = new Uri(configuration.GetConnectionString("OpenTelemetryTracingEndpoint")!));
+                tracing.AddOtlpExporter(options => options.Endpoint = new Uri(configuration.GetConnectionString("tracing")!));
 
                 tracingBuilder?.Invoke(tracing);
             });
@@ -47,7 +47,7 @@ public static class ServiceCollectionExtensions
     public static WebApplication MapInternalEndpoints(this WebApplication app)
     {
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
-        
+
         return app;
     }
 }

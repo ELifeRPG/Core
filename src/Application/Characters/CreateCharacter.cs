@@ -10,7 +10,7 @@ public class CreateCharacterResult : AbstractResult
     {
         Character = character;
     }
-    
+
     public Character Character { get; }
 }
 
@@ -20,7 +20,7 @@ public class CreateCharacterRequest : IRequest<CreateCharacterResult>
     {
         CharacterInfo = characterInfo;
     }
-    
+
     public Character CharacterInfo { get; }
 }
 

@@ -4,8 +4,8 @@ public class TransactionFee
 {
     public TransactionFee(BankAccountTransaction transaction, BankAccount bankAccount)
     {
-        Value = bankAccount.BankCondition!.TransactionFeeBase + Decimal.Multiply(transaction.Amount, bankAccount.BankCondition!.TransactionFeeMultiplier);
+        Value = bankAccount.BankCondition!.TransactionFeeBase + decimal.Multiply(transaction.Amount, bankAccount.BankCondition!.TransactionFeeMultiplier);
     }
-    
+
     public decimal Value { get; }
 }

@@ -11,17 +11,17 @@ public class CompanyTypeConfiguration : IEntityTypeConfiguration<Company>
     public void Configure(EntityTypeBuilder<Company> builder)
     {
         builder.ToTable("Company");
-        
+
         builder.HasKey(x => x.Id).HasName("PK_Company_Id");
         builder.Property(x => x.Id).HasColumnName("Id");
-        
+
         builder.Property(x => x.Name).HasColumnName("Name");
 
         builder
             .HasMany(x => x.Positions)
             .WithOne(x => x.Company)
             .HasConstraintName("FK_Position_Id");
-        
+
         builder
             .HasMany(x => x.Memberships)
             .WithOne(x => x.Company)

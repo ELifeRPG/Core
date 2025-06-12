@@ -12,16 +12,16 @@ public class WithdrawMoneyCommandResult : AbstractResult
     {
         Transaction = transaction;
     }
-    
+
     public BankAccountTransaction Transaction { get; }
 }
 
 public class WithdrawMoneyCommand : IRequest<WithdrawMoneyCommandResult>
 {
     public Guid BankAccountId { get; init; }
-    
+
     public Guid CharacterId { get; init; }
-    
+
     public decimal Amount { get; init; }
 }
 
@@ -46,7 +46,7 @@ internal class WithdrawMoneyCommandHandler : IRequestHandler<WithdrawMoneyComman
         {
             throw new ELifeEntityNotFoundException();
         }
-        
+
         var character = await _databaseContext.Characters
             .SingleOrDefaultAsync(x => x.Id == request.CharacterId, cancellationToken);
 
@@ -54,7 +54,7 @@ internal class WithdrawMoneyCommandHandler : IRequestHandler<WithdrawMoneyComman
         {
             throw new ELifeEntityNotFoundException();
         }
-        
+
         var transaction = bankAccount.WithdrawMoney(character, request.Amount);
 
         await _databaseContext.SaveChangesAsync(cancellationToken);

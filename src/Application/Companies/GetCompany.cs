@@ -13,9 +13,9 @@ public class GetCompanyResult : AbstractResult
         Company = company;
         TopMembers = topMembers;
     }
-    
+
     public Company Company { get; }
-    
+
     public ICollection<CompanyMembership> TopMembers { get; }
 }
 
@@ -25,7 +25,7 @@ public class GetCompanyQuery : IRequest<GetCompanyResult>
     {
         CompanyId = companyId;
     }
-    
+
     public CompanyId CompanyId { get; }
 }
 
@@ -43,7 +43,7 @@ public class GetCompanyHandler : IRequestHandler<GetCompanyQuery, GetCompanyResu
         var company = await _databaseContext.Companies
             .Include(x => x.Memberships!.OrderBy(m => m.Position.Ordering).Take(5))
             .SingleOrDefaultAsync(x => x.Id == request.CompanyId.Value, cancellationToken);
-        
+
         if (company is null)
         {
             throw new ELifeEntityNotFoundException($"Could not find company with Id {request.CompanyId}.");

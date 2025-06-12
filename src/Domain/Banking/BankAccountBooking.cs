@@ -10,10 +10,6 @@ public enum BankAccountBookingType
 
 public class BankAccountBooking : EntityBase
 {
-    internal BankAccountBooking()
-    {
-    }
-
     public BankAccountBooking(BankAccount account, BankAccountTransaction transaction, string? purpose = null)
     {
         Type = GetType(account, transaction);
@@ -22,17 +18,21 @@ public class BankAccountBooking : EntityBase
         Amount = GetAmount(Type, transaction);
         Purpose = purpose;
     }
-    
+
+    internal BankAccountBooking()
+    {
+    }
+
     public Guid Id { get; init; } = Guid.NewGuid();
-    
+
     public BankAccountBookingType Type { get; init; }
 
     public BankAccount BankAccount { get; init; } = null!;
 
     public BankAccount? Source { get; init; }
-    
+
     public string? Purpose { get; init; }
-    
+
     public decimal Amount { get; init; }
 
     private static BankAccountBookingType GetType(BankAccount account, BankAccountTransaction transaction)
@@ -40,15 +40,15 @@ public class BankAccountBooking : EntityBase
         return transaction.Type switch
         {
             BankAccountTransactionType.CashDeposit => BankAccountBookingType.Incoming,
-            
+
             BankAccountTransactionType.CashWithdrawal => BankAccountBookingType.Outgoing,
-            
-            BankAccountTransactionType.BankTransfer => 
+
+            BankAccountTransactionType.BankTransfer =>
                 transaction.BankAccount.Id == account.Id
                     ? BankAccountBookingType.Outgoing
                     : BankAccountBookingType.Incoming,
-            
-            _ => throw new ArgumentOutOfRangeException(nameof(transaction), nameof(transaction.Type))
+
+            _ => throw new ArgumentOutOfRangeException(nameof(transaction), nameof(transaction.Type)),
         };
     }
 
@@ -57,17 +57,17 @@ public class BankAccountBooking : EntityBase
         return transaction.Type switch
         {
             BankAccountTransactionType.CashDeposit => transaction.Amount - transaction.Fees,
-            
+
             BankAccountTransactionType.CashWithdrawal => transaction.Amount + transaction.Fees,
-            
-            BankAccountTransactionType.BankTransfer => type switch 
-            { 
+
+            BankAccountTransactionType.BankTransfer => type switch
+            {
                 BankAccountBookingType.Incoming => transaction.Amount,
                 BankAccountBookingType.Outgoing => transaction.Amount + transaction.Fees,
                 _ => throw new ArgumentOutOfRangeException(nameof(type)),
             },
-            
-            _ => throw new ArgumentOutOfRangeException(nameof(transaction), nameof(transaction.Type))
+
+            _ => throw new ArgumentOutOfRangeException(nameof(transaction), nameof(transaction.Type)),
         };
     }
 }

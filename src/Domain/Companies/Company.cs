@@ -6,10 +6,6 @@ namespace ELifeRPG.Domain.Companies;
 
 public class Company : EntityBase, IHasDomainEvents
 {
-    internal Company()
-    {
-    }
-
     public Company(string name)
     {
         Id = CompanyId.New().Value;
@@ -18,13 +14,17 @@ public class Company : EntityBase, IHasDomainEvents
         Memberships = new List<CompanyMembership>();
         Person = new Person();
     }
-    
+
+    internal Company()
+    {
+    }
+
     public Guid Id { get; init; }
-    
+
     public Person? Person { get; init; }
 
     public string Name { get; init; } = null!;
-    
+
     public ICollection<CompanyPosition>? Positions { get; init; }
 
     public ICollection<CompanyMembership>? Memberships { get; init; }
@@ -37,9 +37,9 @@ public class Company : EntityBase, IHasDomainEvents
         {
             throw new InvalidOperationException("Memberships need to be loaded.");
         }
-        
+
         position ??= Positions!.OrderByDescending(x => x.Ordering).First();
-        
+
         Memberships.Add(new CompanyMembership(this, character, position));
     }
 }

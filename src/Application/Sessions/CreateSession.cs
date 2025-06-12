@@ -8,7 +8,7 @@ namespace ELifeRPG.Application.Sessions;
 public class CreateSessionResult : AbstractResult
 {
     public required Guid AccountId { get; init; }
-    
+
     public required AccountStatus AccountStatus { get; init; }
 }
 
@@ -18,7 +18,7 @@ public class CreateSessionRequest : IRequest<CreateSessionResult>
     {
         BohemiaId = bohemiaId;
     }
-    
+
     public Guid BohemiaId { get; }
 }
 

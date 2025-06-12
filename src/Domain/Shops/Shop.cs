@@ -12,8 +12,6 @@ public class Shop
     public Guid Id { get; init; }
 
     public string DisplayName { get; init; } = null!;
-    
+
     public ShopType Type { get; init; }
-    
-    
 }

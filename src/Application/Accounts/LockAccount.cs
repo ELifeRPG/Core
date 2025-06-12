@@ -14,7 +14,7 @@ public class LockAccountCommand : IRequest<LockAccountResult>
     {
         AccountId = accountId;
     }
-    
+
     public Guid AccountId { get; }
 }
 
@@ -29,7 +29,7 @@ public class LockAccountHandler : IRequestHandler<LockAccountCommand, LockAccoun
 
     public async ValueTask<LockAccountResult> Handle(LockAccountCommand request, CancellationToken cancellationToken)
     {
-        var account = await _databaseContext.Accounts.FindAsync(new object?[] { request.AccountId }, cancellationToken);
+        var account = await _databaseContext.Accounts.FindAsync([request.AccountId], cancellationToken);
         if (account is null)
         {
             throw new ELifeEntityNotFoundException("Account does not exist.");
@@ -42,6 +42,3 @@ public class LockAccountHandler : IRequestHandler<LockAccountCommand, LockAccoun
             .AddSuccessMessage($"Account `{account.Id}` has been locked.");
     }
 }
-
-
-

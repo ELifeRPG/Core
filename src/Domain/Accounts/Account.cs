@@ -7,7 +7,7 @@ namespace ELifeRPG.Domain.Accounts;
 public class Account : EntityBase, IHasDomainEvents
 {
     private AccountStatus _status = AccountStatus.Active;
-    
+
     public Account()
     {
     }
@@ -16,22 +16,22 @@ public class Account : EntityBase, IHasDomainEvents
     {
         Id = Guid.NewGuid();
         DiscordId = discordId;
-        
+
         DomainEvents.Add(new AccountCreatedEvent(this));
     }
-    
+
     public Account(Guid bohemiaId)
     {
         Id = Guid.NewGuid();
         BohemiaId = bohemiaId;
-        
+
         DomainEvents.Add(new AccountCreatedEvent(this));
     }
-    
+
     public Guid Id { get; init; }
 
     public long DiscordId { get; init; }
-    
+
     public Guid? BohemiaId { get; init; }
 
     public AccountStatus Status
@@ -47,15 +47,15 @@ public class Account : EntityBase, IHasDomainEvents
     public void Lock()
     {
         ELifeInvalidOperationException.ThrowIf(_status == AccountStatus.Locked, "Account is already locked.");
-        
+
         _status = AccountStatus.Locked;
         DomainEvents.Add(new AccountLockedEvent(this));
     }
-    
+
     public void Unlock()
     {
         ELifeInvalidOperationException.ThrowIf(_status == AccountStatus.Active, "Account is already active.");
-        
+
         _status = AccountStatus.Active;
         DomainEvents.Add(new AccountUnlockedEvent(this));
     }

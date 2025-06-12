@@ -15,7 +15,7 @@ public static class CompanyEndpoints
         app
             .MapGet("/companies", GetCompanies)
             .Produces<ResultDto<List<CompanyDto>>>();
-        
+
         return app;
     }
 

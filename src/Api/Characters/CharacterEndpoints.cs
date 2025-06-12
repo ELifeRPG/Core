@@ -12,13 +12,13 @@ namespace Microsoft.AspNetCore.Builder;
 public static class CharacterEndpoints
 {
     public const string Tag = "Character";
-    
+
     public static WebApplication MapCharacterEndpoints(this WebApplication app)
     {
         app
             .MapGet(
                 "/accounts/{accountId:guid}/characters",
-                async (Guid accountId, IMediator mediator, IMapper mapper, CancellationToken cancellationToken) =>
+                async (Guid accountId, IMediator mediator, CancellationToken cancellationToken) =>
                     {
                         var response = await mediator.Send(new CharactersQuery(accountId), cancellationToken);
                         return response.Match(
@@ -27,7 +27,7 @@ public static class CharacterEndpoints
             .Produces<ResultDto<List<CharacterDto>>>()
             .WithTags(Tag)
             .WithSummary("List characters of the given account.");
-        
+
         app
             .MapPost(
                 "/characters",
@@ -36,7 +36,7 @@ public static class CharacterEndpoints
             .Produces<ResultDto<CharacterDto>>()
             .WithTags(Tag)
             .WithSummary("Create new character.");
-        
+
         app
             .MapPost(
                 "/characters/{characterId:guid}/sessions",
@@ -45,7 +45,7 @@ public static class CharacterEndpoints
             .Produces<ResultDto<CharacterDto>>()
             .WithTags(Tag)
             .WithSummary("Begins a new character session.");
-        
+
         return app;
     }
 }

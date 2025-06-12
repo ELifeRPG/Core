@@ -8,6 +8,6 @@ public class CharacterSessionEndedEvent : DomainEvent
     {
         Character = character;
     }
-    
+
     public Character Character { get; }
 }

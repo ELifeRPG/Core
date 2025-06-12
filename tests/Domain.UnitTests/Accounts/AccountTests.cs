@@ -19,22 +19,22 @@ public class AccountTests
     public void Lock_SetsStatusToLocked()
     {
         var account = new Account { Status = AccountStatus.Active };
-        
+
         account.Lock();
-        
+
         Assert.Equal(AccountStatus.Locked, account.Status);
     }
-    
+
     [Fact]
     public void Lock_RaisesAccountLockedEvent()
     {
         var account = new Account { Status = AccountStatus.Active };
-        
+
         account.Lock();
-        
+
         Assert.Equal(1, account.DomainEvents.Count(x => x.GetType() == typeof(AccountLockedEvent)));
     }
-    
+
     [Fact]
     public void Lock_ThrowsELifeInvalidOperationException_WhenStatusIsLocked()
     {
@@ -43,27 +43,27 @@ public class AccountTests
         var exception = Assert.Throws<ELifeInvalidOperationException>(() => account.Lock());
         Assert.Equal("Account is already locked.", exception.Message);
     }
-    
+
     [Fact]
     public void Unlock_SetsStatusToActive()
     {
         var account = new Account { Status = AccountStatus.Locked };
-        
+
         account.Unlock();
-        
+
         Assert.Equal(AccountStatus.Active, account.Status);
     }
-    
+
     [Fact]
     public void Unlock_RaisesAccountUnlockedEvent()
     {
         var account = new Account { Status = AccountStatus.Locked };
-        
+
         account.Unlock();
-        
+
         Assert.Equal(1, account.DomainEvents.Count(x => x.GetType() == typeof(AccountUnlockedEvent)));
     }
-    
+
     [Fact]
     public void Unlock_ThrowsELifeInvalidOperationException_WhenStatusIsActive()
     {

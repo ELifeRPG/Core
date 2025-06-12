@@ -13,7 +13,7 @@ public class CompanyProfile : Profile
             .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
             .ForMember(d => d.Name, o => o.MapFrom(s => s.Name))
             .ReverseMap();
-        
+
         CreateMap<ListCompaniesResult, ResultDto<List<CompanyDto>>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s.Companies));
     }

@@ -16,9 +16,9 @@ public class UserSignedInRequest : IRequest<UserSignedInResult>
         DiscordId = discordId;
         AccountName = accountName;
     }
-    
+
     public long DiscordId { get; }
-    
+
     public string AccountName { get; }
 }
 
@@ -40,7 +40,7 @@ public class UserSignedInHandler : IRequestHandler<UserSignedInRequest, UserSign
             _databaseContext.Accounts.Add(account);
             await _databaseContext.SaveChangesAsync(cancellationToken);
         }
-        
+
         return new UserSignedInResult();
     }
 }

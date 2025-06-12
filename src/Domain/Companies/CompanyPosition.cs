@@ -9,8 +9,8 @@ public class CompanyPosition : EntityBase
     public Company Company { get; init; } = null!;
 
     public string Name { get; init; } = null!;
-    
+
     public int Ordering { get; init; }
-    
+
     public CompanyPermissions Permissions { get; init; }
 }

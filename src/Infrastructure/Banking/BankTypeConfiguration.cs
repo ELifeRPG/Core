@@ -12,7 +12,7 @@ public class BankTypeConfiguration : IEntityTypeConfiguration<Bank>
     public void Configure(EntityTypeBuilder<Bank> builder)
     {
         builder.ToTable("Bank");
-        
+
         builder.HasKey(x => x.Id).HasName("PK_Bank_Id");
         builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedNever();
 
@@ -24,7 +24,7 @@ public class BankTypeConfiguration : IEntityTypeConfiguration<Bank>
             .WithOne(x => x.Bank)
             .HasForeignKey("FK_Bank_Id")
             .HasConstraintName("FK_BankCondition_Bank_Id");
-        
+
         builder
             .HasMany(x => x.Accounts)
             .WithOne(x => x.Bank)

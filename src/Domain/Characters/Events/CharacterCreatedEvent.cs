@@ -8,6 +8,6 @@ public class CharacterCreatedEvent : DomainEvent
     {
         Character = character;
     }
-    
+
     public Character Character { get; }
 }

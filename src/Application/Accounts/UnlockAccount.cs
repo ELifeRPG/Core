@@ -14,7 +14,7 @@ public class UnlockAccountCommand : IRequest<UnlockAccountResult>
     {
         AccountId = accountId;
     }
-    
+
     public Guid AccountId { get; }
 }
 
@@ -42,6 +42,3 @@ public class UnlockAccountHandler : IRequestHandler<UnlockAccountCommand, Unlock
             .AddSuccessMessage($"Account `{account.Id}` has been unlocked.");
     }
 }
-
-
-

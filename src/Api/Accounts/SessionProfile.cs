@@ -17,7 +17,7 @@ public class SessionProfile : Profile
 
         CreateMap<CreateSessionResult, ResultDto<SessionDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s));
-        
+
         CreateMap<CreateCharacterSessionResult, ResultDto<CharacterDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s.Character));
     }

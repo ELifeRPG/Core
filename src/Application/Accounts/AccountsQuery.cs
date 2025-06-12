@@ -19,7 +19,7 @@ public class ListAccountsHandler(IDatabaseContext databaseContext)
         var accounts = await databaseContext.Accounts
             .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);
-        
+
         return new List<Account>(accounts);
     }
 }

@@ -7,30 +7,29 @@ using Microsoft.Extensions.Logging;
 
 namespace ELifeRPG.Application.Banking.EventHandlers;
 
-public class BankingLogEventHandler : 
+public class BankingLogEventHandler :
     INotificationHandler<BankAccountOpenedEvent>,
     INotificationHandler<BankAccountTransactionExecutedEvent>
 {
-    private readonly ILogger<AccountLogManager> _logger;
-    
     /// <summary>
     /// Bank-Account {BankAccountId} has been opened
     /// </summary>
     private static readonly Action<ILogger, Guid, Exception> BankAccountOpenedEvent =
         LoggerMessage.Define<Guid>(
             LogLevel.Critical,
-            new EventId((int)LoggingEventId.BankAccountOpenedEvent, nameof(LoggingEventId.BankAccountOpenedEvent)), 
+            new EventId((int)LoggingEventId.BankAccountOpenedEvent, nameof(LoggingEventId.BankAccountOpenedEvent)),
             "Bank-Account {BankAccountId} has been opened");
-    
+
     /// <summary>
     /// Bank-Account {BankAccountId} executed transaction by {CharacterId} to Bank-Account {TargetBankAccountId} with amount {TransactionAmount} (fees: {TransactionFees})
     /// </summary>
     private static readonly Action<ILogger, Guid, Guid, Guid, decimal, decimal, Exception> BankAccountTransactionExecutedEvent =
         LoggerMessage.Define<Guid, Guid, Guid, decimal, decimal>(
             LogLevel.Critical,
-            new EventId((int)LoggingEventId.BankAccountTransactionExecutedEvent, nameof(LoggingEventId.BankAccountTransactionExecutedEvent)), 
+            new EventId((int)LoggingEventId.BankAccountTransactionExecutedEvent, nameof(LoggingEventId.BankAccountTransactionExecutedEvent)),
             "Bank-Account {BankAccountId} executed transaction by {CharacterId} to Bank-Account {TargetBankAccountId} with amount {TransactionAmount} (fees: {TransactionFees})");
-    
+
+    private readonly ILogger<AccountLogManager> _logger;
 
     public BankingLogEventHandler(ILogger<AccountLogManager> logger)
     {

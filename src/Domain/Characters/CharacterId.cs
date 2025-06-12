@@ -3,4 +3,4 @@
 namespace ELifeRPG.Domain.Characters;
 
 [StronglyTypedId]
-public partial struct CharacterId {}
+public partial struct CharacterId;

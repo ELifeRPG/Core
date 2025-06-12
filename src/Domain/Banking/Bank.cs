@@ -12,10 +12,6 @@ public class Bank : EntityBase, IHasDomainEvents
     private static readonly Random Random = new();
     private readonly List<BankAccount>? _accounts = new();
 
-    internal Bank()
-    {
-    }
-
     public Bank(Country country, int? number = null)
     {
         Country = country;
@@ -23,18 +19,24 @@ public class Bank : EntityBase, IHasDomainEvents
         Number = GenerateNumber(number, country);
     }
 
+    internal Bank()
+    {
+    }
+
     public Guid Id { get; init; } = Guid.NewGuid();
-    
+
     public Country Country { get; init; } = null!;
-    
+
     /// <summary>
     /// The national identification number of the bank.
     /// </summary>
     public int Number { get; init; }
-    
+
     public ICollection<BankCondition>? Conditions { get; init; }
 
     public IReadOnlyCollection<BankAccount>? Accounts => _accounts;
+
+    public List<DomainEvent> DomainEvents { get; } = new();
 
     public BankAccount OpenAccount(Person person)
     {
@@ -42,14 +44,6 @@ public class Bank : EntityBase, IHasDomainEvents
         HandleNewAccount(account);
         return account;
     }
-
-    private void HandleNewAccount(BankAccount account)
-    {
-        _accounts!.Add(account);
-        DomainEvents.Add(new BankAccountOpenedEvent(account));
-    }
-
-    public List<DomainEvent> DomainEvents { get; } = new();
 
     private static int GenerateNumber(int? givenNumber, Country country)
     {
@@ -61,8 +55,15 @@ public class Bank : EntityBase, IHasDomainEvents
             {
                 continue;
             }
-            
+
             return number;
-        } while (true);
+        }
+        while (true);
+    }
+
+    private void HandleNewAccount(BankAccount account)
+    {
+        _accounts!.Add(account);
+        DomainEvents.Add(new BankAccountOpenedEvent(account));
     }
 }

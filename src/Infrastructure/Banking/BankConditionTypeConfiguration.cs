@@ -11,13 +11,13 @@ public class BankConditionTypeConfiguration : IEntityTypeConfiguration<BankCondi
     public void Configure(EntityTypeBuilder<BankCondition> builder)
     {
         builder.ToTable("BankCondition");
-        
+
         builder.HasKey(x => x.Id).HasName("PK_BankCondition_Id");
         builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedNever();
-        
+
         builder.Property(x => x.TransactionFeeBase).HasColumnName("TransactionFeeBase");
         builder.Property(x => x.TransactionFeeMultiplier).HasColumnName("TransactionFeeMultiplier");
-        
+
         builder
             .HasMany(x => x.BankAccounts)
             .WithOne(x => x.BankCondition)

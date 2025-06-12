@@ -12,7 +12,7 @@ public class PersonTypeConfiguration : IEntityTypeConfiguration<Person>
     public void Configure(EntityTypeBuilder<Person> builder)
     {
         builder.ToTable("Person");
-        
+
         builder.HasKey(x => x.Id).HasName("PK_Person_Id");
         builder.Property(x => x.Id).HasColumnName("Id");
 
@@ -21,7 +21,7 @@ public class PersonTypeConfiguration : IEntityTypeConfiguration<Person>
             .WithOne(x => x.Person)
             .HasForeignKey<Person>("FK_Person_Id")
             .HasConstraintName("FK_Character_Person_Id");
-        
+
         builder
             .HasOne(x => x.Company)
             .WithOne(x => x.Person)

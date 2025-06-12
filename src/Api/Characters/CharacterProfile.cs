@@ -14,7 +14,7 @@ public class CharacterProfile : Profile
             .ForMember(d => d.FirstName, o => o.MapFrom(s => s.Name!.FirstName))
             .ForMember(d => d.LastName, o => o.MapFrom(s => s.Name!.LastName))
             .ReverseMap();
-        
+
         CreateMap<CreateCharacterResult, ResultDto<CharacterDto>>()
             .ForMember(d => d.Data, o => o.MapFrom(s => s.Character));
     }

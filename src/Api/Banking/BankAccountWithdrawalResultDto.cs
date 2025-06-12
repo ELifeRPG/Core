@@ -7,6 +7,6 @@ public class BankAccountWithdrawalResultDto
     public string? BankAccountNumber { get; set; }
 
     public decimal Amount { get; set; }
-    
+
     public decimal? Fees { get; set; }
 }

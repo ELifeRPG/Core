@@ -19,13 +19,15 @@ public class ListCharactersHandler(IDatabaseContext databaseContext)
 {
     public async ValueTask<ListCharactersResponse> Handle(CharactersQuery request, CancellationToken cancellationToken)
     {
-        var query = databaseContext.Characters.AsQueryable();
+        var query = databaseContext.Characters
+            .AsNoTracking()
+            .AsQueryable();
 
         if (request.AccountId.HasValue)
         {
             query = query.Where(x => x.Account!.Id == request.AccountId);
         }
-        
+
         var characters = await query
             .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);

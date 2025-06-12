@@ -12,16 +12,16 @@ namespace ELifeRPG.Application.Common;
 public interface IDatabaseContext : IDisposable, IAsyncDisposable
 {
     DbSet<Account> Accounts { get; set; }
-    
+
     DbSet<Character> Characters { get; set; }
-    
+
     DbSet<Company> Companies { get; set; }
-    
+
     DbSet<Country> Countries { get; set; }
-    
+
     DbSet<Bank> Banks { get; set; }
-    
+
     DbSet<BankAccount> BankAccounts { get; set; }
 
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = new());
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

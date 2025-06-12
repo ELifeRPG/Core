@@ -12,18 +12,18 @@ public class MakeTransactionCommandResult : AbstractResult
     {
         Transaction = transaction;
     }
-    
+
     public BankAccountTransaction Transaction { get; }
 }
 
 public class MakeTransactionCommand : IRequest<MakeTransactionCommandResult>
 {
     public Guid SourceBankAccountId { get; init; }
-    
+
     public Guid TargetBankAccountId { get; init; }
-    
+
     public Guid CharacterId { get; init; }
-    
+
     public decimal Amount { get; init; }
 }
 
@@ -48,7 +48,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
         {
             throw new ELifeEntityNotFoundException();
         }
-        
+
         var character = await _databaseContext.Characters
             .SingleOrDefaultAsync(x => x.Id == request.CharacterId, cancellationToken);
 
@@ -59,7 +59,7 @@ internal class MakeTransactionCommandHandler : IRequestHandler<MakeTransactionCo
 
         var sourceBankAccount = selectedBankAccounts.First(x => x.Id == request.SourceBankAccountId);
         var targetBankAccount = selectedBankAccounts.First(x => x.Id == request.TargetBankAccountId);
-        
+
         var transaction = sourceBankAccount.TransferMoneyTo(targetBankAccount, request.Amount, character);
         await _databaseContext.SaveChangesAsync(cancellationToken);
 

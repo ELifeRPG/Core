@@ -13,10 +13,6 @@ public enum PersonType
 
 public class Person : EntityBase
 {
-    internal Person()
-    {
-    }
-    
     public Person(Character character)
     {
         Character = character;
@@ -29,12 +25,16 @@ public class Person : EntityBase
         Type = PersonType.Company;
     }
 
+    internal Person()
+    {
+    }
+
     public Guid Id { get; init; } = Guid.NewGuid();
-    
+
     public PersonType Type { get; init; }
-    
+
     public Character? Character { get; init; }
-    
+
     public Company? Company { get; init; }
 
     public ICollection<BankAccount>? BankAccounts { get; init; }

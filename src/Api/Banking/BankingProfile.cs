@@ -24,7 +24,7 @@ public class BankingProfile : Profile
             })
             .ForMember(d => d.Purpose, o => o.MapFrom(s => s.Purpose))
             .ForMember(d => d.Amount, o => o.MapFrom(s => s.Amount));
-        
+
         CreateMap<BankAccountTransaction, BankAccountTransactionDto>()
             .ForMember(d => d.BankAccountId, o => o.MapFrom(s => s.BankAccount.Id))
             .ForMember(d => d.BankAccountNumber, o => o.MapFrom(s => s.BankAccount.Number))
@@ -32,13 +32,13 @@ public class BankingProfile : Profile
             .ForMember(d => d.TargetBankAccountNumber, o => o.MapFrom(s => s.Source!.Number))
             .ForMember(d => d.Amount, o => o.MapFrom(s => s.Amount))
             .ForMember(d => d.Fees, o => o.MapFrom(s => s.Fees));
-        
+
         CreateMap<BankAccountTransaction, BankAccountWithdrawalResultDto>()
             .ForMember(d => d.BankAccountId, o => o.MapFrom(s => s.BankAccount.Id))
             .ForMember(d => d.BankAccountNumber, o => o.MapFrom(s => s.BankAccount.Number))
             .ForMember(d => d.Amount, o => o.MapFrom(s => s.Amount))
             .ForMember(d => d.Fees, o => o.MapFrom(s => s.Fees));
-        
+
         CreateMap<DepositMoneyCommandResult, BankAccountDepositResultDto>()
             .ForMember(d => d.Amount, o => o.MapFrom(s => s.Booking.Amount))
             .ForMember(d => d.Fees, o => o.MapFrom(s => s.Transaction.Fees));

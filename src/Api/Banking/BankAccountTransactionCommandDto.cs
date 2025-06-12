@@ -8,7 +8,7 @@ public class BankAccountTransactionCommandDto
     [Required]
     [FromBody]
     public Guid TargetBankAccountId { get; set; }
-    
+
     [Required]
     [FromBody]
     public decimal Amount { get; set; }

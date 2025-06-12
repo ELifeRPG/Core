@@ -42,7 +42,7 @@ public class BankAccountNumberTests
         var instance = new BankAccountNumber("GB33BUKB20201555555555");
         Assert.Equal("GB33 BUKB 2020 1555 5555 55", instance.ToString());
     }
-    
+
     [Fact]
     public void Constructor_GeneratesValidNumbers()
     {

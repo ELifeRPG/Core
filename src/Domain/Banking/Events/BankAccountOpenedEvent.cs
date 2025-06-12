@@ -8,6 +8,6 @@ public class BankAccountOpenedEvent : DomainEvent
     {
         BankAccount = bankAccount;
     }
-    
+
     public BankAccount BankAccount { get; }
 }

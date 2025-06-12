@@ -16,26 +16,26 @@ public enum BankAccountType
 
 public class BankAccount : EntityBase, IHasDomainEvents
 {
-    internal BankAccount()
-    {
-    }
-    
     public BankAccount(Bank bank, Person owner)
         : this(bank)
     {
         Owner = owner;
         Type = owner.Character is null && owner.Company is not null ? BankAccountType.Corporate : BankAccountType.Personal;
     }
-    
+
+    internal BankAccount()
+    {
+    }
+
     private BankAccount(Bank bank)
     {
         Bank = bank;
         Number = new BankAccountNumber(Bank).Value;
         BankCondition = Bank.Conditions!.First();
     }
-    
+
     public Guid Id { get; init; } = Guid.NewGuid();
-    
+
     public BankAccountType Type { get; init; }
 
     /// <summary>
@@ -46,13 +46,13 @@ public class BankAccount : EntityBase, IHasDomainEvents
     public decimal Balance { get; set; }
 
     public Bank? Bank { get; init; }
-    
+
     public BankCondition? BankCondition { get; init; }
 
     public Person Owner { get; init; } = null!;
-    
+
     public ICollection<BankAccountBooking>? Bookings { get; init; }
-    
+
     public ICollection<BankAccountBooking>? OutgoingBookings { get; init; }
 
     public List<DomainEvent> DomainEvents { get; } = [];
@@ -72,7 +72,7 @@ public class BankAccount : EntityBase, IHasDomainEvents
     /// Tries to execute a transaction to the destination bank-account.
     /// </summary>
     /// <param name="targetAccount">The destination bank-account.</param>
-    /// <param name="amount">The amount to be transferred, without fees.</param> 
+    /// <param name="amount">The amount to be transferred, without fees.</param>
     /// <param name="character">The executing person.</param>
     /// <returns>The transaction including fees.</returns>
     /// <exception cref="ELifeInvalidOperationException">Throws if the character is not allowed to execute the transaction.</exception>
@@ -82,20 +82,20 @@ public class BankAccount : EntityBase, IHasDomainEvents
         {
             throw new InvalidOperationException();
         }
-        
+
         if (character is not null && !Can(character.Person!, BankAccountCapabilities.CommitTransactions))
         {
             throw new ELifeInvalidOperationException();
         }
-        
+
         var transaction = new BankAccountTransaction(this, targetAccount, amount);
         var booking = new BankAccountBooking(this, transaction);
-        
+
         if (Balance < booking.Amount)
         {
             throw new ELifeInvalidOperationException("Can not withdraw money due to low account-balance.");
         }
-        
+
         Bookings.Add(booking);
         Balance -= booking.Amount;
 
@@ -121,12 +121,12 @@ public class BankAccount : EntityBase, IHasDomainEvents
         {
             throw new InvalidOperationException();
         }
-        
+
         if (!Can(character.Person!, BankAccountCapabilities.CommitTransactions))
         {
             throw new ELifeInvalidOperationException();
         }
-        
+
         var transaction = new BankAccountTransaction(this, BankAccountTransactionType.CashWithdrawal, amount);
         var booking = new BankAccountBooking(this, transaction);
 
@@ -134,15 +134,15 @@ public class BankAccount : EntityBase, IHasDomainEvents
         {
             throw new ELifeInvalidOperationException("Can not withdraw money due to low account-balance.");
         }
-        
+
         Bookings.Add(booking);
         Balance -= booking.Amount;
-        
+
         DomainEvents.Add(new BankAccountTransactionExecutedEvent(transaction, character));
 
         return transaction;
     }
-    
+
     public (BankAccountTransaction Transaction, BankAccountBooking Booking) DepositMoney(decimal amount)
     {
         if (Bookings is null)

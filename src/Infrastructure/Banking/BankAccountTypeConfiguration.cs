@@ -11,21 +11,21 @@ public class BankAccountTypeConfiguration : IEntityTypeConfiguration<BankAccount
     public void Configure(EntityTypeBuilder<BankAccount> builder)
     {
         builder.ToTable("BankAccount");
-        
+
         builder.HasKey(x => x.Id).HasName("PK_BankAccount_Id");
         builder.Property(x => x.Id).HasColumnName("Id").ValueGeneratedNever();
-        
+
         builder.Property(x => x.Type).HasColumnName("Type");
 
         builder.Property(x => x.Number).HasColumnName("Number");
         builder.HasIndex(x => x.Number).IsUnique();
-        
+
         builder
             .HasOne(x => x.Owner)
             .WithMany(x => x.BankAccounts)
             .HasForeignKey("FK_Person_Id")
             .HasConstraintName("FK_Person_BankAccount_Id");
-        
+
         builder
             .HasMany(x => x.Bookings)
             .WithOne(x => x.BankAccount)

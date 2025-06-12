@@ -14,7 +14,7 @@ public class BankAccountNumber
     {
         var randomNumber = Random.Shared.NextInt64(1000000000, 99999999999);
         var checkNumber = BuildCheckNumber(bank.Country.Code, bank.Number, randomNumber);
-        
+
         Value = BuildValue(bank.Country.Code, checkNumber, bank.Number, randomNumber);
         Validate();
     }
@@ -47,7 +47,7 @@ public class BankAccountNumber
             return false;
         }
     }
-    
+
     public bool TryValidate(out Exception? exception)
     {
         try
@@ -79,10 +79,10 @@ public class BankAccountNumber
 
             newStr.Append(Value[i]);
         }
-        
+
         return newStr.ToString();
     }
-    
+
     private static byte BuildCheckNumber(string countryCode, int bankCode, long accountNumber)
     {
         var baseNumberToken = new BankAccountNumberToken(countryCode, bankCode, accountNumber);
@@ -95,7 +95,7 @@ public class BankAccountNumber
         var paddedCheckNumber = checkNumber < 10 ? $"0{checkNumber}" : checkNumber.ToString();
         return $"{countryCode}{paddedCheckNumber}{bankCode}{accountNumber}";
     }
-    
+
     private void Validate()
     {
         //// IBAN can not contain more than 34 characters

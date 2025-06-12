@@ -14,7 +14,7 @@ internal class BankAccountNumberToken
     {
         Value = BuildValue(countryCode, $"{bankCode}{accountNumber}", "00");
     }
-    
+
     /// <summary>
     /// Constructs the token from the IBAN.
     /// </summary>
@@ -22,9 +22,9 @@ internal class BankAccountNumberToken
     {
         Value = BuildValue(iban[..2], iban[4..], iban[2..4]);
     }
-    
+
     public decimal Value { get; }
-    
+
     public bool IsValidMod97()
     {
         return Value % 97 == 1;
@@ -34,7 +34,7 @@ internal class BankAccountNumberToken
     {
         var rearrangedValue = $"{remainder}{countryCode}{checkNumber ?? string.Empty}";
         var decimalValueString = rearrangedValue.Aggregate(string.Empty, (current, character) => current + (char.IsLetter(character) ? character - 55 : character - 48));
-        
+
         if (!decimal.TryParse(decimalValueString, out var parsedValue))
         {
             throw new ELifeInvalidOperationException("Generated value could not be parsed.");

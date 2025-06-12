@@ -11,7 +11,7 @@ public class ListCompaniesResult : AbstractResult
     {
         Companies = companies;
     }
-    
+
     public List<Company> Companies { get; }
 }
 

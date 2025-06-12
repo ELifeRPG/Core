@@ -13,7 +13,7 @@ public class DepositMoneyCommandResult : AbstractResult
         Transaction = transaction;
         Booking = booking;
     }
-    
+
     public BankAccountTransaction Transaction { get; }
 
     public BankAccountBooking Booking { get; }
@@ -22,7 +22,7 @@ public class DepositMoneyCommandResult : AbstractResult
 public class DepositMoneyCommand : IRequest<DepositMoneyCommandResult>
 {
     public Guid BankAccountId { get; init; }
-    
+
     public decimal Amount { get; init; }
 }
 
@@ -48,7 +48,7 @@ internal class DepositMoneyCommandHandler : IRequestHandler<DepositMoneyCommand,
         {
             throw new ELifeEntityNotFoundException();
         }
-        
+
         var (transaction, booking) = bankAccount.DepositMoney(request.Amount);
 
         await _databaseContext.SaveChangesAsync(cancellationToken);

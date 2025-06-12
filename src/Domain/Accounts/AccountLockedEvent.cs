@@ -8,6 +8,6 @@ public class AccountLockedEvent : DomainEvent
     {
         Account = account;
     }
-    
+
     public Account Account { get; }
 }

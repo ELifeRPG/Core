@@ -4,8 +4,8 @@ using Microsoft.Extensions.Logging;
 
 namespace ELifeRPG.Application.Accounts;
 
-public class AccountLogManager : 
-    INotificationHandler<AccountCreatedEvent>, 
+public class AccountLogManager :
+    INotificationHandler<AccountCreatedEvent>,
     INotificationHandler<AccountLockedEvent>,
     INotificationHandler<AccountUnlockedEvent>
 {

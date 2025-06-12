@@ -12,7 +12,7 @@ public class BankAccountDetailsQueryResult : AbstractResult
     {
         BankAccount = bankAccount;
     }
-    
+
     public BankAccount BankAccount { get; }
 }
 
@@ -22,7 +22,7 @@ public class BankAccountDetailsQuery : IRequest<BankAccountDetailsQueryResult>
     {
         BankAccountId = bankAccountId;
     }
-    
+
     public Guid BankAccountId { get; }
 }
 
